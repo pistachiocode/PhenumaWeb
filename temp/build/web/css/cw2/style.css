@@ -1,0 +1,102 @@
+* {
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-size: 14pt;
+	font-family: helvetica neue, helvetica, arial, sans-serif;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+	color: #000;
+}
+
+a {
+	color: #fff;
+	text-decoration: none;
+}
+
+em {
+	font-style: italic;
+}
+
+strong {
+	font-weight: strong;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+}
+
+h1 {
+	font-size: 2m;
+}
+
+#cy {
+}
+
+#header {
+	background: #f5f5f5;
+	border-bottom: 1px solid #eaeaea;
+}
+
+#navigation {
+	background: #000;
+	font-size: 0.8em;
+	padding: 0.5em 0;
+	display: block;
+	width: 100%;
+}
+
+#navigation li {
+	display: inline;
+}
+
+#header h1 {
+	display: inline;
+	padding-right: 0.125em;
+}
+
+#navigation a {
+	color: #ddd;
+	padding: 0.5em 0.75em;
+}
+
+#navigation a:hover {
+	color: #fff;
+}
+
+#title {
+	padding: 0.5em 0.6em;
+}
+
+#description {
+	font-size: 0.8em;
+}
+
+a#fork-me-link #fork-me {
+	opacity: 0.85;
+}
+
+a#fork-me-link:hover #fork-me {
+	opacity: 1;
+}
+
+#fork-me {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 149px;
+	width: 149px;
+	background: url("../images/github.png");
+	z-index: 999;
+}
+
+#qtip-div {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: -1;
+}

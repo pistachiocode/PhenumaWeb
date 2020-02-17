@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+
+        
+    <!-- INTERFACE -->
+    <cc:interface>
+
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        
+        
+        
+        <h:form id="menuphenuma" style="font-size: 80%; background-color: transparent;"> 
+            <p:toolbar >
+                <p:toolbarGroup align="left">  
+                    <p:commandButton  title="Download" value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="true" actionListener="#{networkFormBean.createOutputFile}" onstart="showModal('Processing output file, please wait.')" oncomplete="showModalDownload()"> 
+   
+                    </p:commandButton>  
+                    <p:separator/>  
+                    <p:outputLabel value="Layouts:"></p:outputLabel>
+                        <p:commandButton value="Tree" onclick="setLayout('Tree')" /> 
+                        <p:commandButton value="Circle" onclick="setLayout('Circle')" />   
+                        <p:commandButton value="Force Directed" onclick="setLayout('ForceDirected')" /> 
+                        <p:commandButton value="Radial" onclick="setLayout('Radial')" /> 
+                   
+                    </p:toolbarGroup>  
+                
+                    <p:toolbarGroup align="left">  
+                        <p:separator/>
+                        <p:commandButton id="panbutton" type="button" title="Pan" icon="ui-icon-hand" onclick="panEnabled()"/> 
+                        <p:commandButton type="button" title="Fit" icon="ui-icon-arrow-4-diag" onclick="zoomToFit()"/>
+                        <p:outputLabel value="Zoom:"></p:outputLabel>
+                        <p:commandButton type="button" title="Zoom In" icon="ui-icon-plus" onclick="zoomIn()"/>  
+                        <p:commandButton type="button" title="Zomm Out" icon="ui-icon-minus" onclick="zoomOut()"/>  
+                        <p:commandButton value="Novels" onclick="filterNew()" />
+                        <p:commandButton value="Legend" onclick="showModalLegend()" />
+                    </p:toolbarGroup>
+
+                <!-- <p:toolbarGroup align="left">  
+                    <p:separator/>
+                    <p:commandButton  value="Hide/Show Labels" onclick="toggleLabels()" />  
+                    
+                </p:toolbarGroup> -->
+                
+            </p:toolbar>
+        </h:form>
+        
+            
+    </cc:implementation>
+
+    
+</html>

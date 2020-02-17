@@ -1,0 +1,47 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.utils;
+
+import java.util.List;
+import java.util.regex.Pattern;
+import ontologizer.go.Prefix;
+import ontologizer.go.TermID;
+
+/**
+ *
+ * @author Armando
+ */
+public class Utils {
+    /*
+     * List of identifiers to string separated for spaces.
+     */
+    public static String inputToString(List<String> object) 
+    {
+        String str = "";
+        
+        if(object == null)
+            return str;
+                    
+        for(String s : object)
+        {
+            str = str + s  +" ";
+        }
+        
+        str = str.trim();
+        
+        return str;
+    }
+    
+    public static String intToHpoId(Integer id)
+    {
+        TermID termid = new TermID(new Prefix("HP"), id);
+        return termid.toString();
+    }
+    
+    public static boolean isSymbol(String gene)
+    {
+        return Pattern.matches("[a-zA-Z]+[0-9]*", gene);
+    }
+}

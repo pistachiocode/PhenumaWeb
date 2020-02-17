@@ -1,0 +1,318 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.dataqueries;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import ontologizer.StudySet;
+import ontologizer.StudySetFactory;
+import ontologizer.association.AssociationContainer;
+import ontologizer.association.PP2Associations;
+import ontologizer.calculation.SemanticCalculation;
+import ontologizer.go.OBOParserException;
+import ontologizer.go.Ontology;
+import ontologizer.go.TermID;
+import ontologizer.types.ByteString;
+import org.apache.log4j.Logger;
+import phenomizer.hpo.Phenuma;
+import phenomizer.hpo.PhenumaDB;
+import phenomizer.utils.NumberUtils;
+import phenuma.constants.Constants;
+import phenuma.entities.Disease;
+import phenuma.entities.Gene;
+import phenuma.entities.RareDisease;
+import phenuma.network.Network;
+import phenuma.networkproyection.NetworkConstants;
+import phenuma.network.Edge;
+import phenuma.network.EdgeSemantic;
+import phenuma.network.Node;
+import phenuma.network.NodeDisease;
+import phenuma.network.NodeGene;
+import phenuma.network.NodeQuery;
+import phenuma.network.NodeRareDisease;
+import phenuma.network.PhenotypeNetworkDB;
+import phenuma.networkproyection.NetworkUtils;
+
+/**
+ *
+ * @author Armando
+ */
+public class OntologyQueries {
+    
+    static final Logger logger = Logger.getLogger(OntologyQueries.class.toString());
+    /**
+     * Get term list from annotated element. If the element is not annotated
+     * in the ontology the result list will be empty.
+     * 
+     * @param studySet
+     * @return 
+     */
+    public static List<TermID> termListByElement(ByteString element, int associations) throws IOException, OBOParserException{
+        /*Phenomizer Object*/
+        Phenuma p = Phenuma.getInstance();
+        
+        AssociationContainer assocs = p.getAssocationContainerById(associations);
+        
+        /** Get hpo list from diseases*/
+        List<TermID> termlist = new ArrayList<TermID>(); 
+        
+        PP2Associations pp2a = assocs.get(element);
+
+        if(pp2a != null){
+            ArrayList<TermID> sublist = pp2a.getAssociations();
+            
+            if(sublist != null)
+                termlist.addAll(sublist);
+        }
+
+        
+        return termlist;
+    }
+    
+
+    
+
+    
+    /**
+     * We calculate the semantic similarity between a gene and a disease using the HPO ontology and the diseases annotations.
+     * The value is calculated in the same way that a phenomizer query, where the elements of the query set are the gene
+     * phenotypes.
+     * 
+     * @param gene
+     * @param disease
+     * @return 
+     */
+    public static double geneDiseaseSimilarity(ByteString gene, ByteString disease, SemanticCalculation sc) throws IOException, OBOParserException
+    {
+        double res = 0;
+        
+        /*Get he hpo terms of the gene*/
+        ArrayList<TermID> terms = (ArrayList<TermID>) termListByElement(gene, Constants.ASSOC_GENES_HPO);
+        
+        if (!terms.isEmpty()){
+            res = Math.rint(sc.simAvgSym(terms, disease)*1000)/1000;
+  
+        }
+            
+        /*Calculate the semantic similarity*/
+        return res;
+    }
+
+    
+//    /**
+//     * This methods returns the outcome network of a set of phenotypes in an ontology, which is included
+//     * in the arguments.
+//     * @param query
+//     * @param ontology
+//     * @param associations
+//     * @return
+//     * @throws IOException
+//     * @throws OBOParserException 
+//     */
+//    public static Network termQuery(ArrayList<TermID> query, int ontology, int associations) throws IOException, OBOParserException {
+//        
+//        Network result = new Network(NetworkConstants.ASYMMETRIC);
+//        
+//        int relationship_type = 0;
+//        
+//        PhenumaDB pdb = PhenumaDB.getInstance();
+//        
+//        
+//        EntityManagerFactory emf = pdb.getFactory();
+//        EntityManager em = emf.createEntityManager();
+//        
+//        
+//        /*Phenuma Object*/
+//        Phenuma p = Phenuma.getInstance();
+//
+//        /*Association Container*/
+//        AssociationContainer assocs = p.getAssocationContainerById(associations);
+// 
+//        /*Semantic Calculation*/
+//        SemanticCalculation sc = new SemanticCalculation(p.getOntologyById(ontology), assocs);
+//        
+//        
+//        NodeQuery nodequery = new NodeQuery(query, true);
+//   
+//        Set<ByteString> ppset = assocs.getAllAnnotatedPP();
+//        
+//        try{
+//        
+//            for(ByteString ppname : ppset){
+//
+//
+//               
+//                Double score = sc.simAvgSym(query, ppname);
+//                
+//                
+//                //Create edge pvalue
+//                if(score!=null && score > 0)
+//                {
+//                    //P-Value
+//                    Double pvalue = new DatabaseQueries2().getPValue(ppname.toString(), score, ontology, associations, query.size(),  Constants.ADJUSTMENT_BH_COL, em);
+//
+//                    if(pvalue != null && pvalue <= 0.02)
+//                    {
+//                                 //Create target node
+//                        Node node = null;
+//
+//                        if(associations == Constants.ASSOC_DISEASES_HPO)
+//                        {
+//                            node = new NodeDisease(new Disease(new Integer(ppname.toString())));
+//                            relationship_type = NetworkConstants.NETWORK_REL_PHENOTYPIC_QUERY_DISEASE;
+//
+//                        }
+//                        else if (associations == Constants.ASSOC_GENES_HPO)
+//                        {
+//                             node = new NodeGene(new Gene(new Integer(ppname.toString())));
+//                             relationship_type = NetworkConstants.NETWORK_REL_PHENOTYPIC_QUERY_GENE;
+//
+//                        }
+//                        else if (associations == Constants.ASSOC_ER_HPO)
+//                        {
+//
+//                             node = new NodeRareDisease(new RareDisease(new Integer(ppname.toString())));
+//                             relationship_type = NetworkConstants.NETWORK_REL_PHENOTYPIC_QUERY_ER;
+//                        }
+//
+//  
+//                        //Building Edge
+//                        EdgeSemantic edge_pvalue = new EdgeSemantic();
+//
+//                        edge_pvalue.setNode1(nodequery);
+//                        edge_pvalue.setNode2(node);
+//                        edge_pvalue.setScore(score);
+//                        edge_pvalue.setPvalue(pvalue);
+//                        edge_pvalue.setRelationship_type(relationship_type);
+//                        edge_pvalue.setType(NetworkConstants.ASYMMETRIC);
+//
+//                        //Edge info
+//                        edge_pvalue.setMaximumTerm2IC(sc.resnikSimilarityMaximumTerms(query, ppname));
+//                        
+//                        result.add(edge_pvalue);
+//                    }
+//
+//                }
+//            }
+//            
+//        }catch(Exception ex){
+//            logger.error(ex.getMessage());
+//        }finally{
+//            em.close();
+//            emf.close();
+//           
+//        }
+//        
+//        /*Increment progress*/
+//        p.incrementProgress(25);
+//
+//        return result;
+//    }
+
+
+    
+    
+     /**
+     * This methods returns the outcome network of a set of phenotypes in an ontology, which is included
+     * in the arguments.
+     * @param query
+     * @param ontology
+     * @param associations
+     * @return
+     * @throws IOException
+     * @throws OBOParserException 
+     */
+    public static PhenotypeNetworkDB termQueryDB(ArrayList<TermID> query, int ontology, int associations, double threshold) throws IOException, OBOParserException {
+        
+        PhenotypeNetworkDB result = new PhenotypeNetworkDB();
+        
+        
+        
+        
+        List<Object[]> rows = new ArrayList<Object[]>();
+        List<String> nodes = new ArrayList<String>();
+
+        
+        PhenumaDB pdb = PhenumaDB.getInstance();
+
+        DatabaseQueries2 q = new DatabaseQueries2();
+        
+        
+        
+        EntityManagerFactory emf = pdb.getFactory();
+        EntityManager em = emf.createEntityManager();
+        
+        
+        /*Phenuma Object*/
+        Phenuma p = Phenuma.getInstance();
+
+        /*Association Container*/
+        AssociationContainer assocs = p.getAssocationContainerById(associations);
+ 
+        /*Semantic Calculation*/
+        SemanticCalculation sc = new SemanticCalculation(p.getOntologyById(ontology), assocs);
+        
+   
+        Set<ByteString> ppset = assocs.getAllAnnotatedPP();
+        
+        try{
+        
+            for(ByteString ppname : ppset){
+                
+                Double score = sc.simAvgSym(query, ppname); 
+                Double score_normalized =  sc.simAvgSym(query, ppname)/p.getMaximumICById(associations);
+                
+                Object[] row = new Object[4];
+                
+                
+                //Create edge pvalue
+                if(score!=null && score_normalized > threshold)
+                {
+                    //P-Value
+                    Double pvalue = new DatabaseQueries2().getPValue(ppname.toString(), score, ontology, associations, query.size(),  Constants.ADJUSTMENT_BH_COL, em);
+
+                    if(pvalue != null)
+                    {
+         
+                        row[0] = "0";
+                        
+                        row[1] =  ppname.toString();                        
+                        row[2] =  NumberUtils.round(score_normalized, 3);
+                        
+                        row[3] = pvalue;
+                        
+                        rows.add(row);
+                        nodes.add(ppname.toString());
+                    }
+
+                }
+            }
+            
+            result.setQueryTerms(query);
+            result.setResultRelationships(rows);
+            result.setNodes(StudySetFactory.createFromList(nodes, true));
+         
+            
+
+            
+        }catch(Exception ex){
+            logger.error(ex.getMessage());
+        }finally{
+            em.close();
+            emf.close();
+           
+        }
+        
+
+
+        return result;
+    }
+
+}

@@ -1,0 +1,665 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.cysnetwork;
+
+import java.util.ArrayList;
+import java.util.List;
+import ontologizer.types.ByteString;
+import phenomizer.utils.NumberUtils;
+import phenuma.dataqueries.DatabaseQueries2;
+import phenuma.entities.RareDisease;
+import phenuma.network.NetworkDB;
+import phenuma.networkproyection.NetworkConstants;
+import phenuma.networkproyection.NetworkUtils;
+import phenuma.objects.PhenumaConstants;
+import phenuma.objects.SubnetworkType;
+
+/**
+ *
+ * @author Armando
+ */
+public class CysNetworkUtils {
+    
+    public static List<SubnetworkType> getSubnetworkTypes (int outputNetwork)
+    {
+       
+        
+        if( outputNetwork == NetworkConstants.UNIPARTITE_GENE_INFERRED_BY_ORPHAN || 
+            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_HPO || 
+            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_GOBP || 
+            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_GOCC || 
+            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_GOMF || 
+            outputNetwork == NetworkConstants.UNIPARTITE_GENE_INFERRED_BY_OMIM || 
+            outputNetwork == NetworkConstants.UNIPARTITE_GENE_METABOLIC ||
+            outputNetwork == NetworkConstants.UNIPARTITE_GENE_PPI ||
+            outputNetwork == NetworkConstants.QUERY_GENE_NETWORK)
+        {
+            return PhenumaConstants.subnetworkType_monoGenes();
+        }
+        else if ( outputNetwork == NetworkConstants.UNIPARTITE_DISEASE_SS || 
+                  outputNetwork == NetworkConstants.UNIPARTITE_DISEASE_INFERRED_BY_GENE ||
+                  outputNetwork == NetworkConstants.QUERY_DISEASE_NETWORK)
+        {
+            return PhenumaConstants.subnetworkType_monoDiseases();
+        }
+        else if ( outputNetwork == NetworkConstants.UNIPARTITE_ORPHAN_INFERRED_BY_GENE || 
+                  outputNetwork == NetworkConstants.UNIPARTITE_ORPHAN_SS ||
+                  outputNetwork == NetworkConstants.QUERY_ER_NETWORK)
+        {
+            return PhenumaConstants.subnetworkType_monoRareDiseases();
+        }
+        else if ( outputNetwork == NetworkConstants.BIPARTITE_GENE_DISEASE_GENEMAP|| 
+                  outputNetwork == NetworkConstants.BIPARTITE_GENE_DISEASE_SS)
+        {
+            return PhenumaConstants.subnetworkType_bipGeneDiseases();
+        }
+        else if ( outputNetwork == NetworkConstants.BIPARTITE_GENE_ORPHAN_ORPHADATA || 
+                  outputNetwork == NetworkConstants.BIPARTITE_GENE_ORPHAN_SS)
+        {
+            return PhenumaConstants.subnetworkType_bipGeneRareDiseases();
+        }
+        else{
+            return new ArrayList<SubnetworkType>();
+        }
+        
+        
+      //  return null;
+    }
+    
+    
+//    public static Integer getPositionFirstRelationship (int outputNetwork)
+//    {
+//       
+//        
+//        if( outputNetwork == NetworkConstants.UNIPARTITE_GENE_INFERRED_BY_ORPHAN || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_HPO || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_GOBP || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_GOCC || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_GOMF || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_INFERRED_BY_OMIM || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_METABOLIC ||
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_PPI )
+//        {
+//            return NetworkConstants.GENEGENE_REL_PHENOTYPIC_POS;
+//        }
+//        else if ( outputNetwork == NetworkConstants.UNIPARTITE_DISEASE_SS || 
+//                  outputNetwork == NetworkConstants.UNIPARTITE_DISEASE_INFERRED_BY_GENE)
+//        {
+//            return NetworkConstants.OMIMOMIM_REL_PHENOTYPIC_POS;
+//        }
+//        else if ( outputNetwork == NetworkConstants.UNIPARTITE_ORPHAN_INFERRED_BY_GENE || 
+//                  outputNetwork == NetworkConstants.UNIPARTITE_ORPHAN_SS)
+//        {
+//            return NetworkConstants.ORPHAORPHA_REL_PHENOTYPIC_POS;
+//        }
+//        else if ( outputNetwork == NetworkConstants.BIPARTITE_GENE_DISEASE_GENEMAP|| 
+//                  outputNetwork == NetworkConstants.BIPARTITE_GENE_DISEASE_SS)
+//        {
+//            return NetworkConstants.GENEOMIM_REL_KNOWN_POS;
+//        }
+//        else if ( outputNetwork == NetworkConstants.BIPARTITE_GENE_ORPHAN_ORPHADATA || 
+//                  outputNetwork == NetworkConstants.BIPARTITE_GENE_ORPHAN_SS)
+//        {
+//            return NetworkConstants.GENEORPHA_REL_KNOWN_POS;
+//        }
+//        else{
+//            return 3; //la primera relacion en las matrices almacenadas siempre es 3
+//        }
+//            
+//        
+//        
+//      //  return null;
+//    }
+//    
+//    
+//    
+//    public static Integer getPositionLastRelationship (int outputNetwork)
+//    {
+//       
+//        
+//        if( outputNetwork == NetworkConstants.UNIPARTITE_GENE_INFERRED_BY_ORPHAN || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_HPO || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_GOBP || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_GOCC || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_SS_GOMF || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_INFERRED_BY_OMIM || 
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_METABOLIC ||
+//            outputNetwork == NetworkConstants.UNIPARTITE_GENE_PPI )
+//        {
+//            return NetworkConstants.GENEGENE_REL_INFERRED_ORPHA_POS;
+//        }
+//        else if ( outputNetwork == NetworkConstants.UNIPARTITE_DISEASE_SS || 
+//                  outputNetwork == NetworkConstants.UNIPARTITE_DISEASE_INFERRED_BY_GENE)
+//        {
+//            return NetworkConstants.OMIMOMIM_REL_INFERRED_GENE_POS;
+//        }
+//        else if ( outputNetwork == NetworkConstants.UNIPARTITE_ORPHAN_INFERRED_BY_GENE || 
+//                  outputNetwork == NetworkConstants.UNIPARTITE_ORPHAN_SS)
+//        {
+//            return NetworkConstants.ORPHAORPHA_REL_INFERRED_GENE_POS;
+//        }
+//        else if ( outputNetwork == NetworkConstants.BIPARTITE_GENE_DISEASE_GENEMAP|| 
+//                  outputNetwork == NetworkConstants.BIPARTITE_GENE_DISEASE_SS)
+//        {
+//            return NetworkConstants.GENEOMIM_REL_PHENOTYPIC_OMIM_POS;
+//        }
+//        else if ( outputNetwork == NetworkConstants.BIPARTITE_GENE_ORPHAN_ORPHADATA || 
+//                  outputNetwork == NetworkConstants.BIPARTITE_GENE_ORPHAN_SS)
+//        {
+//            return NetworkConstants.GENEORPHA_REL_PHENOTYPIC_ORPHA_POS;
+//        }
+//        else{
+//            return 3; //la primera relacion en las matrices almacenadas siempre es 3
+//        }
+//            
+//        
+//        
+//      //  return null;
+//    }
+//    
+    
+    
+    
+    
+     public static boolean showRelationship(int relationshipType, double score)
+    {
+//        Phenuma p = Phenuma.getInstance();
+//        
+//        switch (relationshipType){
+//            case NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_BP:  return score > p.getGo_bp_threshold();
+//            case NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_CC:  return score > p.getGo_cc_threshold();
+//            case NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_MF:  return score > p.getGo_mf_threshold();
+//            case NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC: return score > p.getHpo_disease_threshold();
+//
+//        }
+        return true;
+    }
+    
+//    public static String getRelationshipPos(int inputtype, int querytype)
+//    {
+//        switch (relationshipType){
+//            case NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_BP:  return CytoscapeConstants.CYS_NET_RELTYPE_SIMSEM_GOBP;
+//            case NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_CC:  return CytoscapeConstants.CYS_NET_RELTYPE_SIMSEM_GOCC;
+//            case NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_MF:  return CytoscapeConstants.CYS_NET_RELTYPE_SIMSEM_GOMF;
+//            case NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC:     return CytoscapeConstants.CYS_NET_RELTYPE_SIMSEM_HPO;
+//            case NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE:  return CytoscapeConstants.CYS_NET_RELTYPE_INF_GENE;
+//            case NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM:  return CytoscapeConstants.CYS_NET_RELTYPE_INF_OMIM;  
+//            case NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA: return CytoscapeConstants.CYS_NET_RELTYPE_INF_ORPHA;
+//            case NetworkConstants.NETWORK_REL_TYPE_PPI:            return CytoscapeConstants.CYS_NET_RELTYPE_PPI;
+//            case NetworkConstants.NETWORK_REL_TYPE_METABOLIC:      return CytoscapeConstants.CYS_NET_RELTYPE_METABOLIC;
+//            case NetworkConstants.NETWORK_REL_TYPE_OMIM:           return CytoscapeConstants.CYS_NET_RELTYPE_OMIM;
+//            case NetworkConstants.NETWORK_REL_TYPE_ORPHADATA:      return CytoscapeConstants.CYS_NET_RELTYPE_ORPHADATA;  
+//            case NetworkConstants.NETWORK_REL_PHENOTYPIC_QUERY_DISEASE: return CytoscapeConstants.CYS_NET_RELTYPE_QUERY_HPO_DISEASE; 
+//            case NetworkConstants.NETWORK_REL_PHENOTYPIC_QUERY_GENE:    return CytoscapeConstants.CYS_NET_RELTYPE_QUERY_HPO_GENE; 
+//            case NetworkConstants.NETWORK_REL_PHENOTYPIC_QUERY_ER:      return CytoscapeConstants.CYS_NET_RELTYPE_QUERY_HPO_ER; 
+//        }
+//        
+//        return null;
+//    }
+
+    static Integer getRelationshipTypeLabelDB(int i, int inputtype, int querytype) 
+    {
+        if (NetworkUtils.isUnipartiteGenes(querytype) || (NetworkUtils.isBipartite(querytype) && inputtype == NetworkConstants.INPUT_TYPE_GENES) || querytype == NetworkConstants.QUERY_GENE_NETWORK)
+        {
+            //System.out.println("entra");
+            if(!NetworkUtils.isBipartite(querytype))
+            {
+               
+                if( i == NetworkConstants.GENEGENE_REL_FUNCTIONAL_GO_BP_POS) return NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_BP;
+                else if( i == NetworkConstants.GENEGENE_REL_FUNCTIONAL_GO_CC_POS) return NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_CC;
+                else if( i == NetworkConstants.GENEGENE_REL_FUNCTIONAL_GO_MF_POS) return NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_MF;
+                else if( i == NetworkConstants.GENEGENE_REL_PHENOTYPIC_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                else if( i == NetworkConstants.GENEGENE_REL_METABOLIC_POS) return NetworkConstants.NETWORK_REL_TYPE_METABOLIC;
+                else if( i == NetworkConstants.GENEGENE_REL_PPI_POS) return NetworkConstants.NETWORK_REL_TYPE_PPI;
+                else if( i == NetworkConstants.GENEGENE_REL_INFERRED_OMIM_POS) return NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM;
+                else if( i == NetworkConstants.GENEGENE_REL_INFERRED_ORPHA_POS) return NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA;
+            }
+            else
+            {
+
+                if(querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_SS || querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_GENEMAP)
+                {
+
+                    if( i == NetworkConstants.GENEOMIM_REL_PHENOTYPIC_OMIM_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                    else if( i == NetworkConstants.GENEOMIM_REL_KNOWN_POS) return NetworkConstants.NETWORK_REL_TYPE_OMIM;
+                }
+                else if(querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_SS || querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_ORPHADATA)
+                {
+                    if( i == NetworkConstants.GENEORPHA_REL_PHENOTYPIC_ORPHA_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                    else if( i == NetworkConstants.GENEORPHA_REL_KNOWN_POS) return NetworkConstants.NETWORK_REL_TYPE_ORPHADATA;
+                }
+            }
+            
+        }
+        else if (NetworkUtils.isUnipartiteDiseases(querytype) || (NetworkUtils.isBipartite(querytype) && inputtype == NetworkConstants.INPUT_TYPE_OMIM) || querytype == NetworkConstants.QUERY_DISEASE_NETWORK)
+        {
+
+            
+            if(!NetworkUtils.isBipartite(querytype))
+            {
+                if( i == NetworkConstants.OMIMOMIM_REL_PHENOTYPIC_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                else if( i == NetworkConstants.OMIMOMIM_REL_INFERRED_GENE_POS) return NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE;
+            }
+            else
+            {
+                if(querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_SS || querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_GENEMAP)
+                {
+                    if( i == NetworkConstants.GENEOMIM_REL_PHENOTYPIC_GENE_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                    else if( i == NetworkConstants.GENEOMIM_REL_KNOWN_POS) return NetworkConstants.NETWORK_REL_TYPE_OMIM;
+                }
+            }
+        }
+        else if (NetworkUtils.isUnipartiteOrphan(querytype) || (NetworkUtils.isBipartite(querytype) && inputtype == NetworkConstants.INPUT_TYPE_ORPHA)|| querytype == NetworkConstants.QUERY_ER_NETWORK)
+        {
+            if(!NetworkUtils.isBipartite(querytype))
+            {
+                if( i == NetworkConstants.ORPHAORPHA_REL_PHENOTYPIC_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                else if( i == NetworkConstants.ORPHAORPHA_REL_INFERRED_GENE_POS) return NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE;
+            }
+            else
+            {
+                if(querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_SS || querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_ORPHADATA)
+                {
+                    if( i == NetworkConstants.GENEORPHA_REL_PHENOTYPIC_GENE_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                    else if( i == NetworkConstants.GENEORPHA_REL_KNOWN_POS) return NetworkConstants.NETWORK_REL_TYPE_ORPHADATA;
+                }
+            }
+        }
+        
+        
+        return null;
+    }
+    
+    
+    static int getNetworkRelationshipTypeDB(int i, int inputtype, int querytype) 
+    {
+        if (NetworkUtils.isUnipartiteGenes(querytype) || (NetworkUtils.isBipartite(querytype) && inputtype == NetworkConstants.INPUT_TYPE_GENES) || querytype == NetworkConstants.QUERY_GENE_NETWORK)
+        {
+            
+            if(!NetworkUtils.isBipartite(querytype))
+            {
+                if( i == NetworkConstants.GENEGENE_REL_FUNCTIONAL_GO_BP_POS) return NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_BP;
+                else if( i == NetworkConstants.GENEGENE_REL_FUNCTIONAL_GO_CC_POS) return NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_CC;
+                else if( i == NetworkConstants.GENEGENE_REL_FUNCTIONAL_GO_MF_POS) return NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_MF;
+                else if( i == NetworkConstants.GENEGENE_REL_PHENOTYPIC_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                else if( i == NetworkConstants.GENEGENE_REL_METABOLIC_POS) return NetworkConstants.NETWORK_REL_TYPE_METABOLIC;
+                else if( i == NetworkConstants.GENEGENE_REL_PPI_POS) return NetworkConstants.NETWORK_REL_TYPE_PPI;
+                else if( i == NetworkConstants.GENEGENE_REL_INFERRED_OMIM_POS) return NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM;
+                else if( i == NetworkConstants.GENEGENE_REL_INFERRED_ORPHA_POS) return NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA;
+            }
+            else
+            {
+                if(querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_SS || querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_GENEMAP)
+                {
+                    if( i == NetworkConstants.GENEOMIM_REL_PHENOTYPIC_OMIM_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                    else if( i == NetworkConstants.GENEOMIM_REL_KNOWN_POS) return NetworkConstants.NETWORK_REL_TYPE_OMIM;
+                }
+                else if(querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_SS || querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_ORPHADATA)
+                {
+                    if( i == NetworkConstants.GENEORPHA_REL_PHENOTYPIC_ORPHA_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                    else if( i == NetworkConstants.GENEORPHA_REL_KNOWN_POS) return NetworkConstants.NETWORK_REL_TYPE_ORPHADATA;
+                }
+            }
+            
+        }
+        else if (NetworkUtils.isUnipartiteDiseases(querytype) || (NetworkUtils.isBipartite(querytype) && inputtype == NetworkConstants.INPUT_TYPE_OMIM) || querytype == NetworkConstants.QUERY_DISEASE_NETWORK)
+        {
+            if(!NetworkUtils.isBipartite(querytype))
+            {
+                if( i == NetworkConstants.OMIMOMIM_REL_PHENOTYPIC_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                else if( i == NetworkConstants.OMIMOMIM_REL_INFERRED_GENE_POS) return NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE;
+            }
+            else
+            {
+                if(querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_SS || querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_GENEMAP)
+                {
+                    if( i == NetworkConstants.GENEOMIM_REL_PHENOTYPIC_OMIM_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                    else if( i == NetworkConstants.GENEOMIM_REL_KNOWN_POS) return NetworkConstants.NETWORK_REL_TYPE_OMIM;
+                }
+            }
+        }
+        else if (NetworkUtils.isUnipartiteOrphan(querytype) || (NetworkUtils.isBipartite(querytype) && inputtype == NetworkConstants.INPUT_TYPE_ORPHA) || querytype == NetworkConstants.QUERY_ER_NETWORK)
+        {
+          if(!NetworkUtils.isBipartite(querytype))
+            {
+                if( i == NetworkConstants.ORPHAORPHA_REL_PHENOTYPIC_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                else if( i == NetworkConstants.ORPHAORPHA_REL_INFERRED_GENE_POS) return NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE;
+            }
+            else
+            {
+                if(querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_SS || querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_ORPHADATA)
+                {
+                    if( i == NetworkConstants.GENEORPHA_REL_PHENOTYPIC_ORPHA_POS) return NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC;
+                    else if( i == NetworkConstants.GENEORPHA_REL_KNOWN_POS) return NetworkConstants.NETWORK_REL_TYPE_ORPHADATA;
+                }
+            }   
+        }
+        
+        
+        return 0;
+    }
+    
+    public static int getNetworkRelationshipTypeDBPos(int relationshipType, int inputtype, int querytype) 
+    {
+        if (NetworkUtils.isUnipartiteGenes(querytype) || (NetworkUtils.isBipartite(querytype) && inputtype == NetworkConstants.INPUT_TYPE_GENES))
+        {
+          
+            if(!NetworkUtils.isBipartite(querytype))
+            {
+                if( relationshipType ==      NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_BP) return NetworkConstants.GENEGENE_REL_FUNCTIONAL_GO_BP_POS;
+                else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_CC) return NetworkConstants.GENEGENE_REL_FUNCTIONAL_GO_CC_POS;
+                else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_MF) return NetworkConstants.GENEGENE_REL_FUNCTIONAL_GO_MF_POS;
+                else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC) return NetworkConstants.GENEGENE_REL_PHENOTYPIC_POS;
+                else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_METABOLIC) return NetworkConstants.GENEGENE_REL_METABOLIC_POS;
+                else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_PPI) return NetworkConstants.GENEGENE_REL_PPI_POS;
+                else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM) return NetworkConstants.GENEGENE_REL_INFERRED_OMIM_POS;
+                else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA) return NetworkConstants.GENEGENE_REL_INFERRED_ORPHA_POS;
+            }
+            else
+            {
+                if(querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_SS || querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_GENEMAP)
+                {
+                    if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC) return NetworkConstants.GENEOMIM_REL_PHENOTYPIC_OMIM_POS;
+                    else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_OMIM) return NetworkConstants.GENEOMIM_REL_KNOWN_POS;
+                }
+                else if(querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_SS || querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_ORPHADATA)
+                {
+                    if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC) return NetworkConstants.GENEORPHA_REL_PHENOTYPIC_ORPHA_POS;
+                    else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_ORPHADATA) return NetworkConstants.GENEORPHA_REL_KNOWN_POS;
+                }
+            }
+            
+        }
+        else if   (NetworkUtils.isUnipartiteDiseases(querytype) || (NetworkUtils.isBipartite(querytype) && inputtype == NetworkConstants.INPUT_TYPE_OMIM))
+        {
+            if(!NetworkUtils.isBipartite(querytype))
+            {
+                if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC) return NetworkConstants.OMIMOMIM_REL_PHENOTYPIC_POS;
+                else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE) return NetworkConstants.OMIMOMIM_REL_INFERRED_GENE_POS;
+            }
+            else
+            {
+                if(querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_SS || querytype == NetworkConstants.BIPARTITE_GENE_DISEASE_GENEMAP)
+                {
+                    if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC) return NetworkConstants.GENEOMIM_REL_PHENOTYPIC_GENE_POS;
+                    else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_OMIM) return NetworkConstants.GENEOMIM_REL_KNOWN_POS;
+                }
+            }
+        }
+        else if (NetworkUtils.isUnipartiteOrphan(querytype) || (NetworkUtils.isBipartite(querytype) && inputtype == NetworkConstants.INPUT_TYPE_ORPHA))
+        {
+            if(!NetworkUtils.isBipartite(querytype))
+            {
+                if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC) return NetworkConstants.ORPHAORPHA_REL_PHENOTYPIC_POS;
+                else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE) return NetworkConstants.ORPHAORPHA_REL_INFERRED_GENE_POS;
+            }
+            else
+            {
+                if(querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN || querytype == NetworkConstants.BIPARTITE_GENE_ORPHAN_ORPHADATA)
+                {
+                    if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC) return NetworkConstants.GENEORPHA_REL_PHENOTYPIC_GENE_POS;
+                    else if( relationshipType == NetworkConstants.NETWORK_REL_TYPE_ORPHADATA) return NetworkConstants.GENEORPHA_REL_KNOWN_POS;
+                }
+            }
+        }
+        
+        
+        return 0;
+    }
+    
+    
+    public static Integer getCysNodeType(ByteString object, int querytype)
+    {
+        if(NetworkUtils.isUnipartiteGenes(querytype) || querytype == NetworkConstants.QUERY_GENE_NETWORK)
+            return CytoscapeConstants.CYS_NODE_TYPE_GENE;
+        else if (NetworkUtils.isUnipartiteDiseases(querytype) || querytype == NetworkConstants.QUERY_DISEASE_NETWORK)
+            return CytoscapeConstants.CYS_NODE_TYPE_OMIM;
+        else if (NetworkUtils.isUnipartiteOrphan(querytype) || querytype == NetworkConstants.QUERY_ER_NETWORK)
+        {
+             DatabaseQueries2 q = new DatabaseQueries2();
+             RareDisease rd = q.getRareDiseasesByOrphanum(object.toString());
+             
+             Integer prevalence = rd.getPrevalence();
+             
+             if (prevalence.equals(PhenumaConstants.OD_PREV_BETWEEN_1_5_10000_ID))
+                return CytoscapeConstants.CYS_NODE_TYPE_ORPHA_LOW_PREVALENCE_1;
+             else if (prevalence.equals(PhenumaConstants.OD_PREV_BETWEEN_1_9_100000_ID))
+                return CytoscapeConstants.CYS_NODE_TYPE_ORPHA_LOW_PREVALENCE_2;
+             else if (prevalence.equals(PhenumaConstants.OD_PREV_BETWEEN_1_9_1000000_ID))
+                return CytoscapeConstants.CYS_NODE_TYPE_ORPHA_LOW_PREVALENCE_3;
+             else if (prevalence.equals(PhenumaConstants.OD_PREV_LESS_1_1000000_ID))
+                return CytoscapeConstants.CYS_NODE_TYPE_ORPHA_LOW_PREVALENCE_4;
+             else
+                 return CytoscapeConstants.CYS_NODE_TYPE_ORPHA;
+        }        
+        return -1;
+    }
+    
+    /*
+     * Bipartitas
+     */
+    
+    /**
+     * Para redes bipartitas obtener el tipo de nodo de entrada,
+     * para mostrarlo en la red con cytoscape
+     * 
+     * @param inputtype
+     * @return 
+     */
+    public static Integer getCysBipartiteNodeType(int inputtype)
+    {
+        if(inputtype == NetworkConstants.INPUT_TYPE_GENES)
+            return CytoscapeConstants.CYS_NODE_TYPE_GENE;
+        else if (inputtype == NetworkConstants.INPUT_TYPE_OMIM)
+            return CytoscapeConstants.CYS_NODE_TYPE_OMIM;
+        else if (inputtype == NetworkConstants.INPUT_TYPE_ORPHA)
+            return CytoscapeConstants.CYS_NODE_TYPE_ORPHA;
+                 
+        return -1;
+    }
+    
+    /**
+     * Para redes bipartitas obtener el tipo de nodo que se relacionaran
+     * con los nodos de entrada:
+     * 
+     * para una red : gene-omim con entrada genes el tipo de obetos relacionados sera "omim"
+     * 
+     * 
+     * @param querytype
+     * @param inputtype
+     * @return 
+     */
+    public static Integer getCysBipartiteNodeType_Related(int querytype, int inputtype)
+    {
+        if(NetworkUtils.isBipartiteGeneDiseases(querytype) && inputtype == NetworkConstants.INPUT_TYPE_GENES)
+            return CytoscapeConstants.CYS_NODE_TYPE_OMIM;
+        else if (NetworkUtils.isBipartiteGeneOrphan(querytype) && inputtype == NetworkConstants.INPUT_TYPE_GENES)
+            return CytoscapeConstants.CYS_NODE_TYPE_ORPHA;
+        else if (NetworkUtils.isBipartiteGeneOrphan(querytype) && inputtype == NetworkConstants.INPUT_TYPE_ORPHA)
+            return CytoscapeConstants.CYS_NODE_TYPE_GENE;
+        else if(NetworkUtils.isBipartiteGeneDiseases(querytype) && inputtype == NetworkConstants.INPUT_TYPE_OMIM)
+            return CytoscapeConstants.CYS_NODE_TYPE_GENE;
+                 
+        return -1;
+    }
+    
+    
+    /**
+     * Comprobar si el nodo es usado en el calculo de la red
+     */
+    
+    public static boolean isInput(ByteString object, NetworkDB network)
+    {
+        try
+        {
+            if (network.getInputtype() == NetworkConstants.INPUT_TYPE_OMIM)
+            {
+                if(NetworkUtils.isUnipartiteDiseases(network.getQuerytype()))
+                {
+                    return network.getInputElements().contains(object);
+                }
+                else if (NetworkUtils.isUnipartiteGenes(network.getQuerytype()))
+                {
+                    return network.getRelatedElements().keySet().contains(new Integer(object.toString()));
+                }
+
+            }
+            else if (network.getInputtype() == NetworkConstants.INPUT_TYPE_GENES)
+            {
+                if(NetworkUtils.isUnipartiteDiseases(network.getQuerytype()) || NetworkUtils.isUnipartiteOrphan(network.getQuerytype()) )
+                {
+                    return network.getRelatedElements().keySet().contains(new Integer(object.toString()));
+                }
+                else if (NetworkUtils.isUnipartiteGenes(network.getQuerytype()))
+                {
+                    return network.getInputElements().contains(object);
+                }
+
+            }
+            else if (network.getInputtype() == NetworkConstants.INPUT_TYPE_ORPHA)
+            {
+                if(NetworkUtils.isUnipartiteOrphan(network.getQuerytype()) )
+                {
+                    return network.getInputElements().contains(object);
+                }
+                else if (NetworkUtils.isUnipartiteGenes(network.getQuerytype()))
+                {
+                    return network.getRelatedElements().keySet().contains(new Integer(object.toString()));
+
+                }
+            }
+        }
+        catch(NullPointerException ex)
+        {
+            
+            return false;
+        }
+        
+        
+        return false;
+    }
+    
+    
+    public static double getMaximumScore(int networktype)
+    {
+        double max = 0.0;
+        
+//        
+        if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_BP)
+            max = 1.0;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_CC)
+            max = 1.0;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_MF)
+            max = 1.0;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC)
+            max = 1.0;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_PPI)
+            max = 1.0;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE)
+            max = 14.0/10;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM)
+            max = 5.0/10;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA)
+            max = 6.0/10;
+        
+        return max;
+    }
+    
+    
+    
+    public static double getMinimumScore(int networktype)
+    {
+        double min = 0.0;
+        
+        
+        if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_BP)
+            min = PhenumaConstants.CONFIDENCE_GO_BP_LOW/PhenumaConstants.MAX_GENE_GENE_GOBP;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_CC)
+            min = PhenumaConstants.CONFIDENCE_GO_CC_LOW/PhenumaConstants.MAX_GENE_GENE_GOCC;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_MF)
+            min = PhenumaConstants.CONFIDENCE_GO_MF_LOW/PhenumaConstants.MAX_GENE_GENE_GOMF;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC)
+            min = PhenumaConstants.CONFIDENCE_HPO_GENES_LOW/PhenumaConstants.MAX_GENE_GENE_HPO;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_PPI)
+            min = 0.0;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE)
+            min = 1.0/10;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM)
+            min = 1.0/10;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA)
+            min = 1.0/10;
+        
+        
+        min = NumberUtils.round(min, 2);
+        
+        return min;
+    }
+    
+    
+    public static String getRelationshipColor(int networktype)
+    {
+        if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_BP)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_SIMSEM_GOBP;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_CC)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_SIMSEM_GOCC;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_MF)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_SIMSEM_GOMF;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_SIMSEM_HPO;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_INF_GENE;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_INF_OMIM;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_INF_ORPHA;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_PPI)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_PPI;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_METABOLIC)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_METABOLIC;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_OMIM)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_OMIM;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_ORPHADATA)
+            return CytoscapeConstants.CYS_NET_RELTYPE_COLOR_ORPHADATA;
+        
+        return "#0000FF";
+    }
+
+    /**
+     * Show slider handler for scored relationships
+     * 
+     * @param networktype
+     * @return 
+     */
+    public static String getRelationshipShowHandle(int networktype) {
+        
+        if (networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_BP || networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_CC ||
+            networktype == NetworkConstants.NETWORK_REL_TYPE_FUNCTIONAL_MF || networktype == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC || 
+            networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE || networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM ||
+            networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA || networktype == NetworkConstants.NETWORK_REL_TYPE_PPI)
+                return "true";
+        else
+                return "false";
+
+    }
+    
+    /**
+     * Slider step. Inferred relationships = 1, the rest 0.05 (semantics)
+     * @param networktype
+     * @return 
+     */
+
+    public static double getRelationshipStep(int networktype) {
+        double step = 0.05;
+        
+        if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE)
+            step = 0.1;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM)
+            step = 0.1;
+        else if (networktype == NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA)
+            step = 0.1;
+        
+        return step;
+    }
+}

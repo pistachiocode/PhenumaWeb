@@ -1,0 +1,78 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.network;
+
+import phenuma.constants.Constants;
+import phenuma.dataqueries.DatabaseQueries;
+import phenuma.entities.RareDisease;
+import phenuma.utils.PhenumaException;
+
+/**
+ *
+ * @author Armando
+ */
+public class NodeRareDisease extends Node{
+    
+    public NodeRareDisease(RareDisease element) {
+        super(element);
+    }
+    
+    public NodeRareDisease(RareDisease element, boolean input) {
+        super(element, input);
+    }
+        
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+    
+    
+    @Override
+    public boolean equals(Object o)
+    {
+         if(o instanceof NodeRareDisease){
+            
+            NodeRareDisease nodedisease = (NodeRareDisease)o;
+            
+            return nodedisease.element.equals(this.element);
+        }
+        
+        return false;
+        
+    }
+        
+    @Override
+    public String toString()
+    {
+        RareDisease disease = (RareDisease)element;
+        
+        return disease.getOrphanum().toString();
+    }
+    
+    public String getLink() {
+        RareDisease raredisease = (RareDisease)element;
+        
+        return Constants.ORPHA_LINK+raredisease.getOrphanum();
+    }
+
+
+    public String getText() throws PhenumaException {
+        RareDisease raredisease = (RareDisease)element;
+        
+        DatabaseQueries q = new DatabaseQueries();
+        
+        //raredisease = q.getRareDiseasesByOrphanum(raredisease.getOrphanum().toString());
+        
+        return raredisease.getName();
+    }
+
+    @Override
+    public String getId() {
+        RareDisease raredisease = (RareDisease)element;
+        
+        return raredisease.getOrphanum().toString();
+    }
+
+}

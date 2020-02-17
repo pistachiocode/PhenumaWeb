@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="resources/phcomp/netwizard.xhtml" x="1400" y="1950" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/default.html" x="3900" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/textarea.html" x="650" y="2100" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/dropdown-month-year.html" x="400" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/cookie.html" x="150" y="2100" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/default.html" x="3650" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/multiple-calendars.html" x="2900" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/droppable.html" x="400" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/visual-feedback.html" x="2150" y="1500" zoom="true"/>
+        <Node id="download.xhtml" x="900" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/accordion/sortable.html" x="400" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/addClass.html" x="1650" y="150" zoom="true"/>
+        <Node id="resources/phcomp/unused/nodetable.xhtml" x="650" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/helper.html" x="3650" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/selectable.html" x="1400" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/vertical.html" x="3400" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/snap-to.html" x="150" y="2400" zoom="true"/>
+        <Node id="resources/phcomp/netview.xhtml" x="2650" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/date-formats.html" x="650" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/button/index.html" x="650" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/visual-feedback.html" x="2400" y="1500" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/slider.html" x="150" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/aspect-ratio.html" x="1150" y="900" zoom="true"/>
+        <Node id="fotos.html" x="1400" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/categories.html" x="1400" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/empty-lists.html" x="900" y="2100" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/switchClass/index.html" x="400" y="1500" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/addClass/index.html" x="1400" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/delay-start.html" x="1650" y="1800" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/accordion/no-auto-height.html" x="1400" y="1500" zoom="true"/>
+        <Node id="citeus.xhtml" x="1900" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/combobox.html" x="3400" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/side-scroll.html" x="2150" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/progressbar/default.html" x="150" y="1650" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/index.html" x="1650" y="1650" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/delay-start.html" x="900" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/remote-jsonp.html" x="2650" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/resizable.html" x="150" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/default.html" x="2150" y="1650" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/handle.html" x="1150" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/hide/default.html" x="1150" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/hotelrooms.html" x="3400" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/localization.html" x="150" y="2850" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/icon-trigger.html" x="900" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/button/icons.html" x="650" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/toggleClass/default.html" x="150" y="2700" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/max-min.html" x="1400" y="1800" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/index.html" x="1900" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/index.html" x="1150" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/button.html" x="3650" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/autocomplete.html" x="3150" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/toggle.html" x="1650" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/dialog/animated.html" x="1400" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/index copia.html" x="1900" y="1500" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/tabs.html" x="1400" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/index.html" x="2650" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/show/index.html" x="150" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/constrain-movement.html" x="2650" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/accordion/index.html" x="2900" y="1050" zoom="true"/>
+        <Node id="resources/phcomp/datatable.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/position.html" x="650" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/dialog/index.html" x="2150" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/date-range.html" x="400" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/show-week.html" x="4150" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/xml.html" x="2900" y="750" zoom="true"/>
+        <Node id="resources/phcomp/progressdialog.xhtml" x="400" y="2550" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/switchClass.html" x="150" y="1800" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/toggleClass/index.html" x="900" y="1500" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/selectable/serialize.html" x="400" y="1950" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/animate.html" x="2650" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/dialog/modal-form.html" x="1650" y="1950" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/revert.html" x="2400" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/show.html" x="1400" y="2100" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/cursor-style.html" x="2650" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/default.html" x="1400" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/index.html" x="150" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/animate/index.html" x="150" y="2550" zoom="true"/>
+        <Node id="resources/phcomp/sessionexpired.xhtml" x="2150" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/items.html" x="150" y="1500" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/range.html" x="650" y="1800" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/ajax/content1.html" x="1900" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/button/splitbutton.html" x="400" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/multiple.html" x="1900" y="150" zoom="true"/>
+        <Node id="index.xhtml" x="3900" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/default.html" x="1150" y="1950" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/multiple-remote.html" x="1900" y="1650" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/slider-vertical.html" x="900" y="2250" zoom="true"/>
+        <Node id="resources/phcomp/unused/phenotable.xhtml" x="2650" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/accordion/collapsible.html" x="400" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/range-vertical.html" x="4150" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/mouseover.html" x="400" y="2100" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/default.html" x="3150" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/ajax/content2.html" x="400" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/collapsible.html" x="3900" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/tabs.html" x="3650" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/droppable/visual-feedback.html" x="1150" y="1650" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/dialog/modal-message.html" x="1150" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/rangemax.html" x="1650" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/addClass/default.html" x="1650" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/remote-with-cache.html" x="650" y="2550" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/progressbar.html" x="3150" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/colorpicker.html" x="2900" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/synchronous-resize.html" x="3900" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/steps.html" x="650" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/constrain-area.html" x="3150" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/accordion.html" x="3900" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/manipulation.html" x="3650" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/animate.html" x="3400" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/index.html" x="2150" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/connect-lists.html" x="900" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/animation.html" x="3150" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/index.html" x="400" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/animate/default.html" x="2400" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/removeClass/default.html" x="1650" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/toggleClass.html" x="650" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/ajax.html" x="1900" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/droppable/revert.html" x="1650" y="1500" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/remote.html" x="1900" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/button/default.html" x="900" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/hide/index.html" x="1150" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/index.html" x="1150" y="2250" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/min-max.html" x="2150" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/delay-start.html" x="150" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/hide.html" x="1150" y="2100" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/selectable/index.html" x="650" y="1950" zoom="true"/>
+        <Node id="resources/phcomp/subnetworks.xhtml" x="1400" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/events.html" x="3150" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/alt-field.html" x="4150" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/dialog/default.html" x="1650" y="450" zoom="true"/>
+        <Node id="resources/phcomp/unused/nodetable_remove.xhtml" x="3650" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/bottom.html" x="3400" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/tabs/sortable.html" x="900" y="150" zoom="true"/>
+        <Node id="resources/phcomp/unused/edgetable.xhtml" x="2150" y="1800" zoom="true"/>
+        <Node id="cursociberer2013.xhtml" x="400" y="1650" zoom="true"/>
+        <Node id="main.xhtml" x="900" y="1650" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/position/default.html" x="4650" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/droppable/photo-manager.html" x="900" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/accordion/mouseover.html" x="1650" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/buttonbar.html" x="4900" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/placeholder.html" x="1900" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/accordion/custom-icons.html" x="2900" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/dialog/modal-confirmation.html" x="1150" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/progressbar/animated.html" x="3150" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/dialog.html" x="2400" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/removeClass/index.html" x="400" y="1800" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/toggle/index.html" x="400" y="2250" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/removeClass.html" x="2900" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/show/default.html" x="400" y="2700" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/display-grid.html" x="900" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/other-months.html" x="650" y="1500" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/button/toolbar.html" x="150" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/switchClass/default.html" x="2900" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/effect.html" x="1400" y="1650" zoom="true"/>
+        <Node id="resources/phcomp/menu.xhtml" x="4650" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/button/checkbox.html" x="400" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/multiple-vertical.html" x="2400" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/accordion/hoverintent.html" x="1150" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/effect/index.html" x="1900" y="1800" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/draggable.html" x="1150" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/progressbar/resize.html" x="2400" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/selectable/default.html" x="3150" y="900" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/progressbar/index.html" x="150" y="750" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/position/cycler.html" x="1900" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/sortable.html" x="150" y="1950" zoom="true"/>
+        <Node id="contact.xhtml" x="2400" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/index.html" x="1400" y="750" zoom="true"/>
+        <Node id="resources/phcomp/mainmenu.xhtml" x="1150" y="1800" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/sortable.html" x="900" y="2400" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/dialog/modal.html" x="2400" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/button/radio.html" x="2150" y="1350" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/droppable/propagation.html" x="150" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/folding.html" x="900" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/accordion/fillspace.html" x="3400" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/droppable/shopping-cart.html" x="900" y="1800" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/position/index.html" x="2900" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/datepicker/inline.html" x="2650" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/portlets.html" x="4150" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/custom-data.html" x="2900" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/effect/default.html" x="650" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/toggle/default.html" x="2400" y="450" zoom="true"/>
+        <Node id="resources/phcomp/dialogsave.xhtml" x="650" y="2250" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/droppable/index.html" x="2150" y="900" zoom="true"/>
+        <Node id="cursociberer2013es.xhtml" x="1150" y="1500" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/slider/rangemin.html" x="650" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/docs/datepicker.html" x="1650" y="900" zoom="true"/>
+        <Node id="resources/phcomp/unused/edgetable_remove.xhtml" x="400" y="2400" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/accordion/default.html" x="4400" y="450" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/snap-to-grid.html" x="1900" y="1200" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/autocomplete/maxheight.html" x="4400" y="150" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/droppable/accepted-elements.html" x="2150" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/draggable/scroll.html" x="4400" y="300" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/resizable/default.html" x="3400" y="1050" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/selectable/display-grid.html" x="650" y="2400" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/effect/easing.html" x="2650" y="600" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/sortable/connect-lists-through-tabs.html" x="650" y="1650" zoom="true"/>
+        <Node id="javascript/obsolete/jquery-ui-1.8.18.custom copia/carpeta sin título/development-bundle/demos/droppable/default.html" x="2150" y="750" zoom="true"/>
+        <Node id="tutorial.xhtml" x="900" y="1950" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+        
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id" />
+        <cc:attribute name="items" required="true"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+            <p:spacer height="20"/>
+          
+             
+            <div id="eq" style="display: table;" >
+                
+                   <c:forEach var="type" items="#{cc.attrs.items}">
+               
+                       
+                       <div style="display:table-row; height: 20px;" >
+                        <div style="display:table-cell; width: 20px; vertical-align:middle;">
+                            <input type="checkbox" style="width: 10px;" checked="true" onchange="showHideSubnetworks(#{type.idNetwork})"></input>
+                        </div>
+                        <div style="display:table-cell; width: 200px; vertical-align:middle;">
+                            <label class="filter_label"> #{type.title}:</label>           
+                        </div>
+                        <div style="display:table-cell; width: 100px;vertical-align:middle;">
+                            <p name ="slidder" style="background: #{type.color}; height:5px;">#{type.maxValue},#{type.minValue},#{type.idNetwork},#{type.showHandle},#{type.step}
+                            </p>
+                        </div>
+                        <div style="display:table-cell; width: 10px; vertical-align:middle; padding-left: 15px;">
+                            <label id="#{type.idNetwork}value" style="font-weight: bold; font-size: 10px"></label>               
+                        </div>
+                     
+                       </div>  
+     
+         
+                   </c:forEach>
+    
+            </div>
+
+               
+           <!--  </p:fieldset> -->
+    </cc:implementation>
+
+    
+</html>

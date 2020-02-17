@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+        <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id"/>
+    </cc:interface>
+        
+    <cc:implementation>
+            <p:idleMonitor onactive="sessionTimeOutDialog.show();" timeout="#{session.maxInactiveInterval * 1000}" />
+            <p:dialog header="#{msg['error.sessionTimeOut.header']}" widgetVar="sessionTimeOutDialog"
+                      modal="true" closable="false" width="400" visible="false">
+                 <h:outputText value="#{msg['error.sessionTimeOut.text']}" />
+                 <input id="confirmBackToLogin" type="button" value="#{msg['error.sessionTimeOut.button']}"
+                    onclick="window.location='#{facesContext.externalContext.requestContextPath}/login.xhtml';" />
+            </p:dialog>
+     
+    </cc:implementation>
+</html>

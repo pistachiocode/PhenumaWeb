@@ -1,0 +1,13 @@
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+
+#en servidor /home/.../glassfich/domain/.../logs/phenuma.log
+log = /home/phenuma/log
+#log = /Users/Armando/log4j
+log4j.rootLogger = DEBUG, FILE
+
+### Para dirigir mensajes a un archivo ###
+log4j.appender.FILE=org.apache.log4j.FileAppender
+log4j.appender.FILE.File=${log}/phenuma.log
+log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+log4j.appender.FILE.layout.ConversionPattern=%5p [%d{dd MMM yyyy HH:mm:ss}] (%F:%L) - %m%n

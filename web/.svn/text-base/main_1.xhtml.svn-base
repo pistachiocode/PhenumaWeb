@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://java.sun.com/jsf/composite/phcomp"> 
+    
+    <h:head>
+        <!--  Cytoscape -->
+
+        <meta name="google-site-verification" content="Of4s9LwBts9yWS7Eg1NfCUyP-wNofie1RT92PWycxxk" />
+        
+        <script type="text/javascript" src ="./javascript/tutorial.js"> </script>        
+
+ 	<link href="./grungestyle/styles.css" rel="stylesheet" type="text/css"></link>      
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>   
+    </h:head>
+    
+    <h:body>
+
+	<header>
+	   <div class="container1">
+	      <!--start title-->
+	      <h1 id="maintitle">
+		  <p:graphicImage url="./resources/img/logo_blanco.png" />
+	      </h1>
+	      <!--end title-->
+	      <!--start menu-->
+	      <nav>
+	      <ul>
+	      <li><a href="main.jsf" class="grn">Home</a></li>
+	      <li><a href="tutorial.jsf" class="pnk">Help</a></li>
+	      <li><a href="download.jsf" class="orng">Download </a></li>
+              <li><a href="citeus.jsf" class="blu">How to cite us</a></li>
+              <li><a href="contact.jsf" class="prpl">Contact us</a></li>
+	      </ul>
+	      </nav>
+	   </div>
+	   <div class="bottom"> 
+           
+           </div>
+	   <!--end menu-->
+	   <!--end header-->
+	</header>
+
+	<!-- Form -->
+        <div id="container1">
+            
+            <!--Formulario e Información -->
+            <div class="formsection">
+
+                <h:form id="queryform">
+
+                    <h:panelGrid columns="1"> 
+                        <!-- Input Type -->
+
+                        <!--<h:outputText  styleClass="phenumalabel_large" value="Type of Input:"/>-->
+                        <p:selectOneButton  value="#{networkFormBean.selectedInputType}" >
+                            <f:selectItems value="#{networkFormBean.list_inputType}"  var="inputType"     
+                                           itemLabel="#{inputType.name}" itemValue="#{inputType.id}" />
+                            <p:ajax update="cbnetworktype" listener="#{networkFormBean.updateComboBoxes}" />
+                        </p:selectOneButton> 
+
+                        <!-- Input List -->
+                         <h:outputText  styleClass="phenumalabel_large" value="Input List:"/>
+                         <p:inputTextarea id="inputtxtarea" value="#{networkFormBean.network.items}" rows="4" cols="200" style="width:505px" />
+
+                         <h:panelGrid columns="6">
+
+                             <!-- Network Type -->
+                             <h:panelGrid columns="1"> 
+                                <h:outputText  styleClass="phenumalabel_large" value="Output Network:"/>
+                                <p:selectOneMenu id="cbnetworktype" value="#{networkFormBean.selectedOutputType}" style="width: 400px;">
+                                    <f:selectItems value="#{networkFormBean.list_networkType}" var="networkType" 
+                                                   itemLabel="#{networkType.name}" itemValue="#{networkType.id}" />
+                                </p:selectOneMenu> 
+                             </h:panelGrid> 
+
+                             <!-- Confidence -->
+                             <h:panelGrid columns="1">
+                                <h:outputText styleClass="phenumalabel_large"  value="Confidence:" />  
+                                    <p:selectOneMenu id="cbconfidence" value="#{networkFormBean.selectedConfidence}" style="width: 100px;">
+                                        <f:selectItems value="#{networkFormBean.list_confidenceTypes}" var="confidenceType" 
+                                                       itemLabel="#{confidenceType.name}" itemValue="#{confidenceType.id}" />
+
+                                    </p:selectOneMenu>
+                            </h:panelGrid>
+                        </h:panelGrid>
+
+                    </h:panelGrid>    
+
+                    <center>
+                        <p:commandButton value="Build Network" styleClass="buttonqtip" actionListener="#{networkFormBean.addNetworkDB}" />
+                    </center>
+
+                </h:form>
+
+            </div>
+
+            <div class="formsection_info">
+                    <h2> Phenotypic Relationships</h2>
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat 
+                     vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+                     Mauris placerat eleifend leo.</p>
+            </div>
+        
+            <div class="intro">
+	
+                <div class="group3">
+                    <h2> Phenotypic Relationships</h2>
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat 
+                     vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+                     Mauris placerat eleifend leo.</p>
+                </div>
+                <div class="group3">
+                    <h2> Enrichment </h2>
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, 
+                     feugiat vitae, ultricies eget, tempor sit amet, ante. 
+                     Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                </div>
+                <div class="group3">
+                    <h2> News</h2>
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat 
+                     vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. 
+                     Mauris placerat eleifend leo.</p>
+                </div>
+                <div class="group3">
+                    <h2>Visualizer</h2>
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, 
+                    feugiat vitae, ultricies eget, tempor sit amet, ante. 
+                    Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                </div>
+		
+            </div>
+
+    	 </div> <!-- div container1 -->
+
+	<footer> 
+            <center>
+            <div  class="container1">
+                     <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.es_CO">
+                        <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" />
+                </a><br />
+                <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title" > PhenUMA </span> is licensed under a 
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+			Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+		</a>
+            </div>
+	    </center>
+   	</footer>
+    </h:body>
+</html>
+

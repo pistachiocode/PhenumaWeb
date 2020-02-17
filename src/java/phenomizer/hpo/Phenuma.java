@@ -1,0 +1,611 @@
+ /*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenomizer.hpo;
+
+import java.io.IOException;
+import java.util.List;
+import ontologizer.association.AssociationContainer;
+import ontologizer.calculation.SemanticCalculation;
+import ontologizer.go.OBOParserException;
+import ontologizer.go.Ontology;
+import phenuma.constants.Constants;
+import phenuma.dataqueries.DatabaseQueries;
+import phenuma.entities.AvaliableGeneSymbol;
+import phenuma.entities.Disease;
+import phenuma.entities.RareDisease;
+
+/**
+ *
+ * @author Armando
+ */
+public class Phenuma extends Phenomizer{
+    
+   
+    /**
+     * Ontologies
+     */
+    
+    /** Human Phenotype Ontology with diseases annotated*/
+    private Ontology human_phenotype_ontology;
+       
+    /** Celullar Component from Gene Ontology with genes annotated*/ 
+    private Ontology gene_ontology_cc;
+    
+    /** Molecular Function from Gene Ontology with genes annotated*/ 
+    private Ontology gene_ontology_mf;
+    
+    /** Biological Process from Gene Ontology with genes annotated*/ 
+    private Ontology gene_ontology_bp;
+    
+    
+
+    /**
+     * Association Containers
+     */
+   
+    /** diseases annotations in HPO*/
+    private AssociationContainer diseases_hpo_associations;
+    
+    /** genes annotations in HPO*/
+    private AssociationContainer genes_hpo_associations;
+    
+    /** genes annotations in HPO*/
+    private AssociationContainer er_hpo_associations;
+    
+    /** snps annotations in HPO*/
+    private AssociationContainer snp_hpo_associations;
+    
+    /** medgen diseases annotations in HPO*/
+    private AssociationContainer medgen_hpo_associations;
+
+    /** alleleid variation annotations in HPO*/
+    private AssociationContainer alleleid_hpo_associations;
+    
+    
+    /** genes annotations in Celullar Component Subontology  of GO*/
+    private AssociationContainer genes_go_associations_cc;
+    
+    /** genes annotations in Molecular Function Subontology  of GO*/
+    private AssociationContainer genes_go_associations_mf;
+    
+    /** genes annotations in Biological Process Subontology  of GO*/
+    private AssociationContainer genes_go_associations_bp;
+    
+    
+    /** semantic calculation disease_hpo **/
+    private SemanticCalculation sc_hpo_diseases;
+    private SemanticCalculation sc_hpo_genes;
+    private SemanticCalculation sc_hpo_er;
+    private SemanticCalculation sc_hpo_snp;
+    private SemanticCalculation sc_hpo_medgen;
+    private SemanticCalculation sc_hpo_alleleid;
+    
+    private SemanticCalculation sc_go_bp_genes;
+    private SemanticCalculation sc_go_cc_genes;
+    private SemanticCalculation sc_go_mf_genes;
+    
+    
+    private double pvalue_hpo_query_threshold;
+    
+
+    private double pvalue_go_bp_threshold;
+    private double pvalue_go_cc_threshold;
+    private double pvalue_go_mf_threshold;
+    
+    /*Global options*/
+    private boolean enable_additional_relationships;
+    
+    private String resources_location = "./";
+    
+    private String database = "PhenumaDB";
+    
+    /*progress*/
+    private int progress;
+    
+    private static Phenuma instance = null;
+    
+    /*List used in selectable table by the web interface*/
+    
+    private List<AvaliableGeneSymbol> geneslist;
+    private List<Disease> diseaselist;
+    private List<RareDisease> rarediseaselist;
+    
+    
+    private Phenuma(){
+
+        //Initialize super class.
+        Phenomizer p = Phenomizer.getInstance();
+        
+        pvalue_hpo_query_threshold = 0.2;
+    
+        pvalue_go_bp_threshold = 1;
+        pvalue_go_cc_threshold = 1;
+        pvalue_go_mf_threshold = 1;
+        
+        progress = 0;
+        
+        enable_additional_relationships = true;
+        
+        this.setSemanticSimilarityMeasure(p.getSemanticSimilarityMeasure());
+    }
+
+
+    public static Phenuma getInstance(){
+        if (instance == null)
+                instance = new Phenuma();
+
+        return instance;      
+    }
+
+    public void initialize() throws IOException, OBOParserException
+    {
+        getDiseases_hpo_associations();
+        getGenes_hpo_associations();
+        getEr_hpo_associations();
+        getSnp_hpo_associations();
+        getMedGen_hpo_associations();
+        
+        getGenes_go_associations_cc();
+        getGenes_go_associations_bp();
+        getGenes_go_associations_mf();
+    }
+    
+    
+    public AssociationContainer getDiseases_hpo_associations() throws IOException, OBOParserException {
+        
+        if(diseases_hpo_associations==null){
+            logger.info("Loading OMIM associations to HPO");
+            diseases_hpo_associations = Phenomizer.parseAssociations(phenuma.constants.Constants.ASSOCIATION_DISEASE_PATH,  this.getHuman_phenotype_ontology(), true);
+        }
+        return diseases_hpo_associations;
+    }
+    
+    public AssociationContainer getGenes_hpo_associations() throws IOException, OBOParserException {
+        if(genes_hpo_associations==null){
+            logger.info("Loading Genes associations to HPO");
+            genes_hpo_associations = Phenomizer.parseAssociations(Constants.ASSOCIATION_GENE_HPO_PATH, this.getHuman_phenotype_ontology(),true);
+        }
+        return genes_hpo_associations;
+    }
+    
+    public AssociationContainer getEr_hpo_associations() throws IOException, OBOParserException {
+        if(er_hpo_associations==null){
+            logger.info("Loading ER associations to HPO");
+            er_hpo_associations = Phenomizer.parseAssociations(Constants.ASSOCIATION_ER_PATH, this.getHuman_phenotype_ontology(),true);
+        }
+        return er_hpo_associations;
+    }
+
+    public AssociationContainer getSnp_hpo_associations() throws IOException, OBOParserException {
+        if(snp_hpo_associations==null){
+            logger.info("Loading SNP associations to HPO");
+            snp_hpo_associations = Phenomizer.parseAssociations(Constants.ASSOCIATION_SNP_HPO_PATH, this.getHuman_phenotype_ontology(),true);
+        }
+        return snp_hpo_associations;
+    }
+    
+    public AssociationContainer getMedGen_hpo_associations() throws IOException, OBOParserException {
+        if(medgen_hpo_associations==null){
+            logger.info("Loading MEDGEN associations to HPO");
+            medgen_hpo_associations = Phenomizer.parseAssociations(Constants.ASSOCIATION_DISEASE_MEDGEN_PATH, this.getHuman_phenotype_ontology(),true);
+        }
+        return medgen_hpo_associations;
+    }
+    
+    public AssociationContainer getAlleleid_hpo_associations() throws IOException, OBOParserException {
+        if(alleleid_hpo_associations==null){
+            logger.info("Loading AlleleID associations to HPO");
+            alleleid_hpo_associations = Phenomizer.parseAssociations(Constants.ASSOCIATION_ALLELEID_HPO_PATH, this.getHuman_phenotype_ontology(),true);
+        }
+        return alleleid_hpo_associations;
+    }
+    /**
+     * Ignore IEA annotations in GO
+     */
+    public AssociationContainer getGenes_go_associations_cc() throws IOException, OBOParserException {
+        
+        if(genes_go_associations_cc==null){
+            logger.info("Loading Genes associations to GO CC");
+            genes_go_associations_cc = Phenomizer.parseAssociations(Constants.ASSOCIATION_ENTREZGENE_GO_PATH, this.getGene_ontology_cc(), true);
+        }
+        return genes_go_associations_cc;
+    }
+    
+    public AssociationContainer getGenes_go_associations_bp() throws IOException, OBOParserException {
+        
+        if(genes_go_associations_bp==null){
+            logger.info("Loading Genes associations to GO BP");
+            genes_go_associations_bp = Phenomizer.parseAssociations(Constants.ASSOCIATION_ENTREZGENE_GO_PATH, this.getGene_ontology_bp(),true);
+        }
+        return genes_go_associations_bp;
+    }
+    
+    public AssociationContainer getGenes_go_associations_mf() throws IOException, OBOParserException {
+        
+        if(genes_go_associations_mf==null){
+            logger.info("Loading Genes associations to GO MF");
+            genes_go_associations_mf = Phenomizer.parseAssociations(Constants.ASSOCIATION_ENTREZGENE_GO_PATH, this.getGene_ontology_mf(),true);
+        }
+        return genes_go_associations_mf;
+    }
+
+    public Ontology getGene_ontology_bp() throws IOException, OBOParserException {
+        
+        if(gene_ontology_bp==null){
+            logger.info("Loading GO BP");
+            gene_ontology_bp = Phenomizer.parseOntology(Constants.GO_PATH, Constants.SUBONTO_BIOLOGICAL_PROCESS);
+        }
+        
+        return gene_ontology_bp;
+    }
+
+    public Ontology getGene_ontology_cc() throws IOException, OBOParserException {
+        
+        if(gene_ontology_cc==null){
+            logger.info("Loading GO CC");
+            gene_ontology_cc = Phenomizer.parseOntology(Constants.GO_PATH, Constants.SUBONTO_CELLULAR_COMPONENT);
+        }
+        
+        return gene_ontology_cc;
+    }
+
+    public Ontology getGene_ontology_mf() throws IOException, OBOParserException {
+        
+        if(gene_ontology_mf==null){
+            logger.info("Loading GO MF");
+            gene_ontology_mf = Phenomizer.parseOntology(Constants.GO_PATH, Constants.SUBONTO_MOLECULAR_FUNCTION);
+        }
+        
+        return gene_ontology_mf;
+    }
+
+    public Ontology getHuman_phenotype_ontology() throws IOException, OBOParserException {
+        
+        if(human_phenotype_ontology==null){
+            logger.info("Loading HPO");
+            human_phenotype_ontology = Phenomizer.parseOntology(Constants.HPO_PATH, Constants.SUBONTO_PHENOTYPIC_ABNORMALITY);
+        }
+        
+        return human_phenotype_ontology;
+    }
+
+
+    
+    /*Get ontology and association by int constant*/
+    
+    public Ontology getOntologyById(int ontology) throws IOException, OBOParserException{
+        
+        switch(ontology)
+        {
+            case Constants.ONTO_HPO :    return this.getHuman_phenotype_ontology();
+            case Constants.ONTO_GO_BP :  return this.getGene_ontology_bp();
+            case Constants.ONTO_GO_MF :  return this.getGene_ontology_mf();
+            case Constants.ONTO_GO_CC :  return this.getGene_ontology_cc();
+            default:
+                return null;
+        }
+        
+    }
+    
+    public AssociationContainer getAssocationContainerById(int associations) throws IOException, OBOParserException{
+        
+        switch(associations)
+        {
+            case phenuma.constants.Constants.ASSOC_DISEASES_HPO :           return this.getDiseases_hpo_associations();
+            case phenuma.constants.Constants.ASSOC_GENES_HPO :              return this.getGenes_hpo_associations();
+            case phenuma.constants.Constants.ASSOC_ER_HPO :                 return this.getEr_hpo_associations();
+            case phenuma.constants.Constants.ASSOC_SNP_HPO :                return this.getSnp_hpo_associations();
+            case phenuma.constants.Constants.ASSOC_DISEASE_MEDGEN_HPO :     return this.getMedGen_hpo_associations();
+            case phenuma.constants.Constants.ASSOC_ALLELEID_HPO:            return this.getAlleleid_hpo_associations();
+            case phenuma.constants.Constants.ASSOC_GENES_GO_BP :            return this.getGenes_go_associations_bp();
+            case phenuma.constants.Constants.ASSOC_GENES_GO_CC :            return this.getGenes_go_associations_cc();
+            case phenuma.constants.Constants.ASSOC_GENES_GO_MF :            return this.getGenes_go_associations_mf();
+            default:
+                return null;
+        }
+        
+    }
+    
+    
+    public double getMaximumICById(int associations) throws IOException, OBOParserException{
+        
+        switch(associations)
+        {
+            case phenuma.constants.Constants.ASSOC_DISEASES_HPO :           return Constants.MAX_IC_DISEASES_HPO;
+            case phenuma.constants.Constants.ASSOC_GENES_HPO :              return Constants.MAX_IC_GENES_HPO;
+            case phenuma.constants.Constants.ASSOC_ER_HPO :                 return Constants.MAX_IC_ORPHAN_HPO;
+            case phenuma.constants.Constants.ASSOC_SNP_HPO :                return Constants.MAX_IC_DISEASES_HPO; //TODO calcular
+            case phenuma.constants.Constants.ASSOC_DISEASE_MEDGEN_HPO :     return Constants.MAX_IC_DISEASES_HPO; //TODO calcular
+            case phenuma.constants.Constants.ASSOC_ALLELEID_HPO :           return Constants.MAX_IC_DISEASES_HPO; //TODO calcular
+            case phenuma.constants.Constants.ASSOC_GENES_GO_BP :            return Constants.MAX_IC_GENES_GOBP;
+            case phenuma.constants.Constants.ASSOC_GENES_GO_CC :            return Constants.MAX_IC_GENES_GOCC;
+            case phenuma.constants.Constants.ASSOC_GENES_GO_MF :            return Constants.MAX_IC_GENES_GOMF;
+            default:
+                return 1;
+        }
+        
+    }
+
+
+    /*Semantic Calculation*/
+    
+    public SemanticCalculation getSc_go_bp_genes() throws IOException, OBOParserException {
+        
+        if(sc_go_bp_genes==null)
+            sc_go_bp_genes = new SemanticCalculation(this.getGene_ontology_bp(), this.getGenes_go_associations_bp());
+        
+        return sc_go_bp_genes;
+    }
+
+    public void setSc_go_bp_genes(SemanticCalculation sc_go_bp_genes) {
+        this.sc_go_bp_genes = sc_go_bp_genes;
+    }
+
+    public SemanticCalculation getSc_go_cc_genes() throws IOException, OBOParserException {
+        
+        if(sc_go_cc_genes==null)
+            sc_go_cc_genes = new SemanticCalculation(this.getGene_ontology_cc(), this.getGenes_go_associations_cc());
+        
+        return sc_go_cc_genes;
+    }
+
+    public void setSc_go_cc_genes(SemanticCalculation sc_go_cc_genes) {
+        this.sc_go_cc_genes = sc_go_cc_genes;
+    }
+
+    public SemanticCalculation getSc_go_mf_genes() throws OBOParserException, IOException {
+        
+        if(sc_go_mf_genes==null)
+            sc_go_mf_genes = new SemanticCalculation(this.getGene_ontology_mf(), this.getGenes_go_associations_mf());
+        
+        return sc_go_mf_genes;
+    }
+
+    public void setSc_go_mf_genes(SemanticCalculation sc_go_mf_genes) {
+        this.sc_go_mf_genes = sc_go_mf_genes;
+    }   
+
+    public SemanticCalculation getSc_hpo_diseases() throws IOException, OBOParserException {
+        
+        if(sc_hpo_diseases==null)
+            sc_hpo_diseases = new SemanticCalculation(this.getHuman_phenotype_ontology(), this.getDiseases_hpo_associations());
+    
+        return sc_hpo_diseases;
+    }
+
+    public void setSc_hpo_diseases(SemanticCalculation sc_hpo_diseases) {
+        this.sc_hpo_diseases = sc_hpo_diseases;
+    }
+
+    public SemanticCalculation getSc_hpo_er() throws IOException, OBOParserException {
+  
+        if(sc_hpo_er==null)
+            sc_hpo_er = new SemanticCalculation(this.getHuman_phenotype_ontology(), this.getEr_hpo_associations());
+    
+        return sc_hpo_er;
+    }
+
+    public void setSc_hpo_er(SemanticCalculation sc_hpo_er) {
+        this.sc_hpo_er = sc_hpo_er;
+    }
+
+    public SemanticCalculation getSc_hpo_genes() throws IOException, OBOParserException {
+     
+        if(sc_hpo_genes==null)
+            sc_hpo_genes = new SemanticCalculation(this.getHuman_phenotype_ontology(), this.getGenes_hpo_associations());
+    
+        return sc_hpo_genes;
+    }
+    
+    public void setSc_hpo_genes(SemanticCalculation sc_hpo_genes) {
+        this.sc_hpo_genes = sc_hpo_genes;
+    }
+
+    public SemanticCalculation getSc_hpo_snp() throws IOException, OBOParserException {
+        if(sc_hpo_snp==null)
+            sc_hpo_snp = new SemanticCalculation(this.getHuman_phenotype_ontology(), this.getSnp_hpo_associations());
+    
+        return sc_hpo_snp;
+    }
+
+    public void setSc_hpo_snp(SemanticCalculation sc_hpo_snp) {
+        this.sc_hpo_snp = sc_hpo_snp;
+    }
+    
+    public SemanticCalculation getSc_hpo_medgen() throws IOException, OBOParserException {
+        if(sc_hpo_medgen==null)
+            sc_hpo_medgen = new SemanticCalculation(this.getHuman_phenotype_ontology(), this.getMedGen_hpo_associations());
+    
+        return sc_hpo_medgen;
+    }
+
+    public void setSc_hpo_medgen(SemanticCalculation sc_hpo_medgen) {
+        this.sc_hpo_medgen = sc_hpo_medgen;
+    }
+
+    public SemanticCalculation getSc_hpo_allleid() throws IOException, OBOParserException {
+        if(sc_hpo_alleleid==null)
+            sc_hpo_alleleid = new SemanticCalculation(this.getHuman_phenotype_ontology(), this.getAlleleid_hpo_associations());
+    
+        return sc_hpo_alleleid;
+    }
+
+    public void setSc_hpo_alleleid(SemanticCalculation sc_hpo_alleleid) {
+        this.sc_hpo_alleleid = sc_hpo_alleleid;
+    }
+    
+    public boolean isEnable_additional_relationships() {
+        return enable_additional_relationships;
+    }
+
+    public void setEnable_additional_relationships(boolean enable_additional_relationships) {
+        this.enable_additional_relationships = enable_additional_relationships;
+    }
+    
+    
+    
+    public SemanticCalculation getSemanticCalculationById(int associations) throws IOException, OBOParserException{
+        
+        switch(associations)
+        {
+            case phenuma.constants.Constants.ASSOC_DISEASES_HPO : return this.getSc_hpo_diseases();
+            case phenuma.constants.Constants.ASSOC_GENES_HPO :    return this.getSc_hpo_genes();
+            case phenuma.constants.Constants.ASSOC_ER_HPO :       return this.getSc_hpo_er();
+            case phenuma.constants.Constants.ASSOC_DISEASE_MEDGEN_HPO: return this.getSc_hpo_medgen();   
+            case phenuma.constants.Constants.ASSOC_ALLELEID_HPO:       return this.getSc_hpo_allleid();       
+            case phenuma.constants.Constants.ASSOC_GENES_GO_BP :       return this.getSc_go_bp_genes();
+            case phenuma.constants.Constants.ASSOC_GENES_GO_CC :       return this.getSc_go_cc_genes();
+            case phenuma.constants.Constants.ASSOC_GENES_GO_MF :       return this.getSc_go_mf_genes();
+            default:
+                return null;
+        }
+        
+    }
+    
+    /*Resources Location*/
+    public String getResources_location() {
+        return resources_location;
+    }
+
+    public void setResources_location(String resources_location) {
+        this.resources_location = resources_location;
+    }
+    
+    
+    /*Database*/
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+    
+    public double getPvalue_go_bp_threshold() {
+        return pvalue_go_bp_threshold;
+    }
+
+    public void setPvalue_go_bp_threshold(double pvalue_go_bp_threshold) {
+        this.pvalue_go_bp_threshold = pvalue_go_bp_threshold;
+    }
+
+    public double getPvalue_go_cc_threshold() {
+        return pvalue_go_cc_threshold;
+    }
+
+    public void setPvalue_go_cc_threshold(double pvalue_go_cc_threshold) {
+        this.pvalue_go_cc_threshold = pvalue_go_cc_threshold;
+    }
+
+    public double getPvalue_go_mf_threshold() {
+        return pvalue_go_mf_threshold;
+    }
+
+    public void setPvalue_go_mf_threshold(double pvalue_go_mf_threshold) {
+        this.pvalue_go_mf_threshold = pvalue_go_mf_threshold;
+    }
+
+    public double getPvalue_hpo_query_threshold() {
+        return pvalue_hpo_query_threshold;
+    }
+
+    public void setPvalue_hpo_query_threshold(double pvalue_hpo_query_threshold) {
+        this.pvalue_hpo_query_threshold = pvalue_hpo_query_threshold;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void incrementProgress(int progress) {
+        this.progress = this.progress+progress;
+    }
+    
+    public void initProgress() {
+        this.progress = 0;
+    }
+    
+   public void endProgress() {
+        this.progress = 100;
+    }
+
+    public List<Disease> getDiseaselist() { 
+        
+        diseaselist = new DatabaseQueries().getAllDiseases();
+            
+        return diseaselist;
+    }
+
+    public List<AvaliableGeneSymbol> getGeneslist() {
+        
+        geneslist = new DatabaseQueries().getAllGenes();
+        
+        return geneslist;
+    }
+
+
+    public List<RareDisease> getRarediseaselist() {
+        
+        rarediseaselist = new DatabaseQueries().getAllRareDiseases();
+        
+        return rarediseaselist;
+    }
+
+    /*Check if an ontology is loaded*/
+    
+    public boolean isOntologyLoaded(int ontology){
+        try{
+            switch(ontology)
+            {
+                case phenuma.constants.Constants.ONTO_HPO :      return this.getHuman_phenotype_ontology()!=null;
+                case Constants.ONTO_GO_BP :  return this.getGene_ontology_bp()!=null;
+                case Constants.ONTO_GO_MF :  return this.getGene_ontology_mf()!=null;
+                case Constants.ONTO_GO_CC :  return this.getGene_ontology_cc()!=null;
+                default:
+                    /*The ontology checked is not exists and obviously is not loaded.*/
+                    return false;
+            }
+        }catch(OBOParserException ex){
+            //logger.error(ex.getMessage());
+            
+        }catch(IOException ex){
+            //logger.error(System.getProperty("user.dir"));
+            //logger.error(ex.getMessage());
+        }
+            
+        return false;    
+    }
+    
+    
+    /*Check if an association container is loaded*/
+    
+    public boolean isAssocationsLoaded(int associations){
+        try{
+            switch(associations)
+            {
+                case phenuma.constants.Constants.ASSOC_DISEASES_HPO : return this.getDiseases_hpo_associations() != null;
+                case phenuma.constants.Constants.ASSOC_GENES_HPO :    return this.getGenes_hpo_associations() != null;
+                case phenuma.constants.Constants.ASSOC_ER_HPO :       return this.getEr_hpo_associations() != null;
+                case phenuma.constants.Constants.ASSOC_SNP_HPO :    return this.getSnp_hpo_associations() != null;
+                case phenuma.constants.Constants.ASSOC_DISEASE_MEDGEN_HPO :    return this.getMedGen_hpo_associations() != null;
+                case phenuma.constants.Constants.ASSOC_ALLELEID_HPO :    return this.getAlleleid_hpo_associations() != null;
+                case phenuma.constants.Constants.ASSOC_GENES_GO_BP :  return this.getGenes_go_associations_bp() != null;
+                case phenuma.constants.Constants.ASSOC_GENES_GO_CC :  return this.getGenes_go_associations_cc() != null;
+                case phenuma.constants.Constants.ASSOC_GENES_GO_MF :  return this.getGenes_go_associations_mf() != null;
+                default:
+                    /*The association container checked is not exists and obviously is not loaded.*/
+                    return false;
+            }
+        }catch(OBOParserException ex){
+            //logger.error(ex.getMessage());
+            
+        }catch(IOException ex){
+            //logger.error(ex.getMessage());
+        }
+            
+        return false;    
+    }
+}

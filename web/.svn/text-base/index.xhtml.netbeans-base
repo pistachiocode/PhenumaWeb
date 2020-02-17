@@ -1,0 +1,404 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://java.sun.com/jsf/composite/phcomp">
+    <h:head>
+        <title>PhenUMA</title>
+
+        <!--  Cytoscape -->
+        <script type="text/javascript" src="./resources/cytoscapeweb/min/json2.min.js"></script>
+        <script type="text/javascript" src="./resources/cytoscapeweb/min/AC_OETags.min.js"></script>
+        <script type="text/javascript" src="./resources/cytoscapeweb/min/cytoscapeweb.min.js"></script>
+        <script type="text/javascript" src ="./javascript/cytoscape.js"> </script>
+        
+        <!-- Sorttable -->
+        <script type="text/javascript" src="./javascript/sorttable.js"></script>
+        <script type="text/javascript" src ="./javascript/phenuma.js"> </script>
+        <script type="text/javascript" src ="./javascript/qtips.js"> </script>
+        
+        <script type="text/javascript" src="./javascript/jquery.qtip.min.js"></script>
+        <script type="text/javascript" src="./javascript/underscore-min.js"></script>
+        
+        <!-- CSS file -->
+        <link type="text/css" rel="stylesheet" href="./css/jquery.qtip.min.css" />
+        
+        <!-- CSS  --> 
+        <link href="./grungestyle/styles.css" rel="stylesheet" type="text/css"></link>
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>
+        <link href="./css/form_vis.css" rel="stylesheet" type="text/css"></link>
+        <link href="./css/table.css" rel="stylesheet" type="text/css"></link>
+        
+        <style>
+            	#eq span {
+                    width:200px; float:left; margin:15px
+                }
+
+        </style>
+        
+        <script type="text/javascript">
+
+           /*
+            * Global variables. 
+            */
+        
+           var _score = 0; //??
+           
+           var _window_size = 0;
+           
+           var _initialOptions = {layout: 'Tree',
+                                  score : 0, 
+                                  simsemgocc : true, 
+                                  simsemgomf : true,
+                                  simsemgobp : true,
+                                  simsemhpo  : true,
+                                  ppi        : true,
+                                  infgene    : true,
+                                  infomim    : true,
+                                  inforpha   : true,
+                                  metabolic  : true,
+                                  omim       : true,
+                                  orphadata  : true};
+           
+           
+            
+           /**
+            * Check if the value of the field 'Items' is empty.
+            */
+           function isItemsEmpty() {
+                return document.getElementById('queryform:panelform:genestab:inputtxtarea').value=='';
+           }
+           
+                    
+           /**
+            * Sliders: change de thresholds and filter relationships
+            */
+           function loadSliders(){
+               
+                $( "[name='slidder']" ).each(function() {
+                       
+                      
+                    // read initial values from markup and remove that
+                    var str = $( this ).text().split(",");
+
+                    var max = Math.round((parseFloat(str[0]))*100)/100;
+                    var min = Math.round((parseFloat(str[1]))*100)/100;
+                    var rel = str[2];
+                    var slide = str[3];
+                    var step = parseFloat(str[4]);
+    
+              
+                    $(this).empty().slider({
+                            value: min,
+                            min: min,
+                            max: max,
+                            step: step,
+                            orientation: "horizontal",
+                            range: "min",
+                            animate: true,
+                            slide: function( event, ui ) {
+                                        var score = ui.value;
+                                        
+                                        var labelscore = score;
+                                        if(rel == 4 || rel == 5 || rel == 6)
+                                            labelscore = labelscore * 10
+                                        
+                                        $("#"+rel+"value").html(labelscore)
+                                   },
+                                stop: function( event, ui ) {
+                                        var score = ui.value;
+                                        applyFilter(score, rel);
+                                   }
+                    });
+                   
+                   //Hidding the handler for slider of unscored relationships.
+                   if(slide=="false" || max==min)
+                   {
+                       $(this).empty().slider().html("");
+                        $("#"+rel+"value").html("")
+                   }
+                   
+                    
+		});
+                
+               
+      
+           }
+           
+          
+          function loadInformation(){
+              loadSliders();
+          }
+          
+          
+          function reload()
+          {
+              
+              $("[id='formfooter']").hide().fadeIn("fast");
+          }
+           
+           
+           $(document).ready(function() {
+
+           
+            
+             
+             loadInformation()   
+             reload();
+             
+             //Table sorter
+             $( "[class='ui-button-icon-left ui-icon ui-icon-hand']").click(function() {
+  
+                  $( this ).toggleClass( "ui-icon-hand-selected");
+                  return false;
+             });
+
+             
+           })
+           
+           
+           
+           window.onresize = panToCenter();
+        </script>
+        
+    </h:head>
+    
+    <h:body style="background-color: #393A3A;" onload="pbAjax.cancel(), reload(), toggleview('#layout', '#layout_table')">
+        
+       
+        <div class="maindiv_index">
+
+            <!-- Query Forms -->
+            <div class="formdiv_index">
+   
+                <div class="container1">
+                    <div style="float:left;">
+                        <img src="./resources/img/logo_blanco.png" />
+                    </div>
+                    <div style="float:left; width: 300px; padding-top: 20px;">
+                      <nav>
+                          <ul>
+                          <li><a href="main.jsf" class="grn">Home</a></li>
+                          <li><a href="index.jsf" class="ylw">Visualizer</a></li>
+                          <li><a href="tutorial.jsf" class="pnk">Help</a></li>
+                          <li><a href="download.jsf" class="orng">Download </a></li>
+                          <li><a href="contact.jsf" class="prpl">About</a></li>
+                          </ul>
+                      </nav>
+                  </div>
+                 
+                </div>
+
+                 <h:form id="queryform">
+                      <h:panelGrid columns="8">
+                           <p:commandButton id="changeview" value="View" onclick="toggleview('#layout', '#layout_table')" styleClass="buttonvisform"/> 
+                            <!-- Network Query From -->
+                           <ph:netwizard id="genestab"/>
+
+                      </h:panelGrid>
+                                     
+
+                </h:form>
+    
+
+            </div>
+
+    
+          <p:spacer height="4px"/>
+
+             
+           <div id="layout_table" styleClass="centraldiv">
+               
+                <!-- <p:layoutUnit id ="tablelayout" position="center" resizable="false"  styleClass="networkdiv" style="background-color: transparent; overflow-y:scroll;"> -->
+                   
+
+                    <h:form id="resultform" style="background-color: transparent; overflow: scroll; max-height: 600px;   ">
+                       	<!-- the input fields that will hold the variables we will use -->
+                        <div>
+                            <div style="display:table; height: 35px; width: 100%; background-color: #BDBDBD;">
+                                <div style="float:right; width: 75%;  height: 35px;">
+                                     </div>
+                                <div style="float:left; padding: 3px;">
+                                    <input id="searchfield" type="text" class="searchfield" onkeyup="filterTable($('input[id=\'searchfield\']').val())" />
+                                </div>
+                                <div style="float: left; padding-top: 5px; width: 2%; position: relative; ">
+                                    <a onclick="filterTable($('input[id=\'searchfield\']').val())">
+                                        <img src="./resources/img/search2.png" style="height:30px;"></img>
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <table id ="resulttable" class="phenumaresult_table"  >
+                                </table>
+                            </div>
+                        </div>
+
+                    </h:form>
+                    
+                <!-- </p:layoutUnit> -->
+               
+           </div>
+               
+
+            <!-- Central -->
+            <p:layout  id="layout" styleClass="centraldiv">
+
+                 <!--<div id="menunetworkdiv"> <ph:menu/> </div> -->
+                              
+                 <!-- Networks --> 
+                 <p:layoutUnit id ="centrallayout" position="center" resizable="false"  styleClass="networkdiv" style="overflow:hidden; background-color: white;">
+                     
+                     <ph:menu styleClass="menunetworkdiv"/>
+                     
+                     <h:form id="networksform"> 
+                            
+                            <!-- networks -->
+                            <ph:netview network="#{networkFormBean.currentCysNetwork.mainnetwork}"
+                                        subnetworks ="#{networkFormBean.currentCysNetwork.subnetworks}"
+                                        threshold ="#{networkFormBean.currentCysNetwork.networkDB.confidence}">
+                            </ph:netview>   
+                            
+
+       
+                     </h:form>
+
+                </p:layoutUnit>
+                 
+                 
+                <!--Information-->
+                <p:layoutUnit position="west" resizable="true" header="Info" collapsible="true" styleClass="infodiv" style="overflow:hidden; background-color: white; width: 200px;">
+                    
+                    <h:form id="selectedform" style="background-color: transparent">
+                  
+                        <p:tabView id="infotabview" style="border-color:#FFF; font-size:10px; overflow: hidden; width: 98%; padding-left: 3px; padding-rigth: 3px;">
+
+                                <p:tab id="infonetworktab" title="Filters" >
+                                    <ph:subnetworks id="subnetworklist" items="#{networkFormBean.subnetworks}"/>    
+                                    
+                                    <p:spacer height="70" width="100%"/>
+                                    <p:graphicImage url="./resources/img/nodelegend.png" width="250px" height="140px"/>
+                                 </p:tab>
+
+
+                                <!--Nodes-->
+
+                                <p:tab id="infonodestab" title="Nodes">  
+                                   <div style="height:200px;width:100%;overflow:scroll;">
+                                   <table id ="nodeTable" class="phenumatable">
+
+                                   </table>
+                                   </div>
+                                   <p:separator/>
+                                   <h:outputText id="phenotable" value="#{edgeTableManagedBean.phenotypeTable}" escape="false"/>  
+                                 </p:tab>
+
+                                <!--Edges-->
+
+                                <p:tab id="infoedgesstab" title="Edges">  
+                                    <div style="height:200px;width:100%;overflow:scroll;">
+                                        <table  id ="edgeTable"  class="phenumatable">
+
+                                        </table>
+                                    </div>
+                                    <p:separator/>
+                                    <h:outputText id="edgeinfotable" value="#{edgeTableManagedBean.phenotypeTable}" escape="false"/> 
+                         
+                                 </p:tab>
+                                
+                                <!--Enrichment-->
+
+                                <p:tab id="enrichmenttab" title="Enrichment" >
+                                        
+                                     <p:toolbar>
+                                         <p:toolbarGroup align="right">  
+                                               <p:commandButton value="Phenotypes" actionListener="#{edgeTableManagedBean.enrichmentPhenotypesClick}" update=":selectedform:infotabview:enrichmentinfotable"/>
+                                               
+                                               <p:commandButton value="GO BP" actionListener="#{edgeTableManagedBean.enrichmentGOBPClick}" update=":selectedform:infotabview:enrichmentinfotable"/>
+                                               
+                                               <p:commandButton value="GO CC" actionListener="#{edgeTableManagedBean.enrichmentGOCCClick}" update=":selectedform:infotabview:enrichmentinfotable"/>
+                                               
+                                               <p:commandButton value="GO MF" actionListener="#{edgeTableManagedBean.enrichmentGOMFClick}" update=":selectedform:infotabview:enrichmentinfotable"/>
+                                               
+                                               <p:commandButton value="Clear" actionListener="#{edgeTableManagedBean.clearEnrichmentClick}" update=":selectedform:infotabview:enrichmentinfotable"/>
+                                               
+                                               <p:commandButton  title="Download Enrichment" value="Download Enrinchment" icon="ui-icon-arrowthickstop-1-s" ajax="false">
+                                                 <p:fileDownload value="#{edgeTableManagedBean.outputFile}" />  
+                                               </p:commandButton>  
+                                          </p:toolbarGroup>
+                                     </p:toolbar>
+                                    
+                                     <h:outputText id="enrichmentinfotable" value="#{edgeTableManagedBean.enrichmentTable}" escape="false"/>
+
+
+                                </p:tab>
+
+                             </p:tabView>
+           
+                   </h:form>
+                    
+                    
+                    <!-- FALSE FORM used to show information selected in the network in the information panel -->
+                  
+                    <h:form id="falseform" style="background:#FFF;">
+                        <!-- Selected node or edge in the tables to show the related information (phenotypes) -->
+                        <h:inputHidden id="selectedNode" value="#{edgeTableManagedBean.selectedNode}" immediate="true" />
+                        <h:inputHidden id="selectedEdge" value="#{edgeTableManagedBean.selectedEdge}" immediate="true" />
+                        
+                        <h:inputHidden id="qtipinformation" value="#{edgeTableManagedBean.qtip}" immediate="true"/>
+                        
+                        <!-- Selected Nodes for Enrichment -->
+                        <h:inputHidden id="selectedNodes" value="#{edgeTableManagedBean.selectedNodes}" immediate="true"/>
+                        
+                        <!-- Show the information in the below table -->
+                        <p:commandLink id="button" value="button" type="submit" actionListener="#{edgeTableManagedBean.click}" update=":selectedform:infotabview:phenotable" style="color:#FFF;"/>
+                        <p:commandLink id="buttonedge" value="button" type="submit" actionListener="#{edgeTableManagedBean.edgeClick}" update=":selectedform:infotabview:edgeinfotable" style="color:#FFF;"/>
+                        <p:commandLink id="buttonenrichmentsubmit" value="button" type="submit" update=":selectedform:infotabview:enrichmentinfotable" style="color:#FFF;"/>
+
+                        <p:commandLink id="buttonqtips" value="button" type="submit" actionListener="#{edgeTableManagedBean.getNodeInformationQtip}" update=":falseform:qtipinformation" style="color:#FFF;" oncomplete="executeShowQtip()"/>
+                        <p:commandLink id="buttonedgeqtips" value="button" type="submit" actionListener="#{edgeTableManagedBean.getEdgeInformationQtip}" update=":falseform:qtipinformation" style="color:#FFF;" oncomplete="executeShowQtip()"/>
+                       
+                    </h:form>
+                    
+                  <!--  <ph:phenotable id="phenodialog" widget="dlg"/> -->
+                </p:layoutUnit>
+
+
+                     
+            </p:layout>
+            
+            <p:spacer height="10" />
+            
+            <!-- Footer -->
+            <footer>
+
+                <h:form id="formfooter" style="height:50px; min-height: 80px;">
+                    <p:spacer height="5" width="5" />
+                    
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+            
+                    <p:spacer height="5" width="5" />
+                    <p:progressBar widgetVar="pbAjax" ajax="true" value="#{networkFormBean.progress}" labelTemplate="{value}%"  interval="500" style="width:94%; border: 0px; background: transparent; padding-left: 10px;">  
+                        <p:ajax event="complete"  update=":networksform, :selectedform, :formfooter:messages" 
+                             listener="#{networkFormBean.getShowMessages}" 
+                             oncomplete="loadInformation(); pbAjax.cancel();"/>
+                    </p:progressBar> 
+                </h:form>
+
+            </footer>
+        </div>
+        
+
+
+        
+        <!-- No se que es esto :S  
+
+        <h:form>
+            <h:commandLink action="/jsf/gene/List" value="Show All Gene Items"/>
+        </h:form>
+        
+        -->
+</h:body>
+
+</html>
+

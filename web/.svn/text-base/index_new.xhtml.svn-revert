@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://java.sun.com/jsf/composite/phcomp">
+    <h:head>
+        <title>PhenUMA</title>
+
+        <!--  Cytoscape -->
+        <script type="text/javascript" src="./resources/cytoscapeweb/min/json2.min.js"></script>
+        <script type="text/javascript" src="./resources/cytoscapeweb/min/AC_OETags.min.js"></script>
+        <script type="text/javascript" src="./resources/cytoscapeweb/min/cytoscapeweb.min.js"></script>
+        <script type="text/javascript" src ="./javascript/cytoscape.js"> </script>
+        
+        <!-- Sorttable -->
+        <script type="text/javascript" src="./javascript/sorttable.js"></script>
+        <script type="text/javascript" src ="./javascript/phenuma.js"> </script>
+        <script type="text/javascript" src ="./javascript/qtips.js"> </script>
+        
+        <script type="text/javascript" src="./javascript/jquery.qtip.min.js"></script>
+        <script type="text/javascript" src="./javascript/underscore-min.js"></script>
+        
+        <!-- CSS file -->
+        <link type="text/css" rel="stylesheet" href="./css/jquery.qtip.min.css" />
+        <link href="./grungestyle/styles.css" rel="stylesheet" type="text/css"></link>   
+        
+        <!-- CSS  --> 
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>
+        <link href="./css/form_vis.css" rel="stylesheet" type="text/css"></link>
+        <link href="./css/table.css" rel="stylesheet" type="text/css"></link>
+        
+        <style>
+            	#eq span {
+                    width:200px; float:left; margin:15px
+                }
+
+        </style>
+        
+        <script type="text/javascript">
+
+           /*
+            * Global variables. 
+            */
+        
+           var _score = 0; //??
+           
+           var _window_size = 0;
+           
+           var _initialOptions = {layout: 'Tree',
+                                  score : 0, 
+                                  simsemgocc : true, 
+                                  simsemgomf : true,
+                                  simsemgobp : true,
+                                  simsemhpo  : true,
+                                  ppi        : true,
+                                  infgene    : true,
+                                  infomim    : true,
+                                  inforpha   : true,
+                                  metabolic  : true,
+                                  omim       : true,
+                                  orphadata  : true};
+           
+           
+            
+           /**
+            * Check if the value of the field 'Items' is empty.
+            */
+           function isItemsEmpty() {
+                return document.getElementById('queryform:panelform:genestab:inputtxtarea').value=='';
+           }
+           
+                    
+           /**
+            * Sliders: change de thresholds and filter relationships
+            */
+           function loadSliders(){
+               
+                $( "[name='slidder']" ).each(function() {
+                       
+                      
+                    // read initial values from markup and remove that
+                    var str = $( this ).text().split(",");
+
+                    var max = Math.round((parseFloat(str[0]))*100)/100;
+                    var min = Math.round((parseFloat(str[1]))*100)/100;
+                    var rel = str[2];
+                    var slide = str[3];
+                    var step = parseFloat(str[4]);
+    
+              
+                    $(this).empty().slider({
+                            value: min,
+                            min: min,
+                            max: max,
+                            step: step,
+                            orientation: "horizontal",
+                            range: "min",
+                            animate: true,
+                            slide: function( event, ui ) {
+                                        var score = ui.value;
+                                        
+                                        var labelscore = score;
+                                        if(rel == 4 || rel == 5 || rel == 6)
+                                            labelscore = labelscore * 10
+                                        
+                                        $("#"+rel+"value").html(labelscore)
+                                   },
+                                stop: function( event, ui ) {
+                                        var score = ui.value;
+                                        applyFilter(score, rel);
+                                   }
+                    });
+                   
+                   //Hidding the handler for slider of unscored relationships.
+                   if(slide=="false" || max==min)
+                   {
+                       $(this).empty().slider().html("");
+                        $("#"+rel+"value").html("")
+                   }
+                   
+                    
+		});
+                
+               
+      
+           }
+           
+          
+          function loadInformation(){
+              loadSliders();
+          }
+          
+          
+          function reload()
+          {
+              
+              $("[id='formfooter']").hide().fadeIn("fast");
+          }
+           
+           
+           $(document).ready(function() {
+
+           
+             //hide table
+             //if($("#layout_table").is(":visible"))
+             //   $("#layout").hide();
+             
+             
+             loadInformation()   
+             reload();
+             
+             //Table sorter
+             $( "[class='ui-button-icon-left ui-icon ui-icon-hand']").click(function() {
+  
+                  $( this ).toggleClass( "ui-icon-hand-selected");
+                  return false;
+             });
+             
+
+             
+           })
+           
+           
+           
+           window.onresize = panToCenter();
+        </script>
+        
+    </h:head>
+    
+    <h:body>
+        
+             <!-- Menu -->
+            <header>
+                <div class="container1">
+                    <!--start title-->
+                    <h1 id="title">
+                        <p:graphicImage url="./resources/img/logo_blanco.png" />
+                    </h1>
+                    <!--end title-->
+                    <!--start menu-->
+                    <nav>
+                    <ul>
+                    <li><a href="main.xhtml" class="grn">Home</a></li>
+                    <li><a href="tutorial.html" class="pnk">Help</a></li>
+	      <li><a href="download.jsf" class="orng">Download </a></li>
+                    <li><a href="citeus.jsf" class="blu">How to cite us</a></li>
+                    <li><a href="contact.jsf" class="prpl">Contact us</a></li>
+                    </ul>
+                    </nav>
+                </div>
+                <div class="bottom"> 
+                     <h:form>
+                        <ph:netwizard id="genestab"/>
+                    </h:form>
+                </div>
+                <!--end menu-->
+            <!--end header-->
+            </header>
+             
+            <section id="container1">               
+                    <p:commandButton value="Table/Network" onclick="toggle('#layout', '#layout_table');" /> 
+            </section>
+
+             <!-- Footer -->
+            <footer>
+
+                <h:form id="formfooter" styleClass="footerform" style="height:80px; min-height: 80px;">
+                    <p:spacer height="5" width="5" />
+                    
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+            
+                    <p:spacer height="5" width="5" />
+                    <p:progressBar widgetVar="pbAjax" ajax="true" value="#{networkFormBean.progress}" labelTemplate="{value}%"  interval="500" style="width:94%; border: 0px; background: transparent; padding-left: 10px;">  
+                        <p:ajax event="complete"  update=":networksform, :selectedform, :formfooter:messages" 
+                             listener="#{networkFormBean.getShowMessages}" 
+                             oncomplete="loadInformation(); pbAjax.cancel();"/>
+                    </p:progressBar> 
+                </h:form>
+
+            </footer>
+
+        
+        <!-- No se que es esto :S  
+
+        <h:form>
+            <h:commandLink action="/jsf/gene/List" value="Show All Gene Items"/>
+        </h:form>
+        
+        -->
+    </h:body>
+
+</html>
+

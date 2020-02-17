@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+
+        
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id"/>
+        <cc:attribute name="update"/>
+        <cc:attribute name="oncomplete"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();" />
+        
+        <p:dialog modal="true" widgetVar="statusDialog" header="Status"   
+                  draggable="false" closable="false" >  
+            
+            <h:outputLabel>Building your network. This could take some minutes....</h:outputLabel>
+            <p:graphicImage value="./resources/img/ajax-loader-animated.gif" />  
+            <p:ajax event="close" update="#{cc.attrs.update}" listener="#{networkFormBean.getShowMessages}" oncomplete="#{cc.attrs.oncomplete}"/>
+        </p:dialog>  
+            
+    </cc:implementation>
+
+    
+</html>

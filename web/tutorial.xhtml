@@ -1,0 +1,535 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://java.sun.com/jsf/composite/phcomp"> 
+    <h:head>
+
+      <!--  <script type="text/javascript" src ="./javascript/jquery/jquery-ui-1.8.11.custom.min.js"> </script>
+        <script type="text/javascript" src="./javascript/jquery/jquery-1.7.1.min.js"></script> -->
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        
+        
+        <!-- CSS  --> 
+        <link href="./grungestyle/styles.css" rel="stylesheet" type="text/css"></link>  
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>
+         
+        <script>
+       
+        
+        function toggle(form)
+        {
+            $("#videos").hide();
+            $("#pdf").hide();
+            $("#startednet").hide();
+            $("#startedenrich").hide();
+            $("#input").hide();
+            $("#relationships").hide();
+            
+            $(form).show();
+
+        }
+       
+         $(document).ready(function() {
+
+           toggle('#startednet')
+
+             
+         })
+           
+        
+        </script>
+    </h:head>
+    <h:body style="font-size:12px;">
+             <!-- Menu -->
+            <header>
+	   <div class="container1">
+	      <!--start title-->
+              <div style="float:left;">
+                <img src="./resources/img/logo_blanco.png" />
+              </div>
+	      <!--end title-->
+	      <!--start menu-->
+              <div style="float:left; width: 300px; padding-top: 20px;">
+                  <nav>
+                      <ul>
+                      <li><a href="main.jsf" class="grn">Home</a></li>
+                      <li><a href="index.jsf" class="ylw">Visualizer</a></li>
+                      <li><a href="tutorial.jsf" class="pnk">Help</a></li>
+                      <li><a href="download.jsf" class="orng">Download </a></li>
+                      <li><a href="citeus.jsf" class="blu">Cite us</a></li>
+                      <li><a href="contact.jsf" class="prpl">About</a></li>
+                      </ul>
+                  </nav>
+              </div>
+	   </div>
+	   <div class="bottom"> 
+           
+           </div>
+	   <!--end menu-->
+	   <!--end header-->
+	</header>
+              <aside id="sidebar2"><!-- sidebar1 -->
+              <br /><br />
+              <ul>
+                  <li> Help: </li>
+                  <li onclick="toggle('#startednet')"> Quick start: Network Query </li>
+                  <li onclick="toggle('#startedenrich')"> Quick start: Enrichment Analysis </li>
+                  <li onclick="toggle('#input')"> Input identifiers </li>
+                  <li onclick="toggle('#relationships')"> Output networks </li>
+                  <li onclick="toggle('#videos')"> Video tutorial: how to... </li>
+                  <li onclick="toggle('#pdf')"> Tutorial PDF </li>
+                  <!--
+                  <li>Type of Input</li>
+                  <li>Type of Networks</li>
+                  <li>Confidence Level </li>
+                  <li>Visualizer: Filter, select, get information</li>
+                  <li>Enrichment</li>
+                  <li>Download results</li>
+                  -->
+              </ul>
+              </aside><!-- end of sidebar1 -->
+            
+                
+            <div id="videos">
+                
+            <h3> Video tutorials: how to ... </h3>
+            <br/>
+            
+             
+                <table class="tabtext_tutorial">
+
+
+                    <tr> 
+                        <td style="width: 470px; padding: 10px;" >
+                            <h4> ...find genes/diseases identifiers? </h4>
+                            <p>Select the identifiers to execute a query in PhenUMA. Severals resources are available to find the gene 
+                            or disease of interest:
+                            <a href="http://www.ncbi.nlm.nih.gov/"> NCBI </a>, <a href="http://www.ensembl.org/index.html">Ensembl</a>,
+                            <a href="www.omim.org"> OMIM </a>, <a href="http://www.genenames.org/">HGNC</a> and <a href="www.orpha.net">Orphanet</a>. 
+                           </p>
+                        </td> 
+                       
+                        <td style="width: 470px; padding: 10px;">
+                            <h4>  ..manage the interface? </h4>
+                            <p>The visualizer allow to interact with the network. Some controls are located in the left-hand panel: filters,
+                               check phenotypic information of the selected nodes, enrichment analyses...
+                           </p>
+                        </td>  
+                    </tr>
+                    <tr>
+                        <td> 
+                            <iframe width="300" height="170" src="//www.youtube.com/embed/NvlJWbhxxd0" frameborder="0" allowfullscreen="true"></iframe> 
+                        </td> 
+                        <td> 
+                            <iframe width="300" height="170" src="//www.youtube.com/embed/z2oZS3Tfqqc" frameborder="0" allowfullscreen="true"></iframe> 
+                        </td>
+                    </tr>
+
+                    <tr> 
+                        <td style="width: 470px; padding: 10px;">
+                            <h4>  ...download the output data? </h4>
+                            <p>Resulting networks can be downloaded in text file format. This makes it possible to work with the results using other
+                                platforms as Cytoscape. 
+                           </p>
+                        </td>
+                        <td style="width: 470px; padding: 10px;">
+                            <h4>  ...visualize resulting networks using Cytoscape? </h4>
+                            <p>Text files returned by PhenUMA can be used in Cytoscape. This video tutorial shows how to visualize
+                               PhenUMA networks using this tool.
+                           </p>
+                        </td>
+                     </tr>
+                    <tr>
+                        
+                        <td> 
+                            <iframe width="300" height="170" src="//www.youtube.com/embed/m8GpwTdHc_8" frameborder="0" allowfullscreen="true"></iframe> 
+                        </td>
+                        <td> 
+                            <iframe width="300" height="170" src="//www.youtube.com/embed/y9_c0HRGzME" frameborder="0" allowfullscreen="true"></iframe> 
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+                
+            <div id="startednet">
+             <h2> Quick start: Network Query</h2>
+            <br/>
+            
+             
+                <table class="tabtext_tutorial">
+
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4> 1 Select "Network" option </h4>
+                        </td> 
+                        
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="./resources/img/tutorial/queryoptionnetwork.png"/>
+                        </td>
+                    </tr>
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4> 2 Select the input type: genes, OMIM diseases, Orphan diseases or Phenotypes </h4>
+                        </td> 
+                        
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="./resources/img/tutorial/InputType.png"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">
+                            <h4> 3 Write your query </h4>
+                            <p>Introduce a list of genes, diseases or phenotype separate by commas: </p>
+                            <img src="./resources/img/tutorial/InputList.png"/>
+                            <ul>
+                                <li>
+                                    For queries of OMIM genes/diseases use the OMIM id (i.e. 271980),   the Orphan id (i.e. 95) for Orphan Diseases and
+                                the HPO id for phenotypes (i.e. HP:0001691, HP:0003116, HP:0001953). As long as you want to introduce a set of genes you can use the EntrezGene (Recommended), Symbol or Ensembl. The
+                                MIM, HGNC and Orpha ids are allowed too but, it must be indicated in the same way: MIM:300461, HGNC:8512 or ORPHA:124033.</li>
+                           </ul>
+                        </td>  
+
+                    </tr>
+
+                    <tr> 
+                        <td style="padding: 10px;">
+                            <h4> 4 Select the output network </h4>
+                            <p>Select the network that you want to visualize. 
+                           </p>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="./resources/img/tutorial/Output.png"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">
+                            <h4> 5 Choice the confidence level </h4>
+                            <p> Three leves of confidence are availiable. Select a <b>high</b> to get a network with the more significative relationships.
+                                If you want to lower the threshold select a <b>medium</b> or <b>low</b> confidence.
+                           </p>
+                        </td> 
+                     </tr>
+                     <tr>
+                        <td>
+                            <img src="./resources/img/tutorial/Confidence.png"/>
+                        </td>
+                    </tr>
+                    
+                     <tr>
+                        <td style="padding: 10px;">
+                            <h4> 6 Press "Execute" button and wait some seconds while the query is performed. </h4>
+                            <p> Once the network has been generated the table/visualizer view will be shown. 
+                           </p>
+                        </td> 
+                     </tr>
+                     <tr>
+                        <td>
+                            <img src="./resources/img/tutorial/Build.png"/>
+                        </td>
+                     </tr>
+
+                </table>
+
+            </div>
+            
+            <div id="startedenrich">
+            <h2> Quick start: Enrichment Analysis</h2>
+            <br/>
+            
+             
+                <table class="tabtext_tutorial">
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4> 1 Select "Enrichment Analysis" option </h4>
+                        </td> 
+                        
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="./resources/img/tutorial/queryoptionenrichment.png"/>
+                        </td>
+                    </tr>
+
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4> 2 Select the input type: genes, OMIM diseases, Orphan diseases </h4>
+                        </td> 
+                        
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="./resources/img/tutorial/inputtypeenrich.png"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">
+                            <h4> 3 Write your query </h4>
+                            <p>Introduce a list of genes, diseases separated by commas: </p>
+                            <img src="./resources/img/tutorial/InputList.png"/>
+                            <ul>
+                                <li>
+                                For queries of OMIM genes/diseases use the OMIM id (i.e. 271980), the Orphan id (i.e. 95) for Orphan Diseases and
+                                the HPO id for phenotypes (i.e. HP:0001691, HP:0003116, HP:0001953). As long as you want to introduce a set of genes you can use the EntrezGene (Recommended), Symbol or Ensembl. The
+                                MIM, HGNC and Orpha ids are allowed too but, it must be indicated in the same way: MIM:300461, HGNC:8512 or ORPHA:124033.</li>
+                           </ul>
+                        </td>  
+
+                    </tr>
+
+                    <tr> 
+                        <td style="padding: 10px;">
+                            <h4> 4 Select type of analysis </h4>
+                            <p>Select the network that you want to execute. 
+                           </p>
+                        </td> 
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <img src="./resources/img/tutorial/enrichmenttype.png"/>
+                        </td>
+                    </tr>
+                    
+                    <tr> 
+                        <td style="padding: 10px;">
+                            <p>The avaliable enrichment analyses are:
+                                <ul>
+                                    <li>Phenotypic (HPO)</li>
+                                    <li>Functional (GO Biological Process)</li>
+                                    <li>Functional (GO Cellular Component)</li>
+                                    <li>Functional (GO Molecular Function)</li>
+                                </ul>
+                                <br />
+                                Notice that is possible execute a functional enrichment from a list of diseases. In these cases, the set of genes related to each
+                                input disease is used to perform the analysis. 
+                           </p>
+                        </td> 
+                    </tr>
+                    
+                     <tr>
+                        <td style="padding: 10px;">
+                            <h4> 5 Press "Execute" button and wait some seconds while the query is performed. </h4>
+                            <p> Once the network has been generated the enrichment table will be shown. 
+                           </p>
+                        </td> 
+                     </tr>
+                     <tr>
+                        <td>
+                            <img src="./resources/img/tutorial/Build.png"/>
+                        </td>
+                     </tr>
+
+                </table>
+
+            </div>
+            <div id="input">
+                <h2>Input identifiers</h2>
+
+                <table class="tabtext_tutorial">
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4>Genes</h4>
+                            <p>
+                                <b>EntrezGene/GeneID</b> is the indentifier recommend for queries of genes in PhenUMA.
+
+                                <p:inputTextarea id="inputtxtarea" value="1411, 2629, 3845, 208" immediate="true" rows="3" cols="200" readonly="true" style="width:605px"/>
+                            </p>
+                            <p>
+                                However, others identifiers are supported: Gene Symbol speciffically the official symbol provided by HGNC, Ensembl, HGNC id, MIM and Orpahnum. Visit 
+                                <a href="http://www.ncbi.nlm.nih.gov/"> http://www.ncbi.nlm.nih.gov/ </a>, 
+                                <a href="www.genenames.org"> www.genenames.org </a> , 
+                                <a href="http://www.ensembl.org/index.html"> http://www.ensembl.org/index.html</a> or 
+                                <a href="http://www.orpha.net/"> http://www.orpha.net/ </a> to find the identifiers of your genes.
+                            </p>
+                            
+                            <p>Gene Symbols</p>
+                            
+                            <p:inputTextarea id="inputtxtarea" value="CRYAB, GBA, KRAS, AKT2" immediate="true" rows="3" cols="200" readonly="true" style="width:605px"/>
+
+                            <p class="tutorialnote">
+                                <span style="color:red; font-size: 16px;"> Important! </span> If you choose HGNC, MIM or Orphanum identifiers you must indicate the database of reference (i.e 
+                                MIM:123610, HGNC:2394 or ORPHA:120836) to avoid confusion.
+                                
+                            </p>
+                            <p>Different identifiers: </p>
+                            <p:inputTextarea id="inputtxtarea" value="MIM:123610, GBA, ORPHA:122879, HGNC:392" immediate="true" rows="3" cols="200" readonly="true" style="width:605px"/>
+
+                        </td> 
+                    </tr>
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4>OMIM Genes/Diseases</h4>
+                            
+                            <p>
+                                For queries of OMIM genes or diseases a list of MIM id must be provided:
+                            </p>
+                                
+                             <p:inputTextarea id="inputtxtarea" value="271980, 107650, 117100, 130300" immediate="true" rows="3" cols="200" readonly="true" style="width:605px"/>
+                                
+                             <p>    
+                                Visit <a href="www.omim.org">www.omim.org</a> to find the identifier of your disease(s) of interest.
+                            </p>
+                        </td> 
+                    </tr>
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4>Orphanet Diseases</h4>
+                            
+                            <p> Use orphanum identifier: </p>
+                            
+                             <p:inputTextarea id="inputtxtarea" value="95, 98, 103, 104" immediate="true" rows="3" cols="200" readonly="true" style="width:605px"/>
+                            
+                            <p>    
+                                Visit <a href="www.orpha.net">www.orpha.net</a> to find the identifier of your orphan disease(s) of interest.
+                            </p>
+                        </td> 
+                    </tr>
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4>Phenotypes</h4>
+                            
+                            
+                            <p> Use HPO id identifier: </p>
+                           
+                             <p:inputTextarea id="inputtxtarea" value="HP:0001691, HP:0003116, HP:0001953" immediate="true" rows="3" cols="200" readonly="true" style="width:605px"/>
+                            <p>    
+                                Visit <a href="http://compbio.charite.de/phenexplorer/">http://compbio.charite.de/phenexplorer/</a> to find the identifier of your phenotype of interest.
+                            </p>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="tutorialnote" style="font-size: 16px;">
+                                Read more about identifers in <img class="icon_pdf"/> <a href="resources/cursophenuma/Inputs.pdf"> Inputs.pdf  </a>
+                            </p> 
+                        </td>
+                    </tr>
+                </table>
+                
+            </div>
+
+          <div id="relationships">
+                <h2>Output networks</h2>
+                <p style="padding: 10px;">
+                Network building with PhenUMA requires of the selection of a type of network. These networks can be classified in Gene-Gene, OMIM-OMIM,
+                ORPHA-ORPHA and Phenotype Query Network. Additionally, bipartite networks are available too. The type of networks available depends on
+                the input type selected.
+                
+                
+                </p>
+                <table class="tabtext_tutorial">
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4>Gene-Gene</h4>
+                            <p>
+                               Genes networks can be built from a list of genes or diseases (OMIM diseases or Orphan diseaes). If a list
+                               of diseases (yellow circles) is provided the relationships between genes and diseases, obtained from OMIM and Orphanet, are
+                               used to create a list of input genes (red triangles). <b> Seed network </b> includes relationships between
+                               the input genes and the rest of genes of the knowledge base. <b> The type of relationship of seed network is
+                               the selected by the user: </b> Gene-Gene Semantic Similarity from HPO, Gene-Gene Semantic Similarity from GO, etc. Finally,
+                               the network is <b>extended</b> with the rest of relationships among genes included in PhenUMA: phenotypic (HPO), functional (GO),
+                               protein-protein interactions (STRING), metabolic (Veeramani et al.) and inferred relationships.
+                                
+                            </p>
+                            
+                            
+                            <img src="./resources/img/tutorial/genenetwork_workflow.png" width="800" height="300"/>
+                            
+                        </td> 
+                    </tr>
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4>OMIM Disease - OMIM Disease / Orphan Disease - Orphan Disease</h4>
+                            <p>
+                            The procedure used to generate diseases networks is similar to genes network workflow. The following figure
+                            represents OMIM diseases (yellow circles in PhenUMA) networks but could be extrapolated to Orphan diseases (blue
+                            octogons in PhenUMA) networks. <b>Extended network</b> includes phenotypic and inferred relationships among
+                            diseases.
+
+                            </p>
+                            
+                            <img src="./resources/img/tutorial/diseasenetwork_workflow.png" width="800" height="300"/>
+                        </td> 
+                    </tr>
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4>Phenotypic Query Network</h4>
+                             <p>
+                             In this type of networks the input list of phenotypes is considered a phenotypic profile and is compared
+                             with the rest of genes or diseaes (OMIM or Orphanet). The rest of the steps are similar to the rest of 
+                             networks.
+                            </p>
+                            <img src="./resources/img/tutorial/hponetwork_workflow.png" width="800" height="370"/>
+                        </td> 
+                    </tr>
+                </table>
+                
+            </div>
+            <div id="pdf">    
+                
+             <!-- Phenuma tutorial -->
+             <h3> PhenUMA Tutorial </h3>
+                 <br/>
+
+                 <p style="padding: 10px;" > We are working to provide a complete tutorial in HTML and more help resources, however provisionally, you can download this preliminary 
+                                                                  version in PDF format from the following link:</p>
+
+                 <table>
+
+                     <tr><td><a href="resources/tutorial_phenuma.pdf"> <div class="icon_download_small"> </div> </a> </td>
+                         <td><a href="resources/tutorial_phenuma.pdf" class="link_tutorial"> Download Tutorial PDF  </a></td></tr>
+
+                 </table>
+
+             
+             <!-- Events -->
+             <br />
+        
+             <h3> PhenUMA Course </h3>
+             <br/>
+             <p class="tabtext_tutorial">  Phenuma Course 2013 organized by Ciberer and given the 13 and 14 of June of 2013:  </p>
+             
+             <p class="tabtabtext_tutorial">  
+                 <h:outputLink value="./cursociberer2013.jsf" styleClass="link_tutorial"> 
+                    Course website 
+                 </h:outputLink>
+             </p>
+            
+             
+             <p class="tabtext_tutorial"> Donwload slides in PDF
+             <a class="icon_pdf" href="./resources/cursophenuma/SESION_PRACTICA_I.pdf"> </a> </p> 
+
+            </div> 
+ 
+             <!-- Footer -->
+            <footer> 
+                <center>
+                <div  class="container1">
+                         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.es_CO">
+                            <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" />
+                    </a><br />
+                    <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title" > PhenUMA </span> is licensed under a 
+                    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+                            Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+                    </a>
+                </div>
+                </center>
+            </footer>
+         
+    </h:body>
+</html>
+

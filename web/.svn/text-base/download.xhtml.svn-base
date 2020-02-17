@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://java.sun.com/jsf/composite/phcomp"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"> 
+    <h:head>
+        <!--  Cytoscape -->
+
+        
+      <!--  <script type="text/javascript" src ="./javascript/jquery/jquery-ui-1.8.11.custom.min.js"> </script>
+        <script type="text/javascript" src="./javascript/jquery/jquery-1.7.1.min.js"></script> -->
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        
+        <script type="text/javascript" src ="./javascript/tutorial.js"> </script>        
+
+ 	<link href="./grungestyle/styles.css" rel="stylesheet" type="text/css"></link>      
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>   
+    </h:head>
+    
+    <h:body>
+
+	<!-- Menu -->
+            <header>
+	   <div class="container1">
+	      <!--start title-->
+              <div style="float:left;">
+                <img src="./resources/img/logo_blanco.png" />
+              </div>
+	      <!--end title-->
+	      <!--start menu-->
+              <div style="float:left; width: 300px; padding-top: 20px;">
+                  <nav>
+                      <ul>
+                      <li><a href="main.jsf" class="grn">Home</a></li>
+                      <li><a href="index.jsf" class="ylw">Visualizer</a></li>
+                      <li><a href="tutorial.jsf" class="pnk">Help</a></li>
+                      <li><a href="download.jsf" class="orng">Download </a></li>
+                      <li><a href="contact.jsf" class="prpl">About</a></li>
+                      </ul>
+                  </nav>
+              </div>
+	   </div>
+	   <div class="bottom"> 
+           
+           </div>
+	   <!--end menu-->
+	   <!--end header-->
+	</header>
+	<!-- Form -->
+         <div style = "display: table; width: 1200px; height: 500px; padding-top: 20px; padding-left: 40px;">
+             
+
+                 <h2> Downloads </h2>
+
+                 <center>
+                 <table class="tabtext_tutorial">
+                     <tr><td><a href="./resources/networks/phenuma_networks.zip" target="_blank"> <div class="icon_download" />  </a></td>
+                         <td><a href="./resources/networks/phenuma_networks.zip" class="link_tutorial" target="_blank">  phenuma_networks.zip  </a></td></tr>
+                 </table>
+                 </center>
+                 <p> We provide the networks used by PhenUMA. 
+                     
+                     The compresed file <i> phenuma_networks.zip </i> (62.5Mb) contains three tab separated files. The content of these files is listed down below. 
+                     Each column of these files corresponds to a type of relationships and the score of each one is included. Therefore, each row shows all the links between two genes 
+                 or diseases. If an association between two genes or disease is to score "NULL" implies that these genes or diseases are not related. </p>
+                 <table>
+                     <tr>
+                         <td valign="top">
+                     <li><p><b>gene2gene.txt (343.7Mb):</b> </p>
+                         <ul style="list-style-type:circle; padding-left: 30px;">
+                             <li> geneX (EntrezGene) </li>
+                             <li> geneY (EntrezGene)</li>
+                             <li>phenotypic (HPO)</li>
+                             <li>functional_bp (GO Biological Process)</li>
+                             <li>functional_cc (GO Cellular Component)</li>
+                             <li>functional_mf (GO Molecular Function)</li>
+                             <li>ppi (protein-protein interaction from STRING)</li>
+                             <li>metabolic (Veeramani et al.) </li>
+                             <li>inferred_omim: relationships between genes sharing one or more OMIM diseases. </li>
+                             <li>inferred_orpha: relationships between genes sharing one or more Orphan diseases.</li>
+                             <li> geneXsymbol (Official Symbol) </li>
+                             <li> geneYsymbol (Official Symnol) </li>
+                         </ul></li>
+                             </td>
+                         <td valign="top">
+                    <li><p> <b>omim2omim.txt (45.8Mb)</b> </p></li>  
+                         <ul style="list-style-type:circle; padding-left: 30px;">
+                             <li> omimX (OMIM Id) </li>
+                             <li> omimY (OMIM Id)</li>
+                             <li>phenotypic (HPO)</li>
+                             <li>inferred_gene: relationships between OMIM diseases sharing one or more genes. </li>
+                             <li> omimXname: disease name</li>
+                             <li> omimYname: disease name</li>
+                         </ul>
+                    </td>
+                         <td valign="top">
+                    <li><p> <b>orpha2orpha.txt (7.6Mb)</b> </p></li>  
+                        <ul style="list-style-type:circle; padding-left: 30px;">
+                             <li> orphaX (Orpha Id) </li>
+                             <li> orphaY (Orpha Id)</li>
+                             <li> phenotypic (HPO)</li>
+                             <li>inferred_gene: relationships between Orphan diseases sharing one or more genes. </li>
+                             <li> orphaXname: disease name</li>
+                             <li> orphaYname: disease name</li>
+                         </ul>
+                    </td>                    
+                 </tr>
+                </table>
+                 <br/> 
+                <p>In Help section you can find a video tutorial about how to load these networks in Cytoscape.</p> 
+
+       
+        </div>
+        
+       
+	<footer> 
+            <center>
+            <div  class="container1">
+                     <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.es_CO">
+                        <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" />
+                </a><br />
+                <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title" > PhenUMA </span> is licensed under a 
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+			Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+		</a>
+            </div>
+	    </center>
+   	</footer>
+         
+    </h:body>
+</html>
+

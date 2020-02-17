@@ -1,0 +1,71 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.utils;
+
+import java.util.List;
+import java.util.Set;
+import ontologizer.go.Prefix;
+import ontologizer.go.TermID;
+import phenuma.network.Node;
+import phenuma.networkproyection.NetworkConstants;
+import phenuma.util.PhenumaException;
+
+/**
+ *
+ * @author Armando
+ */
+public class JSONUtils {
+
+    public static String createSemanticJSON_DB(List<Object[]> rows, double d, Integer rel_type) {
+       
+        String relationships_json = "terms: [";
+        
+        for (Object[] row : rows)
+        {
+            
+            Integer hpoid  = (Integer)row[2];
+            String  hpomax = (String)row[3];
+            Double  ic     = (Double)row[4];
+            
+            TermID term = new TermID(new Prefix("GO"), hpoid);
+            if (rel_type == NetworkConstants.NETWORK_REL_TYPE_PHENOTYPIC)
+                term = new TermID(new Prefix("HP"), hpoid);
+            
+            
+            relationships_json = relationships_json + "{ id: '"+term.toString()+"', name: '"+hpomax+"', ic:"+ic+"}, ";
+        
+        }
+        
+        relationships_json = relationships_json.substring(0, relationships_json.length()-2);
+        relationships_json = relationships_json +"]";
+        
+        return relationships_json;
+
+    }
+    
+    /**
+     * 
+     * @param nodes
+     * @param relationshipType
+     * @return
+     * @throws PhenumaException 
+     */
+    //Create HTML Tables
+    public static String createInferredJSON_DB(Set<Node> nodes, Integer relationshipType) throws PhenumaException
+    {
+        String relationships_json = "objects: [";
+        
+
+        for (Node node : nodes){
+            relationships_json = relationships_json + "{id: '"+node.getId()+"', name: '"+node.getText()+"'}, ";
+        }
+
+        relationships_json = relationships_json.substring(0, relationships_json.length()-2);
+        relationships_json = relationships_json +"]";
+        
+        return relationships_json;
+    }
+    
+}

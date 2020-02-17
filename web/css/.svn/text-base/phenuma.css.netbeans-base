@@ -1,0 +1,895 @@
+/* 
+    Document   : phenuma
+    Created on : 12-ene-2012, 12:07:42
+    Author     : Armando
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+@font-face{
+    font-family: 'Saxmono';
+    src: local('Saxmono'), local('Saxmono'), url('./fonts/saxmono.ttf') format('truetype');    
+}
+
+@font-face {
+    font-family:'MyriadPro';
+    src: url("./fonts/myriadpro/MYRIADPRO-REGULAR.OTF") format("opentype");
+}
+
+@font-face {
+    font-family:'MyriadPro';
+    font-weight: bold;
+    src: url("./fonts/myriadpro/MYRIADPRO-BOLD.OTF") format("opentype");
+}
+
+root { 
+    display: block;
+
+}
+
+body {
+       min-height: 300px;
+       font: bold;
+       height: 100%;
+       width: 100%;
+       font-family: 'MyriadPro', sans-serif;
+       
+ }
+     
+     
+a {
+     color: #F39814;
+     font-size: 1em;
+     text-decoration: none;
+     font-weight: bold;
+     transition:color 1s;
+     cursor: pointer;
+}
+ 
+a:hover {
+     color: #F7BA63;
+     font-size: 1em;
+
+}
+
+
+a.phenumaresult_data {
+    color:black;
+    font-size: 12px;
+}
+
+
+li {
+    font-size: 1em;
+}
+
+label {
+    font-size: 12px !important;
+    color: #666; 
+}
+
+
+span {
+    font-size: 12px;
+}
+
+button {
+    font-size: 1.1em !important;
+}
+
+.tablelink:hover {
+    font-size: 1em;
+}
+
+
+.tablelink{
+    font-size: 1em;
+ 
+}
+
+/*Table Styles*/
+
+
+.phenumatable{
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size: 10px;
+    vertical-align:baseline;
+    background:transparent;
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+
+.phenumarow{
+    font-size: 1em;
+    cursor: pointer;
+    width: 10px;
+    height: 5px;
+}
+
+.phenumarow:hover{
+    background-color: #F7BA63;
+}
+
+.phenumarow:selected{
+    background-color: #F7BA63;
+}
+
+.phenumadata{
+     text-align: center;
+
+     padding: 2px;
+      width: auto;
+     
+}
+
+.phenumadata_text{
+     text-align: left;
+     width: auto;
+     padding: 2px;
+     max-width: 120px;
+}
+
+
+.phenumalabel {
+    font-size: 1em;
+}
+
+.phenumalabel_large {
+    font-size: 1em;
+}
+
+.phenumalabel_large:hover {
+    font-size: 1em;
+    color: gray;
+}
+
+.phenumalink{
+    height: 2px;
+    background-image: url("../resources/img/world_link.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    
+}
+
+.phenumatableicon{
+    width: 15px;
+}
+
+.phenumageneicon{
+    width: 15px;
+    background-image: url("../resources/img/genetablenode.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color:transparent;
+
+
+}
+
+.phenumadiseaseicon{
+    width: 15px;
+    background-image: url("../resources/img/diseasetablenode.png");
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+
+
+.phenumaorphaneticon{
+    width: 15px;
+    background-image: url("../resources/img/orphanettablenode.png");
+    background-repeat: no-repeat;
+    background-position: center;
+  
+}
+
+/*Result Table*/
+
+.phenumaresult_table{
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size: 10px;
+    vertical-align:baseline;
+    background:transparent;
+    width: 100%;
+    border-collapse: collapse;
+    padding-top: 0;
+    
+}
+
+.phenumaresult_header{
+    background-color:#BDBDBD;
+    color: #393A3A;
+    font-size: 1.5em;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+        text-align: left;
+
+}
+
+
+.phenumaresult_title{
+    text-align: left;
+    color: #393A3A;
+    
+}
+
+
+.phenumaresult_row{
+    font-size: 1em;
+    cursor: pointer;
+    height: 18px;
+    background-color: white;
+    color: black;
+}
+
+
+.phenumaresult_row:hover{
+    font-size: 1em;
+    cursor: pointer;
+    height: 20px;
+    background-color:#F7BA63;
+    color: white;
+}
+
+
+.phenumaresult_data{
+     text-align: left;
+     padding: 2px;
+     color: black;
+     font-size: 12px;
+    
+}
+
+.phenumaresult_data:hover{
+     text-align: left;
+     padding: 2px;
+     width: auto;
+     color: #FFFFFF;
+     
+}
+
+.phenumaresult_link{
+    transition:background-color 1s;
+}
+
+.phenumaresult_link:hover{
+    background-image: url("../resources/img/worldlink.png");
+}
+
+/**
+ * Paginación (no se usa, de momento)
+ */
+
+#page_navigation a{
+	padding:3px;
+	border:1px solid gray;
+	margin:2px;
+	color:black;
+	text-decoration:none
+}
+
+.active_page{
+	background:darkblue;
+	color:white !important;
+}
+
+/**
+ * Networks view divs 
+ */
+
+.maindiv{
+    display: table; 
+
+    height: 100%;
+    width: 100%; 
+    min-height: 400px;
+
+    
+}
+
+.maindiv_index{
+    background-color: #393A3A;
+    display: table; 
+    position: fixed;
+    height: 100%;
+    width: 100%; 
+    
+}
+
+
+.menudiv{
+    background-image: url("../img/menu.png");
+    background-repeat: repeat-x;
+    min-height: 15px; 
+    height: 2%;
+    width: 100%;
+    padding-top: 2px;
+    font-size: 12px;
+}
+
+.logodiv{
+    min-height:52px; 
+    height: 7%; 
+    width: 100%;
+     background-color: transparent;
+
+}
+
+/*Vizualizer divs*/
+
+.formdiv{
+    background-color:white;
+    min-height: 70px;
+    height: 10%; 
+    width: 100%;
+    font-size: 1em;
+    
+}
+
+
+.formdiv_index{
+    height: 100px; 
+    min-width: 50px;
+    background: #393A3A;
+    height: 80px;
+    display: block;
+}
+
+
+/*central panel*/
+.centraldiv{
+    background-color: #BDBDBD;
+    display: table; 
+    height: 75%;
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+.centraldiv_main{
+    background-color: white;
+    display: table; 
+    height: 70%;
+    width: 100%;
+
+}
+
+/*information panel: tabs*/
+.infodiv{
+    background-color:#BDBDBD;
+    position:absolute;
+    height: 100%;
+    width: 30%;
+    font-size: 1em;
+    overflow: hidden;
+}
+
+/*network panel*/
+.networkdiv{
+    display:block;
+    background-color:#BDBDBD;
+    float: left;
+}
+
+.menunetworkdiv{
+   
+    height: 10%;
+    width: 100%;
+    display:table-row;
+    min-height: 50px; 
+    min-width: 50px;
+}
+
+#cytoscapeweb{
+    position:absolute;
+    display:table-row;
+    min-height: 50px; 
+    min-width: 50px;
+    height: 96%;
+    width: 100%; 
+      padding-right: 5px;
+
+
+
+}
+
+/*Central div*/
+
+.footerdiv{
+    height: 12%;  
+    min-height: 150px;
+    width: 99.1%;
+    padding-left: 5px;
+    max-height: 30px;
+}
+
+
+/**
+ * Toolbar style
+ */
+ #toolbar {
+    padding: 4px;
+    display: inline-block;
+    font-size: 80% !important;
+  }
+  
+.ui-icon {
+    width: 16px; 
+    height: 16px; 
+    background-image: url("../resources/img/search.png");
+}
+
+
+
+/**
+ * Main Page divs
+ */
+ 
+ .centralheader{
+     float: left;
+     width: 100%;
+     height: 30%;
+ }
+ 
+ 
+.centralform{
+    float: left;
+     width: 100%;
+     height: 100%;
+     margin-top: 200px;
+     margin-left: 100px;
+ }
+ 
+ .centralfooter{
+     width: 100%;
+     height: 30%;
+ }
+ 
+ 
+
+/**
+ * Style of information displayed when is selected 
+ * a nodes or edge in a network.
+ */
+#tip {
+   width:200px;
+   height:50px;
+   background-color: rgba(0, 0, 0, 0.85); 
+   display:none;
+   position:fixed;
+   border-radius: 10px;
+   padding-top: 10px;
+   padding-right: 6px;
+   padding-bottom: 10px;
+   padding-left: 6px;
+}
+
+
+
+
+
+.buttonmain {
+    background:#F39814;
+    background:-moz-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#F39814),color-stop(100%,#F59C1E));
+    background:-webkit-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:-o-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:-ms-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    /*padding:5px 4px;*/
+    
+    margin-left: 150px;
+    color:#fff;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border:1px solid #F39814;
+ }
+ 
+ 
+ .buttonvisform {
+    background:#F39814;
+    background:-moz-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#F39814),color-stop(100%,#F59C1E));
+    background:-webkit-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:-o-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:-ms-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:linear-gradient(top,#F39814 0%,#F59C1E 100%);
+   
+    color:#fff;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border:1px solid #F39814;
+
+    font-size: 16px; 
+    padding: 0em 0em;
+ }
+
+ 
+  .buttonqtip {
+    background:#F39814;
+    background:-moz-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#F39814),color-stop(100%,#F59C1E));
+    background:-webkit-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:-o-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:-ms-linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    background:linear-gradient(top,#F39814 0%,#F59C1E 100%);
+    padding:5px 4px;
+    color:#fff;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border:1px solid #F39814;
+    
+    font-weight: bold; 
+    font-size: 14px; 
+    padding: .2em .4em;
+ }
+ 
+ .buttonmain span {
+     font-size: 13px;
+     margin: 0px;
+     padding: 0px;
+ }
+
+ 
+ .searchfield{
+     height: 20px; 
+     width: 240px; 
+     font-size: 14px; 
+     color: #454545; 
+     font-weight: bolder;
+     border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+     
+     -webkit-box-shadow: inset 0 2px 2px #d3d3d3;
+     box-shadow: inset 0 2px 2px #d3d3d3;
+ }
+
+/**
+ * Text included in a tip
+ */
+#tiptext {
+	
+  margin: 10px;
+  color : #F5F5F5;
+}
+
+
+input {
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    display: block;
+    padding: 0 5px;
+    position: relative;
+    z-index: 1000;
+    color: blue;
+}
+
+
+.ui-widget .ui-icon-hand {
+    background-image: url("../resources/img/cursor_hand.png");
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+   
+}
+
+.ui-widget .ui-icon-treelayout {
+    background-image: url("../resources/img/cursor_hand.png");
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+   
+}
+
+.ui-widget .ui-icon-hand-selected {
+    background-image: url("../resources/img/cursor_hand_selected.png");
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+   
+}
+
+
+/**
+ * Filter panel styles
+ */
+ 
+.filterdivcell{
+    display:table-cell; 
+    width: 20px; 
+    vertical-align:middle;
+}
+
+.filter_label{
+   font-weight: bold; 
+   font-size: 1.1em;
+}
+
+
+.filter_label:hover{
+    font-weight: bold; 
+   font-size: 1em;
+    color: #F39814;
+}
+
+
+/**
+ * Primefaces components
+ */
+ 
+.ui-widget {
+    font-size: 12px;
+
+}
+
+.ui-widget .ui-widget {
+    font-size: 10px;
+}            
+
+.ui-layout, .ui-layout-doc, .ui-layout-unit, .ui-layout-wrap, .ui-layout-bd, .ui-layout-hd{
+    border: none;
+    font-size: 12px;
+    background-color: #BDBDBD;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+    padding: 0 0 0 0;
+    margin: 0 0 0 ;    
+    background: none;
+    border:none;
+}
+
+
+
+.ui-tabs .ui-tabs-panel{ 
+    border-width: 0; 
+    padding: 0 0; 
+    background: none; 
+    border-bottom-color: #FFF;
+    font-size: 1em;
+}
+
+
+/**
+ * Accordion style
+ */
+ 
+.ui-accordion .ui-accordion-header { 
+    font-size: 1em;
+}
+
+.ui-accordion .ui-accordion-content { 
+    padding: 0 0; 
+    border-top: 1; 
+    margin-top: -2px; 
+    overflow: auto; 
+    border: 0px;
+    padding:  0 0;
+    font-size: 1em;
+}
+
+
+ 
+ .ui-fieldset-legend {
+    font-size: 1em;
+ }
+ 
+
+
+.ui-slider-horizontal .ui-slider-handle {
+    left: 0;
+    margin-bottom: -41px;
+    margin-left: 0;
+    height: 10px;
+    width: 10px;
+    background-color: blue;
+}
+.ui-layout-center {                    
+    overflow:hidden !important;
+}
+
+.ui-layout-center .ui-layout-unit-content {
+    overflow:hidden !important;
+}
+
+.ui-layout-unit {
+     overflow:hidden !important;
+}
+
+.ui-messages-info, .ui-messages-warn, .ui-messages-error, .ui-messages-fatal {
+    border: 2px solid;
+    border-color: #393A3A;
+    margin: 5px 5px 5px 5px;
+    padding: 10px 5px 5px 5px;
+    font-size: 14px;
+    color: #393A3A;
+    width: 96%;
+    height:auto;
+}
+
+
+
+.animated .ui-progressbar-value {
+   border:0px;
+   background-image: url("../resources/img/ajax-loader-animated.gif"); 
+
+}
+
+
+
+.ui-state-active {
+    background: #393A3A;
+    color: white;
+}
+
+
+.ui-state-default {
+}
+
+/**
+ * HTML components
+ */
+networkFormField{
+    width: 50px;
+    
+}
+
+
+/**
+ * Tutorial Styles
+ */
+ 
+ .title_tutorial {
+     font-size: 16px; 
+     padding-left: 10px; 
+     font-weight: bold;
+     border-bottom-style:solid;
+     border-color:#F39814;
+     margin-bottom:20px;
+
+ }
+
+ .tabtext_tutorial {
+     font-size: 14px; 
+     margin-bottom:10px;
+     padding-left: 10px;
+ }
+ 
+.tabtabtext_tutorial {
+     font-size: 14px; 
+     margin-bottom:10px;
+     padding-left: 18px;
+ }
+ 
+ .link_tutorial {
+      font-size: 24px; 
+ }
+ 
+ .icon_youtube {
+     width:20px; 
+     height: 20px;
+     background-image: url("../resources/img/youtube.png");
+     background-repeat: no-repeat;
+     background-size: 100%;
+ }
+ 
+  .icon_pdf {
+     width:20px; 
+     height: 20px;
+     background-image: url("../resources/img/Icono_PDF.jpg");
+     background-repeat: no-repeat;
+     background-size: 100%;
+ }
+ 
+  .icon_zip {
+     width:20px; 
+     height: 20px;
+     background-image: url("../resources/img/zip.png");
+     background-repeat: no-repeat;
+     background-size: 100%;
+ }
+ 
+  .icon_download {
+     width:50px; 
+     height: 50px;
+     background-image: url("../resources/img/download.png");
+     background-repeat: no-repeat;
+     background-size: 100%;
+ }
+ 
+ 
+ /**
+  * Qtips
+  */
+  
+  
+  .genenameqtip{
+      font-size: 13px;
+  }
+  
+  .textqtip{
+      font-size: 12px;
+      line-height: 200%;
+      font-family: 'MyriadPro';
+  }
+  
+  .descriptionqtip{
+      font-size: 12px;
+      line-height: 150%;
+  }
+  
+  .subtitleqtip{
+      font-weight: bold;
+      font-size: 12px;
+      color: #393A3A;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+      line-height: 150%; 
+  }
+  
+  .subsubtitleqtip{
+      font-weight: bold;
+      font-size: 12px;
+      color: #393A3A;
+      line-height: 150%; 
+  }
+  
+  
+  #contenedor {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 2px;
+  }
+        
+  .qtiplinks {
+      color: #393A3A;
+      text-decoration: underline;
+      
+  }
+  
+  .myCustomClass{
+    border-color: #393A3A;
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    font-family: 'MyriadPro';
+  }
+  
+  .myCustomClass .qtip-content{
+    font-size: 13px;
+  }
+  
+  .myCustomClass .qtip-titlebar{
+      background-color: #393A3A;
+      font-size: 13px;
+      color: #f5f5f5;
+      border: 1px solid white;
+     
+  }
+  
+
+  
+  

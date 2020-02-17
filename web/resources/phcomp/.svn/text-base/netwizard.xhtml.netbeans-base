@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id"/>
+    </cc:interface>
+    
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        
+    <table>
+        <tr>
+            <!-- Type of input -->
+            <td>
+                 <!--  <h:outputText styleClass="phenumalabel" value="Type of Input:"/>   -->
+
+                <p:selectOneMenu  value="#{networkFormBean.selectedInputType}" style="width: 150px;">
+                    <f:selectItems value="#{networkFormBean.list_inputType}"  var="inputType" 
+                                    itemLabel="#{inputType.name}" itemValue="#{inputType.id}" />
+
+                    <p:ajax update="cbnetworktype" listener="#{networkFormBean.updateComboBoxes}"/>
+                </p:selectOneMenu>
+
+            </td>
+
+            <!-- Type of network selector -->
+            <td>
+
+                <!-- <h:outputText styleClass="phenumalabel" value="Type of Output Network:" />  -->
+                <p:selectOneMenu id="cbnetworktype" value="#{networkFormBean.selectedOutputType}" style="width:320px"> 
+                    <f:selectItems value="#{networkFormBean.list_networkType}" var="networkType" 
+                                    itemLabel="#{networkType.name}" itemValue="#{networkType.id}" noSelectionValue="0"/>
+                </p:selectOneMenu>
+
+            </td>
+
+            <!-- Confidence -->
+            <td>
+               <!--  <h:outputText styleClass="phenumalabel"  value="Confidence:" />  -->
+
+                <p:selectOneMenu id="cbconfidence" value="#{networkFormBean.selectedConfidence}">
+                    <f:selectItems value="#{networkFormBean.list_confidenceTypes}" var="confidenceType" 
+                                    itemLabel="#{confidenceType.name}" itemValue="#{confidenceType.id}" />
+
+                </p:selectOneMenu>
+            </td>  
+
+            <!-- Input Text Area -->
+            <td>
+
+               <!-- <h:outputText styleClass="phenumalabel" value="  Input List:" />  -->
+                <h:panelGrid columns="3" >
+                    <p:inputText id="inputtxtarea" value="#{networkFormBean.network.items}" immediate="true" style="width: 508px; padding: 3px;"/>
+                    
+                    <p:commandButton id="buildnetworkbtn" styleClass="buttonvisform " value="Build Network"  actionListener="#{networkFormBean.addNetworkDB}" onmousedown="pbAjax.cancel();pbAjax.start();"/>
+
+                </h:panelGrid>
+            </td>
+
+        </tr>
+ 
+    </table>
+        
+    </cc:implementation>
+    
+
+    
+    
+</html>

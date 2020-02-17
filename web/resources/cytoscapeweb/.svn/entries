@@ -1,0 +1,34 @@
+10
+
+dir
+37
+svn+ssh://150.214.214.39/home/rocio/svn/PhenumaWeb/web/resources/cytoscapeweb
+svn+ssh://150.214.214.39/home/rocio/svn
+
+
+
+2014-01-21T19:33:47.706970Z
+34
+rocio
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+26c08b6b-7047-419c-ac78-bcf0c783e9dd
+
+min
+dir
+
+swf
+dir
+

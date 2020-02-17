@@ -1,0 +1,150 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.utils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import phenuma.objects.PhenumaConstants;
+
+/**
+ *
+ * @author Armando
+ */
+public class Messages {
+    
+    private List<FacesMessage> messages = new ArrayList<FacesMessage>();
+    
+    //Summaries
+    public static final String NOT_FOUND = "Not found";
+    /**
+     * Global variable used to store the single instance of PhenumaWeb used by the application.
+     */
+    private static Messages instance = null;
+    
+    
+
+    /**
+     * Private constructor of phenomizer. 
+     */
+    public Messages()
+    {
+        messages = new ArrayList<FacesMessage>();
+    }
+
+    /**
+     * Create a phenomizer instance. If the instance is not null, this method create it.
+     * @return
+     */
+    public static Messages getInstance()
+    {
+        if (instance == null){
+                instance = new Messages();
+        }
+        return instance;
+    }
+
+    public void show()
+    {
+
+        if(!messages.isEmpty())
+        {
+            for(FacesMessage msg : messages)
+            {
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+        }
+    }
+    
+    public void reset(){
+        messages = new ArrayList<FacesMessage>();
+    }
+
+    
+    
+    public void errorMessage(String summary, String detail){
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, detail);  
+        messages.add(msg);
+    }
+    
+    public void warningMessage(String summary, String detail){
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, detail);  
+        messages.add(msg);
+    }
+        
+    public void infoMessage(String summary, String detail){
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);  
+        
+        boolean add = true;
+        for(FacesMessage m : messages)
+        {
+            if(m.getSummary().equals(summary))
+                add = false;
+        }
+        if(add)
+            messages.add(msg);
+    }
+            
+    public void fatalMessage(String summary, String detail){
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, summary, detail);  
+        messages.add(msg);
+    }
+
+    public void tooLargeMessage()
+    {
+        FacesContext contex = FacesContext.getCurrentInstance();
+        if(contex.getViewRoot().getViewId().equals("/main.xhtml")) {
+            warningMessage("Network Vizualizer", "The network is too large. You can download the network in a text file using the link 'Download Network' ");
+        }
+        else {
+            warningMessage("Network Vizualizer", "The network is too large. You can download the network in a text file using the link 'Download' in the toolbar");
+        }
+    }
+    
+
+    
+    //Details
+    /**
+     * Item not found in the database.
+     * @param type of the object
+     * @param itemId : object indentifier
+     * @return 
+     */
+    public static String itemNotFound(int type, List<String> itemId){   
+        
+        String object = "";
+        if(PhenumaConstants.ID_GENES_INPUT == type)
+            object = "gene(s)";
+        else if (PhenumaConstants.ID_OMIM_INPUT == type)
+            object = "omim id(s)";
+        else if (PhenumaConstants.ID_ORPHANUM_INPUT == type)
+            object = "orphanum id(s)";
+        else if (PhenumaConstants.ID_PHENOTYPE_INPUT == type)
+            object = "hpo id(s)";
+        
+        String msg = "The "+object+" ";
+        for(String item : itemId)
+        {
+            msg = msg + item+", ";
+        }
+        msg = msg.substring(0, msg.length()-2);
+        msg.lastIndexOf(",");
+        msg = msg + " is not included in our database and it has been ignored in the calculation of the network.";
+        
+        return msg;
+        
+    }
+    
+    public String isEmpty(){
+        if (this.messages.isEmpty())
+            return "false";
+        else
+            return "true";
+    }
+    
+}

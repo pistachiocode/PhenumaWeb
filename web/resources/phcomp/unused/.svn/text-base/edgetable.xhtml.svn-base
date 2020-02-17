@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+
+        
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id" />
+        <cc:attribute name="items" required="true"/>
+        <cc:attribute name="selected" required="true"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        
+
+        <!-- Networks tabs -->
+    
+        <p:dataTable  var="edge" widgetVar="edgetable" value="#{edgeTableManagedBean.edges}" rowKey="#{edge.id}" 
+                      selectionMode="single" selection="#{edgeTableManagedBean.selectedEdge}" >
+                
+            <p:ajax event="rowSelect" oncomplete="selectEdge(edgetable.selection)"/> 
+            
+           <p:column>
+                <p:rowToggler/>
+            </p:column>
+
+            <p:column  sortBy="#{edge.source}">
+                    <f:facet name="header">  
+                        Source
+                    </f:facet>  
+                    <h:outputLink value="#{edge.source.link}" styleClass="tablelink">  <h:outputText value="#{edge.source.text}"/>  </h:outputLink> 
+                </p:column>   
+
+            <p:column   sortBy="#{edge.target.text}">
+                    <f:facet name="header">  
+                        Target
+                    </f:facet>  
+                   <h:outputLink value="#{edge.target.link}" styleClass="tablelink">  <h:outputText value="#{edge.target.text}" />  </h:outputLink>  
+                </p:column>  
+
+               <p:column  sortBy="#{edge.score}" >
+                    <f:facet name="header">  
+                        Score
+                    </f:facet>  
+                    <h:outputText value="#{edge.score}" styleClass="tablelink" />   
+                </p:column>    
+
+                <p:column >  
+                    <f:facet name="header" >  
+                        P-Value
+                    </f:facet>  
+                    <h:outputText value="#{edge.pvalue}" styleClass="tablelink" />   
+                </p:column>    
+
+                <p:column>
+                    <f:facet name="header">  
+                        Type
+                    </f:facet>  
+                    <h:outputText value="#{edge.relationship_type}" styleClass="tablelink"/>   
+                </p:column>  
+
+                <p:rowExpansion>
+                    
+                    <p:dataTable  value="#{edge.objects}" var="object" rendered="#{not empty edge.objects}">
+                        <p:column styleClass="phenumahpotable">  
+                            <f:facet name="header">  
+                                Id  
+                            </f:facet>  
+                            <h:outputLink value="#{object.link}"  styleClass="tablelink">  <h:outputText value="#{object.id}" />  </h:outputLink> 
+                        </p:column>   
+
+                        <p:column styleClass="phenumahpotable">  
+                            <f:facet name="header">  
+                                Name  
+                            </f:facet>  
+                            <h:outputText value="#{object.text}" styleClass="tablelink" />  
+                        </p:column>                       
+                    </p:dataTable>
+                    
+                    <p:dataTable  value="#{edge.info}" var="edgeinfo" rendered="#{not empty edge.info}">
+                        <p:column styleClass="phenumahpotable"  sortBy="#{edgeinfo.termMax}" >    
+                             <f:facet name="header">  
+                                HPO Id  
+                            </f:facet>     
+                             <h:outputText value="#{edgeinfo.termMax}" styleClass="tablelink" />  
+                        </p:column>  
+                        
+                        <p:column styleClass="phenumahpotable" sortBy="#{edgeinfo.score}" >    
+                             <f:facet name="header">  
+                                IC  
+                            </f:facet>     
+                             <h:outputText value="#{edgeinfo.score}" styleClass="tablelink" />  
+                        </p:column>  
+                    </p:dataTable>
+
+                </p:rowExpansion>
+
+        </p:dataTable>
+                    
+
+           
+    
+    </cc:implementation>
+
+    
+</html>

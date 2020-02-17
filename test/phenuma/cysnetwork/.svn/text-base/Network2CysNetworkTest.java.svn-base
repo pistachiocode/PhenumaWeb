@@ -1,0 +1,203 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.cysnetwork;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import ontologizer.StudySet;
+import ontologizer.StudySetFactory;
+import ontologizer.go.TermID;
+import ontologizer.types.ByteString;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import phenomizer.hpo.Phenuma;
+import phenuma.util.PhenumaException;
+import phenuma.objects.QueryExecution;
+import phenuma.network.NetworkDB;
+import phenuma.network.PhenotypeNetworkDB;
+import phenuma.networkproyection.NetworkConstants;
+import phenuma.objects.PhenumaConstants;
+
+/**
+ *
+ * @author Armando
+ */
+public class Network2CysNetworkTest {
+    
+    public StudySet genes;
+        
+    public Network2CysNetworkTest() {
+        
+        try 
+        {
+            String[] genes_array = {"1411"};
+            genes = StudySetFactory.createFromArray(genes_array, true);
+            
+        } 
+        catch (IOException ex) 
+        {
+            System.err.println("Error al crear el study set.");
+        }
+    }
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
+    }
+
+    /**
+     * Test of network2CysNetwork method, of class Network2CysNetwork.
+     */
+    //@Test
+    public void testNetwork2CysNetwork() throws Exception {
+        System.out.println("network2CysNetwork");
+
+        
+        ByteString omim = new ByteString("230800");
+        
+        ArrayList<TermID> hpo = Phenuma.getInstance().getDiseases_hpo_associations().get(omim).getAssociations();
+       
+        ArrayList<String> query = new ArrayList<String>();
+        for (TermID term : hpo)
+        {
+            query.add(term.toString());
+        }
+        
+        PhenotypeNetworkDB n = (PhenotypeNetworkDB) QueryExecution.executePhenotypeQuery(query, NetworkConstants.QUERY_DISEASE_NETWORK, 2);
+
+        
+        saveToFile("resources/out/tests/network.txt", n.toString());
+        
+    }
+    
+   
+    
+    
+   // @Test
+    public void textOMIMNetwork() 
+    {
+        try {
+            List<String> omimlist = new ArrayList<String>();
+            omimlist.add("214350");
+            omimlist.add("613241");
+            
+            
+            PrintWriter out = new PrintWriter("/Users/Armando/resources/out/omim_network_low.txt");
+            
+            System.out.println("Low");
+            NetworkDB n = QueryExecution.executeDiseaseQuery(omimlist, NetworkConstants.UNIPARTITE_DISEASE_SS, PhenumaConstants.CONFIDENCE_HPO_GENES_LOW);
+            
+            out.println(n.toString());
+            out.close();
+            
+            out = new PrintWriter("/Users/Armando/resources/out/omim_network_medium.txt");
+            System.out.println("Medium");
+            n = QueryExecution.executeDiseaseQuery(omimlist, NetworkConstants.UNIPARTITE_DISEASE_SS, PhenumaConstants.CONFIDENCE_HPO_GENES_MEDIUM);
+            out.println(n.toString());
+            out.close();
+            
+            out = new PrintWriter("/Users/Armando/resources/out/omim_network_high.txt");
+            System.out.println("High");
+            n = QueryExecution.executeDiseaseQuery(omimlist, NetworkConstants.UNIPARTITE_DISEASE_SS, PhenumaConstants.CONFIDENCE_HPO_GENES_HIGH);
+            out.println(n.toString());
+            out.close();          
+            
+            
+           
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Network2CysNetworkTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    
+   // @Test
+    public void textOrphaNetwork() 
+    {
+//        try {
+//            List<String> orphalist = new ArrayList<String>();
+//            orphalist.add("154");
+//            
+//            
+//       //     Network n = QueryExecution.executeRareDiseaseQuery(orphalist, NetworkConstants.UNIPARTITE_ORPHAN_SS, 2);
+//            
+//       //     CysNetwork network1 = new CysNetwork(n, NetworkConstants.UNIPARTITE_ORPHAN_SS);         
+//            
+//            
+//        } catch (PhenumaException ex) {
+//            Logger.getLogger(Network2CysNetworkTest.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(Network2CysNetworkTest.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+    }
+    
+    
+    
+   // @Test
+    public void textGeneNetwork() 
+    {
+
+            
+
+//        GeneQuery genequery = new GeneQuery(genes, NetworkConstants.UNIPARTITE_GENE_SS_HPO);
+//        genequery.executeQueryDB();
+//
+//        CysNetworkDB cysnet = new CysNetworkDB(genequery.getResultDB(), NetworkConstants.UNIPARTITE_GENE_SS_HPO);
+//       // String s = Network2CysNetworkDB.network2CysNetworkDB(genequery.getResultDB());
+//        System.out.println(cysnet.getMainnetwork());
+//        System.out.println(cysnet.getSubnetworks());
+
+        
+    }
+    
+    @Test
+    public void CysnetworkFromDB()
+    {
+//        try {
+//            CysNetwork cys = new CysNetwork(new NetworkDB(),151,1411);
+//            
+//            System.out.println(cys.getMainnetwork());
+//            System.out.println(cys.getSubnetworks());
+//            
+//        } catch (PhenumaException ex) {
+//            Logger.getLogger(Network2CysNetworkTest.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//       
+       
+    }
+    
+    public static void saveToFile(String file, String content) throws IOException{
+        
+        PrintWriter pw = new PrintWriter(new FileWriter(file));
+        
+        pw.println(content);
+        
+        pw.close();
+        
+    }
+
+
+}

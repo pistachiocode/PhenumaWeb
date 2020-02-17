@@ -1,0 +1,63 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.selectable;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.log4j.Logger;
+import org.primefaces.model.SelectableDataModel;
+import phenomizer.hpo.Phenuma;
+import phenuma.entities.RareDisease;
+import phenuma.utils.PhenumaException;
+
+/**
+ *
+ * @author Armando
+ */
+public class OrphanTable implements SelectableDataModel<SelectableObject>{
+    
+    static final Logger logger = Logger.getLogger(OrphanTable.class.getName());
+    
+    private List<SelectableObject> rarediseases;
+    
+    public OrphanTable() throws PhenumaException
+    {
+        rarediseases = new ArrayList<SelectableObject>();
+        
+        List<RareDisease> diseaselist = Phenuma.getInstance().getRarediseaselist();
+        
+        for (RareDisease d : diseaselist){
+
+            rarediseases.add(new SelectableObject(d.getOrphanum().toString(), d.getName()));
+
+        }
+    }
+
+    public List<SelectableObject> getTerms() {
+        return rarediseases;
+    }
+
+    public void setTerms(ArrayList<SelectableObject> rarediseases) {
+        this.rarediseases = rarediseases;
+    }
+    
+    
+    @Override
+    public Object getRowKey(SelectableObject d) {
+        return d.getName();
+    }
+
+    @Override
+    public SelectableObject getRowData(String string) {
+        
+        for(SelectableObject d : this.rarediseases) {  
+            if(d.getName().equals(string))  
+                return d;
+        }  
+          
+        return null;  
+    }
+    
+}

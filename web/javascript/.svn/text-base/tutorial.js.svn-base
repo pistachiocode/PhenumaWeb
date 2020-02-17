@@ -1,0 +1,39 @@
+var tutorial = new Array(
+{title:"Introduction",
+ info:"This is the introduction to the phenUMA aplication",
+ pages: [{title:"General", text:"general information..."}]
+})
+
+
+
+var mainpage = {intro: "<center>Phen<span style=\"color:#F39814\">UMA</span>: a Network-based Tool for Integrating Biomedical Phenotypic and Functional Data in Humans</center>",
+                form: "First of all complete the following fields:"
+};
+
+
+
+var inputTypeInfo = 
+    {  genes: "If you want to make a query of genes you have to include a list separated by commas, for example: 1411,1410,2. Select an type of ID that you want to use."
+    
+    
+    }
+
+
+var identifierType =
+    {   entrez : "The ID <b>Entrez<b> consists in a number of several figures that represents a gene, you can search the code of the gene that you need in \n\
+                 <a href='http://www.ncbi.nlm.nih.gov/gene'>NCBI</a> website",
+        ensembl : "",
+        genesymbol : "",
+        mim : "",
+        hgnc : "",
+        hprd : "",
+        orphanum : ""
+    }
+function loadTutorial(){
+    
+}
+
+
+function help(id){
+    alert(id)
+}

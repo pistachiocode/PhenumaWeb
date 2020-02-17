@@ -1,0 +1,1173 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.managedbeans;
+
+
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import javax.faces.context.FacesContext;
+import ontologizer.go.OBOParserException;
+import ontologizer.go.Term;
+import org.apache.log4j.Logger;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+import phenomizer.hpo.Phenuma;
+import phenuma.constants.Constants;
+import phenuma.objects.IdentifierType;
+import phenuma.objects.NetworkType;
+import phenuma.objects.PhenumaConstants;
+import phenuma.objects.QueryExecution;
+import phenuma.objects.SubnetworkType;
+import phenuma.cysnetwork.CysNetwork;
+import phenuma.cysnetwork.CysNetworkFactory;
+import phenuma.cysnetwork.CysNetworkUtils;
+import phenuma.dataqueries.DatabaseQueries2;
+import phenuma.entities.Disease;
+import phenuma.entities.Gene;
+import phenuma.entities.RareDisease;
+import phenuma.network.NetworkDB;
+import phenuma.networkproyection.NetworkConstants;
+import phenuma.networkproyection.NetworkUtils;
+import phenuma.objects.ConfidenceType;
+import phenuma.objects.InputType;
+import phenuma.selectable.GeneTable;
+import phenuma.selectable.HPOTable;
+import phenuma.selectable.SelectableObject;
+import phenuma.util.PhenumaException;
+import phenuma.utils.Messages;
+import phenuma.utils.Utils;
+/**
+ *
+ * @author Armando
+ */
+public final class NetworkFormBean implements Serializable{
+    
+    static final Logger logger = Logger.getLogger(NetworkFormBean.class);
+    
+    /**
+     * OptionLists
+     */
+    private List<NetworkType> list_networkType;
+        
+    private List<InputType> list_inputType;
+
+    private List<IdentifierType> list_identifiers;
+    
+    private List<ConfidenceType> list_confidenceTypes;
+    
+    
+    private CysNetwork currentCysNetwork;
+    
+    private NetworkDB currentNetworkDB;
+    
+    /**
+     * Subnetworks
+     */
+    
+    private List<SubnetworkType> subnetworks;
+    
+    
+    /**
+     * Selectables Lists
+     */  
+    private List<SelectableObject> genes;
+    private SelectableObject[] selectedObjects;
+   
+    
+    /**
+     * Selected 
+     */    
+    private Integer selectedIdentifier;
+
+    private Integer selectedInputType;
+    
+    private Integer selectedConfidence;
+    
+    private Integer selectedOutputType;
+    
+    
+    private UploadedFile file;
+            
+    private StreamedContent outputFile;  
+    
+    private StreamedContent outputFileCW;  
+    
+    private NetworkBean network = new NetworkBean();
+    
+    
+    /**
+     * Progres bar
+     */
+  //  private Integer progress;  
+    private boolean validate;
+    
+    
+    /**
+     * Auxiliar fields
+     */
+    private List<String> notFoundList;
+    private Messages messages;
+
+    private boolean isTooLarge;
+    
+    private String processtext;
+    private Integer progress;
+    
+    
+    
+    /** Creates a new instance of NetworkFormBean */
+    public NetworkFormBean() throws OBOParserException, IOException {
+
+        System.out.println("initialize");
+
+        Phenuma p = Phenuma.getInstance();
+        
+        setInitialConfiguration(p);
+
+
+        /*Create empty network*/
+        network = new NetworkBean();
+        
+        file = null;
+
+        /*Input information*/
+        this.list_inputType =  PhenumaConstants.inputTypeList();   
+        this.selectedInputType = PhenumaConstants.ID_GENES_INPUT;
+
+        this.list_networkType = PhenumaConstants.networkTypeList_Genes();
+        this.list_identifiers = PhenumaConstants.geneIdentifiers();
+        this.list_confidenceTypes = PhenumaConstants.confidenceTypeList();
+
+        
+        /*Selectable objects*/
+        this.genes = new GeneTable().getTerms();
+        
+        /*Messages*/
+        notFoundList = new ArrayList<String>();
+
+        validate = false;
+
+        isTooLarge = false;
+
+        messages = new Messages();
+        
+        this.processtext = "";
+        this.progress = 0;
+  
+    }
+    
+    
+
+    public void configureSubnetworks(int outputType) {
+        logger.info("Configuring filters");
+         
+        //Get the list of networks (relationships) included in the network
+        this.subnetworks = CysNetworkUtils.getSubnetworkTypes(outputType);
+        
+        System.out.println("Subnetworks: "+this.subnetworks.size());
+
+        for(SubnetworkType s : this.subnetworks){
+            
+            s.setMaxValue(CysNetworkUtils.getMaximumScore(s.getIdNetwork()));
+            s.setMinValue(CysNetworkUtils.getMinimumScore(s.getIdNetwork())  );
+            s.setColor(CysNetworkUtils.getRelationshipColor(s.getIdNetwork()));
+            s.setShowHandle(CysNetworkUtils.getRelationshipShowHandle(s.getIdNetwork()));
+            s.setStep(CysNetworkUtils.getRelationshipStep(s.getIdNetwork()));
+        }
+        
+    }
+    
+    
+    public void setInitialConfiguration(Phenuma p) {
+        p.setPvalue_hpo_query_threshold(1.0);
+
+        /*Set resources location*/
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        String resources_location = ctx.getExternalContext().getInitParameter("RESOURCES_LOCATION");
+        p.setResources_location(resources_location);
+        
+        /*Set GO Addicional Relationship*/
+        String enableGO = ctx.getExternalContext().getInitParameter("ENABLE_ADDITIONAL_RELATIONSHIPS");
+        p.setEnable_additional_relationships(enableGO.equals("true"));
+        
+        /*Set database*/
+        p.setDatabase(phenuma.constants.Constants.PERSISTENCE_UNIT_PHENUMA_DB);
+    }
+     
+    public NetworkDB createNetworkDB(List<String> inputItems) throws IOException, OBOParserException {
+        
+        logger.info("Creating network DB");
+        
+        NetworkDB newnetwork = null;
+        
+        if(PhenumaConstants.ID_GENES_INPUT == this.network.getInputType())
+        {
+           newnetwork = QueryExecution.executeGeneQueryDB(inputItems, this.network.getOutputType(), PhenumaConstants.getConfidence(this.network.getInputType(), this.network.getOutputType(), this.network.getConfidence()));
+        }
+        else if(PhenumaConstants.ID_OMIM_INPUT == this.network.getInputType())
+        {
+            logger.info("Executing OMIM query");
+            try
+            {
+                newnetwork = QueryExecution.executeDiseaseQuery(inputItems, this.network.getOutputType(), PhenumaConstants.getConfidence(this.network.getInputType(), this.network.getOutputType(), this.network.getConfidence()));
+            }
+            catch(Exception ex)
+            {
+                logger.error(ex.getMessage());
+            }
+        }
+        else if(PhenumaConstants.ID_ORPHANUM_INPUT == this.network.getInputType())
+        {
+           newnetwork = QueryExecution.executeRareDiseaseQuery(inputItems, this.network.getOutputType(), PhenumaConstants.getConfidence(this.network.getInputType(), this.network.getOutputType(), this.network.getConfidence()));
+        }
+        else if(PhenumaConstants.ID_PHENOTYPE_INPUT == this.network.getInputType())
+        { 
+           newnetwork = QueryExecution.executePhenotypeQuery(inputItems,  this.network.getOutputType(), PhenumaConstants.getConfidence(this.network.getInputType(), this.network.getOutputType(), this.network.getConfidence()));
+        }
+          
+        logger.info("NetworkDB created");
+        return newnetwork;
+    }
+    
+    
+
+    // Getters and Setters
+    
+    public NetworkBean getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(NetworkBean network) {
+        this.network = network;
+    }
+
+  
+    
+    /**
+     * Input Fields
+     */
+    public List<ConfidenceType> getList_confidenceTypes() {
+        return list_confidenceTypes;
+    }
+
+    public void setList_confidenceTypes(List<ConfidenceType> list_confidenceTypes) {
+        this.list_confidenceTypes = list_confidenceTypes;
+    }
+
+    public List<IdentifierType> getList_identifiers() {
+        return list_identifiers;
+    }
+
+    public void setList_identifiers(List<IdentifierType> list_identifiers) {
+        this.list_identifiers = list_identifiers;
+    }
+
+    public List<InputType> getList_inputType() {
+        return list_inputType;
+    }
+
+    public void setList_inputType(List<InputType> list_inputType) {
+        this.list_inputType = list_inputType;
+    }
+
+    public List<NetworkType> getList_networkType() {
+        return list_networkType;
+    }
+
+    public void setList_networkType(List<NetworkType> list_networkType) {
+        this.list_networkType = list_networkType;
+    }
+
+    
+    /**
+     * Selcted input fields
+     * @return 
+     */
+    
+    public Integer getSelectedInputType() {
+        return selectedInputType;
+    }
+
+    public void setSelectedInputType(Integer selectedInputType) {
+        this.selectedInputType = selectedInputType;
+        this.network.setInputType(this.selectedInputType);
+    }
+
+    
+    public Integer getSelectedIdentifier() {
+        return selectedIdentifier;
+    }
+    
+    public void setSelectedIdentifier(Integer selectedIdentifier) {
+        this.selectedIdentifier = selectedIdentifier;
+         this.network.setInputType(this.selectedInputType);
+    }
+
+    
+    public Integer getSelectedConfidence() {
+        return selectedConfidence;
+    }
+
+    public void setSelectedConfidence(Integer selectedConfidence) {
+        this.selectedConfidence = selectedConfidence;
+         this.network.setConfidence(this.selectedConfidence);
+    }
+
+    public Integer getSelectedOutputType() {
+        return selectedOutputType;
+    }
+
+    public void setSelectedOutputType(Integer selectedOutputType) {
+        this.selectedOutputType = selectedOutputType;
+         this.network.setOutputType(this.selectedOutputType);
+    }
+
+    public List<SubnetworkType> getSubnetworks() {
+        return subnetworks;
+    }
+
+    public void setSubnetworks(List<SubnetworkType> subnetworks) {
+        this.subnetworks = subnetworks;
+    }
+
+    public CysNetwork getCurrentCysNetwork() {
+        return currentCysNetwork;
+    }
+
+    public void setCurrentCysNetwork(CysNetwork currentCysNetwork) {
+        this.currentCysNetwork = currentCysNetwork;
+    }
+    
+    
+    
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
+    public String getFileName() {
+        if(file!=null) {
+            return file.getFileName();
+        }
+        
+        return "";
+    }
+ 
+    public void setOutputFile(StreamedContent file)
+    {
+        this.outputFile = file; 
+    }
+    
+    public StreamedContent getOutputFile() {  
+        try {
+            
+            NetworkUtils.createNetworkZip(currentNetworkDB);
+            outputFile = new DefaultStreamedContent(new FileInputStream(Constants.TEMP+this.currentNetworkDB.getName()+".zip"), "application/zip", "network.zip");
+            //FileUtils.deleteDirectory(new File(Constants.TEMP+this.currentNetworkDB.getName()+".zip"));
+            
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            logger.info(ex.getMessage());
+        } finally{
+            return outputFile;
+        } 
+    }    
+
+    public void setOutputFileCW(StreamedContent file)
+    {
+        this.outputFileCW = file; 
+    }
+    
+    public StreamedContent getOutputFileCW() {  
+        try {
+            
+          //  NetworkUtils.createNetworkZip(currentNetworkDB);
+            InputStream stream = new ByteArrayInputStream(this.currentCysNetwork.toString().getBytes("UTF-8"));
+            outputFileCW = new DefaultStreamedContent(stream, "text/plain", "network.txt");
+            //FileUtils.deleteDirectory(new File(Constants.TEMP+this.currentNetworkDB.getName()+".zip"));
+            
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            logger.info(ex.getMessage());
+        } finally{
+            return outputFileCW;
+        } 
+    }     
+    
+    public List<InputType> getInputType() {
+        return list_inputType;
+    }
+
+    public void setInputType(List<InputType> inputType) {
+        this.list_inputType = inputType;
+    }
+
+    
+    public Integer getProgress() {  
+        return progress;
+    }  
+  
+    public void setProgress(Integer progress) {  
+
+        this.progress = progress;
+    }
+
+
+    public boolean isValidate() {
+        
+        if(this.network.getItems()!=null && !this.network.getItems().isEmpty()) {
+            validate = true;
+        }
+       
+        return validate;
+    }
+
+    public void setValidate(boolean validate) {
+        this.validate = validate;
+    }
+
+    public String getProcesstext() {
+        return processtext;
+    }
+
+    public void setProcesstext(String processtext) {
+        this.processtext = processtext;
+    }
+    
+
+    public boolean isIsTooLarge() {
+        System.out.println("Is too big "+this.isTooLarge);
+        return isTooLarge;
+    }
+
+    public void setIsTooLarge(boolean isTooBig) {
+        this.isTooLarge = isTooBig;
+    }
+
+      
+
+    //Events 
+    public void addNetworkDB()    
+    {
+         long time = System.currentTimeMillis();
+        
+         messages.reset();
+         
+         /*Progress bar value*/
+         this.progress = 0;
+
+         try 
+         {
+
+             this.progress = 5;
+             this.processtext = "Validating the input information.";
+             //Read query input
+             List<String> inputItems = readItems();
+
+             this.progress = 10;
+             this.processtext = "Accesing to the database.";
+             
+             if(inputItems!=null){
+
+                 //Execute Query
+                 logger.info("Type of Input:"+this.network.getInputType());  
+                 logger.info("Input "+this.network.getItems());
+                 logger.info("Output "+this.network.getOutputType());
+                 logger.info("Confidence "+this.network.getConfidence());
+                
+                 
+                 diseaseGeneQueryDB(inputItems);
+                 
+             }
+
+        }
+        catch (IOException ex) 
+        {
+            messages.errorMessage("IOException" ,"ERROR: "+ex.getMessage()+" "+ex.toString());  
+            logger.error(ex.getMessage());
+        }
+        catch (NullPointerException ex) 
+        {
+            messages.errorMessage("NullPointerException" ,"ERROR: "+ex.getMessage());  
+            logger.error(ex.getMessage());
+        }
+        catch (Exception ex) 
+        {
+            messages.errorMessage(ex.getClass().toString(),"ERROR: "+ex.getMessage());  
+            logger.error(ex.getMessage());
+            
+        }finally{
+             logger.info("Saving query informaiton");
+             time = System.currentTimeMillis() - time;
+             
+             QueryExecution.saveQuery(this.network.getItems(), new Integer(this.network.getOutputType()), this.network.getInputType(), new Double(time/1000), this.getSelectedConfidence());
+             
+             this.progress = 100;
+
+        }
+    }
+
+    
+    
+    /**
+     * Retrieve a precomputed cytoscape network form the database.
+     * 
+     * @param inputItems
+     * @return
+     * @throws IOException
+     * @throws OBOParserException
+     * @throws PhenumaException 
+     */
+     private CysNetwork findNetworkDB(List<String> inputItems) throws IOException, OBOParserException, PhenumaException {
+         
+         //Find network stored in the database
+         NetworkDB networkDB = new NetworkDB();
+         networkDB.setConfidence(this.network.getConfidence());
+         networkDB.setQuerytype(this.network.getOutputType());
+         networkDB.setInputtype(this.network.getInputType());
+
+
+         CysNetwork newcysnetwork = CysNetworkFactory.createCysNetworkFromDatabase(networkDB, inputItems);
+         
+         return  newcysnetwork;
+     }
+    
+    
+    
+    private void diseaseGeneQueryDB(List<String> inputItems)
+    {
+        
+        boolean networkbuilded = false;
+        
+        try {
+            
+            this.progress = 20;
+            
+            CysNetwork newcysnetwork = findNetworkDB(inputItems);
+            
+            this.currentNetworkDB = null; 
+            
+            if(newcysnetwork == null)
+            {
+                //Create network
+                NetworkDB newnetwork = createNetworkDB(inputItems);
+                
+                this.progress = 40;
+                
+                this.currentNetworkDB = newnetwork; // se usa para generar el fichero network.txt
+                
+                
+                if(newnetwork == null || newnetwork.getRows()==null || newnetwork.getRows().isEmpty())
+                {   
+                    messages.warningMessage("Network Builder", "The network is empty.");
+                    
+                    newcysnetwork = new CysNetwork(new NetworkDB(), this.network.getOutputType());
+  
+                }
+                else if (!NetworkUtils.isBipartite(this.network.getOutputType()) && (newnetwork.getRows().size() > 7000 || newnetwork.getNodes().getSize() > 500))
+                {    
+                    this.setIsTooLarge(true); //?? se usa??
+                    
+                    newcysnetwork = new CysNetwork(new NetworkDB(), this.network.getOutputType());
+
+                    this.messages.tooLargeMessage();
+                }
+                else
+                {
+                    newcysnetwork = new CysNetwork(newnetwork, this.network.getOutputType());  
+                    messages.infoMessage("Done!", "The query has been executed succesfully. Please wait while the network is loaded into the display.");
+                    networkbuilded = true;
+                   
+                }
+                
+            }else if (newcysnetwork.getToolarge().equals(1)) {
+                    this.setIsTooLarge(true); //?? se usa??
+                    
+                    newcysnetwork = new CysNetwork(new NetworkDB(), this.network.getOutputType());
+
+                    this.messages.tooLargeMessage();
+            }else{
+                 messages.infoMessage("Done!", "The query has been executed succesfully. Please wait while the network is loaded into the display.");
+                 networkbuilded = true;
+            }
+            
+            
+            
+            
+            configureSubnetworks(this.network.getOutputType());
+            
+            this.currentCysNetwork = newcysnetwork; 
+
+            
+            this.progress = 60;
+
+            logger.info("Redirecting to index.jsf");
+            this.processtext = "Redirecting to PhenUMA visualizer.";
+
+            FacesContext contex = FacesContext.getCurrentInstance();
+            if(contex.getViewRoot().getViewId().equals("/main.xhtml") && networkbuilded){
+               contex.getExternalContext().redirect( contex.getExternalContext().getInitParameter("VIEW_URL") );
+            }
+
+            this.progress = 100;
+
+           
+
+            
+            
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(NetworkFormBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (OBOParserException ex) {
+            java.util.logging.Logger.getLogger(NetworkFormBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PhenumaException ex) {
+            java.util.logging.Logger.getLogger(NetworkFormBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    
+    
+    
+    /**
+     * Execute a query of genes or diseases and display the network
+     * 
+     * @param inputItems
+     * @throws IOException
+     * @throws OBOParserException
+     * @throws PhenumaException 
+     */
+    private void diseaseGeneQuery(List<String> inputItems) throws IOException, OBOParserException, PhenumaException {
+        
+        CysNetwork newcysnetwork = null;
+        
+        if(inputItems.size()==1  && 
+           ((this.network.getInputType() == NetworkConstants.INPUT_TYPE_GENES && this.network.getOutputType() == NetworkConstants.UNIPARTITE_GENE_SS_HPO) ||
+            (this.network.getInputType() == NetworkConstants.INPUT_TYPE_OMIM && this.network.getOutputType() == NetworkConstants.UNIPARTITE_DISEASE_SS)   && 
+             this.network.getConfidence() == PhenumaConstants.CONFIDENCE_LOW_ID))
+        {
+            
+            
+            NetworkDB networkDB = new NetworkDB();
+            networkDB.setConfidence(PhenumaConstants.getConfidence(this.network.getInputType(), this.network.getOutputType(), this.network.getConfidence()));
+            networkDB.setQuerytype(this.network.getOutputType());
+            networkDB.setInputtype(this.network.getInputType());
+            
+            
+            newcysnetwork = CysNetworkFactory.createCysNetworkFromDatabase(networkDB, inputItems);
+           
+            //Eliminar contenido del fichero para que el recolector limpie la memoria
+            networkDB = null;
+            
+            this.currentCysNetwork = newcysnetwork;    
+
+            this.progress = 60;
+
+            logger.info("Redirecting to index.jsf");
+
+            configureSubnetworks(this.network.getOutputType());
+            
+            FacesContext contex = FacesContext.getCurrentInstance();
+            if(contex.getViewRoot().getViewId().equals("/main.xhtml")){
+               contex.getExternalContext().redirect( contex.getExternalContext().getInitParameter("VIEW_URL") );
+            }
+
+            this.progress = 100;
+            
+            messages.infoMessage("Done!", "The query has been executed succesfully. Please, wait while the network is loaded in the visualizer.");
+        }
+        else
+        {
+            NetworkDB newnetwork = createNetworkDB(inputItems);
+
+
+            this.progress = 20;
+            this.processtext = "Reading information from the database. This step could take some minutes...";
+
+
+            this.progress = 30;
+
+
+            if(newnetwork != null && !newnetwork.getRows().isEmpty())
+            {   
+                this.setIsTooLarge(newnetwork.getRows().size() > 7000);
+
+                if (this.isIsTooLarge())
+                {
+                    /*Current network text version*/
+                    this.currentNetworkDB = newnetwork;
+
+                    /*Visualization is empty*/
+                    CysNetwork emptynetwork = new CysNetwork(new NetworkDB(), this.network.getOutputType());
+                    this.currentCysNetwork = emptynetwork;
+
+                    FacesContext contex = FacesContext.getCurrentInstance();
+                    if(contex.getViewRoot().getViewId().equals("/main.xhtml")) {
+                        messages.warningMessage("Network Vizualizer", "The network is too large. You can download the network in a text file using the link 'Download Network' ");
+                    }
+                    else {
+                        messages.warningMessage("Network Vizualizer", "The network is too large. You can download the network in a text file using the link 'Download' in the toolbar");
+                    }
+
+                }
+                else
+                {
+
+                   /*Subnetwork configuration: max and min*/
+                   configureSubnetworks(this.network.getOutputType());
+
+                   this.progress = 35;
+
+                   /*Current network text version*/
+                   this.currentNetworkDB = newnetwork;
+
+                   /*Update current network*/
+                   this.processtext = "Building network";
+
+
+                   newcysnetwork = new CysNetwork(newnetwork, this.network.getOutputType());         
+                  
+                   this.currentCysNetwork = newcysnetwork;    
+
+                   this.progress = 60;
+
+                   logger.info("Redirecting to index.jsf");
+                   this.processtext = "Redirecting to PhenUMA visualizer.";
+
+                   FacesContext contex = FacesContext.getCurrentInstance();
+                   if(contex.getViewRoot().getViewId().equals("/main.xhtml")){
+                       contex.getExternalContext().redirect( contex.getExternalContext().getInitParameter("VIEW_URL") );
+                   }
+
+                   this.progress = 100;
+
+                   messages.infoMessage("Done!", "The query has been executed succesfully. Please, wait while the network is loaded in the visualizer.");
+
+               }
+
+            }  
+            else
+            {    
+
+                messages.warningMessage("Network Builder", "The network is empty.");
+            }
+        }
+    }
+    
+    public String getShowMessages(){
+        messages.show();
+        messages.reset();
+        return "";
+    }
+
+    
+    public void setSelectedObjects(){
+        
+         String inputTerms = "";
+        
+        for (SelectableObject t : this.selectedObjects) {
+            inputTerms = inputTerms + t.getId() +",";
+        }
+        
+        
+        this.network.setItems(inputTerms);
+    }
+    
+    public void listener() {  
+        this.processtext = this.processtext + ".";
+    }  
+    
+    /**
+     * Upload combo boxes
+     */
+    public void updateComboBoxes(){
+        updateNetworkType();
+        updateIdentifierType();
+        updateSelectionList();
+    }
+    
+    /**
+     * Update network type list
+     */
+    public void updateNetworkType()
+    {
+       
+        if(this.selectedInputType !=null)
+        {
+            if(PhenumaConstants.ID_GENES_INPUT == this.selectedInputType)
+            {
+                list_networkType = PhenumaConstants.networkTypeList_Genes();
+            }
+            else if(PhenumaConstants.ID_OMIM_INPUT == this.selectedInputType)
+            {
+                list_networkType = PhenumaConstants.networkTypeList_Diseases();
+            }
+            else if(PhenumaConstants.ID_ORPHANUM_INPUT == this.selectedInputType)
+            {
+                list_networkType = PhenumaConstants.networkTypeList_RareDiseases();
+            }
+            else if(PhenumaConstants.ID_PHENOTYPE_INPUT == this.selectedInputType)
+            {
+                list_networkType = PhenumaConstants.networkTypeList_Phenotypes();
+            }
+        }
+    }
+    
+    
+    /**
+     * Update network type list
+     */
+    public void updateIdentifierType()
+    {
+  
+        if(this.selectedInputType !=null)
+        {
+            
+            if(PhenumaConstants.ID_GENES_INPUT == this.selectedInputType)
+            {
+                list_identifiers = PhenumaConstants.geneIdentifiers();
+            }
+            else if(PhenumaConstants.ID_OMIM_INPUT == this.selectedInputType)
+            {
+                list_identifiers = PhenumaConstants.diseasesIdentifiers();
+
+            }
+            else if(PhenumaConstants.ID_ORPHANUM_INPUT == this.selectedInputType)
+            {   
+                list_identifiers = PhenumaConstants.rareDiseasesIdentifiers();
+            }
+            else if(PhenumaConstants.ID_PHENOTYPE_INPUT == this.selectedInputType)
+            {   
+                list_identifiers = PhenumaConstants.phenotypeIdentifiers();
+            }
+        }
+
+    }
+    
+    
+    public void updateSelectionList()
+    {
+       
+        
+        System.out.println("updating "+this.selectedInputType);
+        
+        if(this.selectedInputType !=null)
+        {
+            if(PhenumaConstants.ID_GENES_INPUT == this.selectedInputType)
+            {
+               //  genes = new GeneTable().getTerms();
+            }
+            else if(PhenumaConstants.ID_OMIM_INPUT == this.selectedInputType)
+            {
+             //    genes = new OMIMTable().getTerms();
+            }
+            else if(PhenumaConstants.ID_ORPHANUM_INPUT == this.selectedInputType)
+            {
+              //  genes = new OrphanTable().getTerms();
+            }
+            else if(PhenumaConstants.ID_PHENOTYPE_INPUT == this.selectedInputType)
+            {
+                 genes = new HPOTable().getTerms();
+            }
+        }
+    }
+    
+    /**
+     * Upadete text area content. 
+     */
+    public void updateItemTextArea()
+    {
+        Messages current_messages = Messages.getInstance();
+       
+        if(this.file !=null)
+        {
+            try {
+                this.readItemsFormFile();
+            } catch (UnsupportedEncodingException ex) {
+                 current_messages.errorMessage("Unsoported Encodign Exception" ,"ERROR: "+ex.getMessage()); 
+            } catch (IOException ex) {
+                 current_messages.errorMessage("I/O Exception" ,"ERROR: "+ex.getMessage()); 
+            }
+        }
+    }
+    
+    
+    
+    /**
+     * HandleFileUpload. Read the input file and store the information to the text area.
+     * @param event 
+     */
+    
+    public void handleFileUpload(FileUploadEvent event) {
+        
+        Messages current_messages = Messages.getInstance();
+        
+        try{
+            //Hay que hacer esta asignacion, no se realiza automaticamente al hacer submit en el formulario :s
+            
+            this.file = event.getFile();
+            this.readItemsFormFile();
+                        
+        }catch(Exception ex){
+             current_messages.fatalMessage("File Upload" ,"ERROR: "+ex.getMessage()); 
+        }
+    }
+    
+    /**
+     * Remove the file loaded
+     * @param event 
+     */
+    
+
+    public void removeFile() {
+        this.file = null;
+        this.network.setItems("");
+    }
+    
+    
+    //Enable/disable
+    
+    
+    public boolean getVisibleClear(){
+        return this.file != null;
+    }
+    
+    
+    //Auxiliar methods
+    
+    
+    /**
+     * Read the content of the uploaded file and is loaded in the
+     * 'items' field.
+     * 
+     * @throws UnsupportedEncodingException
+     * @throws IOException 
+     */
+    public List<String> readItems() throws UnsupportedEncodingException, IOException 
+    {
+        
+        Messages current_messages = Messages.getInstance();
+        List<String> inputItems = new ArrayList<String>();
+
+        /**
+         * Read items string.
+         */
+        if(this.network.getItems()!=null && !this.network.getItems().isEmpty())
+        {
+           // System.out.println("Processing input..."+this.network.getItems());
+            String[] str = this.network.getItems().split("[\\s\t\n;,]+");
+            
+            
+            
+            for(String s : str)
+            {
+                //System.out.println("Processing "+s);
+                //Process input checks if the item is stored in the database
+                List<String> itemID = this.processInput(s.replace("\"", "").trim());
+               
+                for(String id : itemID){
+                    inputItems.add(id);
+                   
+                }
+
+            }
+            
+            this.network.setItems(this.network.getItems().replace("\n", " "));
+            
+        }else{
+            System.out.println("Missing input");
+            current_messages.errorMessage("Missing input", "You must to complete the 'Input' field or upload a file.");
+            return null;
+        }
+        
+        /**
+         * Show warning. Not found items.
+         */
+        if(!this.notFoundList.isEmpty()){
+            current_messages.warningMessage(Messages.NOT_FOUND, Messages.itemNotFound(this.selectedInputType, notFoundList));
+            this.notFoundList = new ArrayList<String>(); //reset list
+        }
+        
+        
+        return inputItems;
+
+    }
+
+    /**
+     * Read items form file.
+     * @throws IOException 
+     */
+    public void readItemsFormFile() throws IOException {
+        
+        if(file != null)
+        {
+            InputStream is = file.getInputstream();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+
+            String line = br.readLine();
+            
+            String items = "";
+            while(line!=null)
+            {
+                String[] str = line.split("[\t\\s\n;,]+");
+            
+                for(String s : str){
+                    items=items+s+", ";
+                }
+                
+                line = br.readLine();
+            }
+
+            this.network.setItems(items);
+        }
+    }
+    
+    /**
+     * Process input: this method check if the input item is stored in the database
+     * @param input 
+     */
+    
+    public List<String> processInput(String input)
+    {
+        Messages current_messages = Messages.getInstance();
+                
+        List<String> res = new ArrayList<String>();
+        try{
+
+            if (PhenumaConstants.ID_GENES_INPUT == this.selectedInputType)
+            {
+                List<Gene> geneslist = this.getGeneByInput(input);
+                
+                if(geneslist!=null && !geneslist.isEmpty()){
+                    for(Gene g : geneslist) {
+                        res.add(g.getEntrezid().toString());
+                    }
+                    
+                }else{
+                    notFoundList.add(input);
+                }
+            
+            }
+            else if (PhenumaConstants.ID_OMIM_INPUT == this.selectedInputType)
+            {
+                DatabaseQueries2 q = new DatabaseQueries2();
+                Disease d = q.getDiseaseByOmim(input);
+
+                if(d!=null) {
+                    res.add(d.getOmim().toString());
+                }
+                else {
+                    notFoundList.add(input);
+                }
+            }
+            else if (PhenumaConstants.ID_ORPHANUM_INPUT == this.selectedInputType)
+            {
+                DatabaseQueries2 q = new DatabaseQueries2(){};
+                RareDisease rd = q.getRareDiseasesByOrphanum(input);
+
+                if(rd!=null) {
+                    res.add(rd.getOrphanum().toString());
+                }
+                else {
+                    notFoundList.add(input);
+                }  
+            }
+            else if (PhenumaConstants.ID_PHENOTYPE_INPUT == this.selectedInputType)
+            {
+               Phenuma p = Phenuma.getInstance();
+               
+               /*Getting allTerms and term object of the each input in order to check if the input is correct.*/
+               ArrayList<Term> allterms = p.getHuman_phenotype_ontology().getTermsInTopologicalOrder();
+               Term term = p.getHuman_phenotype_ontology().getTerm(input);
+               
+               if(allterms.contains(term)){
+                   res.add(term.getID().toString());
+               }
+               else
+               {
+                   notFoundList.add(input);
+               }  
+                    
+            }
+            
+            
+        }catch(Exception ex){
+            current_messages.errorMessage("Input Process Exception. ", ex.getMessage());
+        }
+        
+        return res;
+        
+    }
+    
+    
+    
+    public List<Gene> getGeneByInput(String input) throws PhenumaException{
+
+        List<Gene> genes_list = new ArrayList<Gene>();
+                
+        DatabaseQueries2 q = new DatabaseQueries2();
+        
+        
+        if(input.startsWith("MIM"))
+        {
+            String[] geneid = input.split(":");
+            genes_list = q.getGeneBySynonym(geneid[1], "Mim");
+        }
+        else if(input.startsWith("ENSG"))
+        {
+            genes_list = q.getGeneBySynonym(input, "Ensembl");
+            
+        }
+        else if(input.startsWith("ORPHA"))
+        {  
+            String[] geneid = input.split(":");
+            genes_list = q.getGeneBySynonym(geneid[1], "Orphanum");
+            
+        }
+        else if(input.startsWith("HGNC"))
+        {            
+            String[] geneid = input.split(":");
+            genes_list = q.getGeneBySynonym(geneid[1], "Hgnc");
+        }
+        else
+        {
+            Gene g = null; 
+        
+            if(Utils.isSymbol(input))   g = q.getGeneBySymbol(input);
+            else                        g = q.getGeneByEntrezId(input);
+            
+            if(g!=null) {
+                genes_list.add(g);
+            }
+            
+        }
+        
+        return genes_list;
+
+    }
+    
+    
+    
+    
+
+
+    
+}

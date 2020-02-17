@@ -1,0 +1,53 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.managedbeans;
+
+import java.io.Serializable;
+import javax.enterprise.context.SessionScoped;
+import phenuma.cysnetwork.CysNetwork;
+
+/**
+ *
+ * @author Armando
+ */
+@SessionScoped
+public class PhenumaWeb implements Serializable{
+    
+
+    private CysNetwork currentNetwork; 
+
+
+    /**
+     * Private constructor of phenomizer. This method parses the association files and the ontology files.
+     */
+    public PhenumaWeb()  
+    {	
+        currentNetwork = null;
+    }
+    
+
+
+
+    public CysNetwork getCurrentNetwork() {
+        return currentNetwork;
+    }
+
+    public void setCurrentNetwork(CysNetwork currentNetwork) {
+        this.currentNetwork = currentNetwork;
+    }
+
+    public CysNetwork getCurrentNetworkDB() {
+            return currentNetwork;
+    }
+
+    public void setCurrentNetworkDB(CysNetwork currentNetworkkDB) {
+        this.currentNetwork = currentNetwork;
+    }
+
+
+ 
+    
+    
+}

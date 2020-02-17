@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://java.sun.com/jsf/composite/phcomp"> 
+    
+    <h:head>
+        <!--  Cytoscape -->
+
+        <meta name="google-site-verification" content="Of4s9LwBts9yWS7Eg1NfCUyP-wNofie1RT92PWycxxk" />
+      
+
+        <style>
+            
+            /*Texto de los botones: ajustar ancho de selección de tipo
+            de dato al area de texto.*/
+            .ui-button-text-only .ui-button-text {
+                padding: .6em 2.8em;
+            }
+        </style>
+        
+        <script>
+            function ejemplo1()
+            {          
+                $("textarea[id = 'queryform:inputtxtarea']").val("OTC")              
+                $("input[id='queryform:inputtype:0']").click()         
+                $("button[id='queryform:buildnetworkbtn']").click()
+                
+                                
+                pbAjax.cancel();
+                pbAjax.start();
+            }
+            
+            function ejemplo2()
+            {     
+                $("input[id='queryform:inputtype:1']").click()      
+                $("textarea[id = 'queryform:inputtxtarea']").val("271980")              
+
+
+                $("button[id='queryform:buildnetworkbtn']").click()
+                
+                                
+                pbAjax.cancel();
+                pbAjax.start();
+            }
+            
+            function ejemplo3()
+            {          
+                $("textarea[id = 'queryform:inputtxtarea']").val("95")              
+                $("input[id='queryform:inputtype:2']").click()         
+  
+                
+                $("button[id='queryform:buildnetworkbtn']").click()
+                                
+                pbAjax.cancel();
+                pbAjax.start();
+            }
+            
+            function ejemplo4()
+            {          
+                $("textarea[id = 'queryform:inputtxtarea']").val("HP:0001691, HP:0003116, HP:0001953")              
+                $("input[id='queryform:inputtype:3']").click()         
+                $("button[id='queryform:buildnetworkbtn']").click()
+                                
+                pbAjax.cancel();
+                pbAjax.start();
+            }
+        </script>
+        
+        
+        
+ 	<link href="./grungestyle/styles.css" rel="stylesheet" type="text/css"></link>      
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>   
+    </h:head>
+    
+    <h:body onload="pbAjax.cancel()">
+
+	<header>
+	   <div class="container1">
+	      <!--start title-->
+              <div style="float:left;">
+                <img src="./resources/img/logo_blanco.png" />
+              </div>
+	      <!--end title-->
+	      <!--start menu-->
+              <div style="float:left; width: 300px; padding-top: 20px;">
+                  <nav>
+                      <ul>
+                      <li><a href="main.jsf" class="grn">Home</a></li>
+                      <li><a href="index.jsf" class="ylw">Visualizer</a></li>
+                      <li><a href="tutorial.jsf" class="pnk">Help</a></li>
+                      <li><a href="download.jsf" class="orng">Download </a></li>
+                      <li><a href="contact.jsf" class="prpl">About</a></li>
+                      </ul>
+                  </nav>
+              </div>
+	   </div>
+	   <div class="bottom"> 
+           
+           </div>
+	   <!--end menu-->
+	   <!--end header-->
+	</header>
+
+            <!-- Form -->
+            <div style = "display: table; width: 1200px; height: 80%; padding-top: 20px; padding-left: 25px;">
+               
+                <div class="mainformdiv">
+                       
+                    <h:form id="queryform">
+
+                        <h:panelGrid columns="1"> 
+                            <!-- Input Type -->
+
+                            <!--<h:outputText  styleClass="phenumalabel_large" value="Type of Input:"/>-->
+                            <p:selectOneButton  id="inputtype" value="#{networkFormBean.selectedInputType}">
+                                <f:selectItems  value="#{networkFormBean.list_inputType}"  var="inputType"     
+                                                itemLabel="#{inputType.name}" itemValue="#{inputType.id}"/>
+                                <p:ajax update="cbnetworktype" listener="#{networkFormBean.updateComboBoxes}" />
+                            </p:selectOneButton> 
+
+                            <!-- Input List -->
+                             <h:outputText  styleClass="phenumalabel_large" value="Input List:"/>
+                             <p:inputTextarea id="inputtxtarea" value="#{networkFormBean.network.items}" rows="5" cols="200" style="width:605px" />
+
+                             <table>
+                                 <tr> 
+                                     <td style="width:110px;"><a onclick="ejemplo1()"> Example 1 Genes </a></td>
+                                     <td style="width:180px;"><a onclick="ejemplo2()"> Example 2 OMIM disease </a></td>
+                                     <td style="width:180px;"><a onclick="ejemplo3()"> Example 3 Orphan disease </a></td>
+                                     <td style="width:150px;"><a onclick="ejemplo4()"> Example 4 Phenotypes </a></td>
+                                 </tr>
+                             </table>
+                             
+                             <h:panelGrid columns="6">
+
+                                 <!-- Network Type -->
+                                 <h:panelGrid columns="1"> 
+                                    <h:outputText  styleClass="phenumalabel_large" value="Output Network:"/>
+                                    <p:selectOneMenu id="cbnetworktype" value="#{networkFormBean.selectedOutputType}" style="width: 500px;">
+                                        <f:selectItems value="#{networkFormBean.list_networkType}" var="networkType" 
+                                                       itemLabel="#{networkType.name}" itemValue="#{networkType.id}" />
+                                    </p:selectOneMenu> 
+                                 </h:panelGrid> 
+
+                                 <!-- Confidence -->
+                                 <h:panelGrid columns="1">
+                                    <h:outputText styleClass="phenumalabel_large"  value="Confidence:" />  
+                                        <p:selectOneMenu id="cbconfidence" value="#{networkFormBean.selectedConfidence}" style="width: 100px;">
+                                            <f:selectItems value="#{networkFormBean.list_confidenceTypes}" var="confidenceType" 
+                                                           itemLabel="#{confidenceType.name}" itemValue="#{confidenceType.id}" />
+
+                                        </p:selectOneMenu>
+                                </h:panelGrid>
+                            </h:panelGrid>
+
+                        </h:panelGrid>    
+                        
+                        <p:spacer height="5px" />
+                        <h:panelGrid columns="3"> 
+                                <p:progressBar widgetVar="pbAjax" ajax="true" value="#{networkFormBean.progress}" labelTemplate="{value}%" interval="1500" style="width:300px; border: 0px; background: transparent;">
+                                     <p:ajax event="complete" listener="#{networkFormBean.getShowMessages}"/>
+                                </p:progressBar>
+
+                                <p:commandButton id="buildnetworkbtn" value="Build Network" styleClass="buttonmain"  actionListener="#{networkFormBean.addNetworkDB}" onmousedown="pbAjax.cancel();pbAjax.start();" update=":messages, :downloadLinkform"/>
+
+                        </h:panelGrid>   
+
+                        
+                        </h:form>
+                   
+                        <h:form id="downloadLinkform" styleClass="formlabel" style="padding-left:200px;">
+                             <table>
+                                 <tr>
+                                     <td>
+                                        <p:commandLink id="downloadLinkImage" ajax="false" rendered="#{networkFormBean.isTooLarge}">
+                                             <p:graphicImage value="/resources/img/download.png" style="width:32px;height:32px;"/>
+                                            <p:fileDownload value="#{networkFormBean.outputFile}" />  
+                                        </p:commandLink> 
+                                    </td>
+                                     <td>
+                                        <p:commandLink id="downloadLink" value="Download Network" ajax="false" rendered="#{networkFormBean.isTooLarge}" style="font-size: 25px;">
+                                            <p:fileDownload value="#{networkFormBean.outputFile}" />  
+                                        </p:commandLink> 
+                                     </td>
+                                 </tr>
+                             </table>
+                        </h:form>
+                   
+
+                </div>
+                
+                <div id="phenumainfo" class = "infoformdiv">
+                    
+                    
+                    <table cellspacing="10px">
+                         <tr>
+                            <td>
+                                <p:graphicImage value="/resources/img/logo_red.png" style="width:50px;height:50px; padding-bottom: 12px;"/>
+                            </td>
+                            <td>   
+                                <p class="biggertext"> <b>PhenUMA</b> is a web tool to generate integrative networks from a list of genes, diseases or phenotypes. </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:graphicImage value="/resources/img/help.png" style="width:50px;height:50px; padding-bottom: 12px;"/>
+                            </td>
+                            <td>   
+                                <p class="biggertext"> Visit <i> Quick start </i> in <a href="tutorial.jsf" class="pnk">Help</a> section for further information about 
+                                    how to execute queries in PhenUMA.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:graphicImage value="/resources/img/example.png" style="width:50px;height:50px; padding-bottom: 12px;"/>
+                            </td>
+                            <td>   
+                                <p class="biggertext"> Try some examples</p>
+        
+                            </td>
+                        </tr>
+                    </table>
+                    
+
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/> 
+                    
+                </div>
+                          
+                <br />
+                <br />          
+                
+                <div class = "notesgroupdiv">
+                    <div class = "notediv">
+                        <center>
+                        <h3 class="grouptitle"> Phenotypic and Functional Networks </h3>  <br />
+                        <p class="groupcontent"> Networks built using the clinical and functional features associated with genes and diseases. Integration
+                        of different types of networks in the same network to allow study phenotypic relationships in a biomolecular context.</p>
+                        </center>
+                    </div>
+                    <div class = "notediv">
+                         <center>
+                        <h3 class="grouptitle"> Phenotypic and Functional Enrichment</h3>  <br />
+                        <p class="groupcontent"> Most significative phenotypes or GO terms of a node or groups of nodes can be obtained. PhenUMA includes the possibility of evaluate 
+                        the enrichment of terms from a selection of genes or diseases.</p>    
+                        </center>
+                    </div>
+                    <div class = "notediv" style="float:right">
+                         <center>
+                        <h3 class="grouptitle"> Networks Visualization </h3>  <br />
+                        <p class="groupcontent"> PhenUMA provides a network visualizer that allow work with the resulting networks: apply filters, layouts and explore the
+                        information related with the nodes and edges.</p>  
+                        </center>
+                    </div>
+                </div>
+            </div>        
+            
+	<footer> 
+            <center>
+            <div  class="container1">
+                     <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.es_CO">
+                        <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" />
+                </a><br />
+                <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title" > PhenUMA </span> is licensed under a 
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+			Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+		</a>
+            </div>
+	    </center>
+   	</footer>
+    </h:body>
+</html>
+

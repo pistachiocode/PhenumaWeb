@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+
+        
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id" />
+        <cc:attribute name="items" required="true"/>
+        <cc:attribute name="selected" required="true"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        
+
+    <table class="phenumatable">   
+        <!-- Networks tabs -->
+        <c:forEach var="type" items="#{cc.attrs.items}">        
+            <!-- Genes, Orphan Diseases, OMIM title -->
+            <tr class='phenumaobjectrow' style="background-color:#FFFFFF;">
+                <td class="phenumatableicon" > <div class="ui-icon ui-icon-triangle-1-e"></div></td>
+                <td class="phenumainfotitle"> <h:outputText value="#{type.text}"/> </td>
+            </tr>
+            
+            
+             <tr  class="phenumaroweven">
+                <td colspan="3">
+
+                    <table class="phenumatable">
+                        
+                        <thead><tr class='phenumarow'><th></th><th>Source</th><th>Target</th><th>Score</th><th>PValue</th></tr></thead>
+                        
+                        <c:forEach var="relationship" items="#{type.edges}">
+                            <tr class='phenumaobjectrow' style="background-color:#{relationship.color};" onmousemove="selectEdge(#{relationship.id})">
+                                <td><div class='ui-icon ui-icon-carat-1-sw'></div></td>
+                                <td class="phenumatableicon" > <div class="ui-icon ui-icon-triangle-1-e"></div></td>
+                                <td>#{relationship.source.text}</td>
+                                <td>#{relationship.target.text}</td>
+                                <td>#{relationship.score}</td>
+                                <td>#{relationship.pvalue}</td>
+                           </tr>
+                           <!-- Semantic Similarity Relationships-->
+
+                          <tr class='phenumaroweven'>
+                           <td></td>
+                            <td colspan="6">
+                                <!--
+                                <table class="phenumatable">
+                                    <c:forEach var="semsiminfo" items="#{relationship.info}">    
+                                        <tr class='phenumarow' style="background-color:#{semsiminfo.color};">
+                                            <td><div class='ui-icon ui-icon-carat-1-sw'></div></td>
+                                            <td>#{semsiminfo.text}</td>
+                                            <td>#{semsiminfo.value}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </table>
+                                -->
+                            </td>
+                           </tr> 
+                                
+ 
+                        </c:forEach>
+                        
+                    </table>
+                    
+                </td>
+             </tr>
+        </c:forEach>
+    </table>
+           
+    
+    </cc:implementation>
+
+    
+</html>

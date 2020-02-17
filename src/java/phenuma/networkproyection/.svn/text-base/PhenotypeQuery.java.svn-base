@@ -1,0 +1,100 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.networkproyection;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import ontologizer.StudySet;
+import ontologizer.go.OBOParserException;
+import ontologizer.go.TermID;
+import org.apache.log4j.Logger;
+import phenomizer.hpo.PhenumaDB;
+import phenuma.constants.Constants;
+import phenuma.dataqueries.DatabaseQueries2;
+import phenuma.dataqueries.OntologyQueries;
+
+
+/**
+ *
+ * @author Armando
+ */
+public class PhenotypeQuery extends NetworkQuery implements QueryOperations{
+    
+    static final Logger logger = Logger.getLogger(PhenotypeQuery.class.getName());
+    
+    //Entity manager factory
+    PhenumaDB pdb = PhenumaDB.getInstance();         
+
+   // PhenotypeNetworkDB resultDB;
+    
+    ArrayList<TermID> termlist;
+    
+    public PhenotypeQuery(ArrayList<TermID> termlist, int queryType) {
+        super(queryType);
+        this.termlist = termlist; 
+        this.queryType = queryType;
+       
+    }
+
+    public ArrayList<TermID> getTermlist() {
+        return termlist;
+    }
+
+    public void setTermlist(ArrayList<TermID> termlist) {
+        this.termlist = termlist;
+    }
+    
+    
+
+
+    @Override
+    public void executeQueryDB() {
+        
+        logger.info("executeQuery: "+queryType+" input phenotypes ");
+
+        
+        DatabaseQueries2 databaseQueries = new DatabaseQueries2();
+        try {
+            
+            if(queryType == NetworkConstants.QUERY_DISEASE_NETWORK)
+            {
+                System.out.println(termlist.size());
+                
+                resultDB = OntologyQueries.termQueryDB(termlist, ontology, Constants.ASSOC_DISEASES_HPO, threshold);
+                resultDB.setRows(databaseQueries.networkQuery(resultDB.getNodes(), new StudySet(), NetworkConstants.INPUT_TYPE_OMIM, NetworkConstants.QUERY_DISEASE_NETWORK, this.threshold));
+            }
+            else if(queryType == NetworkConstants.QUERY_ER_NETWORK)
+            {
+                resultDB = OntologyQueries.termQueryDB(termlist, ontology, Constants.ASSOC_ER_HPO, threshold);
+                resultDB.setRows(databaseQueries.networkQuery(resultDB.getNodes(), new StudySet(), NetworkConstants.INPUT_TYPE_ORPHA, NetworkConstants.QUERY_ER_NETWORK, this.threshold));
+                
+            }    
+            else if(queryType == NetworkConstants.QUERY_GENE_NETWORK)
+            {
+                resultDB = OntologyQueries.termQueryDB(termlist, ontology, Constants.ASSOC_GENES_HPO, threshold);
+                resultDB.setRows(databaseQueries.networkQuery(resultDB.getNodes(), new StudySet(), NetworkConstants.INPUT_TYPE_GENES, NetworkConstants.QUERY_GENE_NETWORK, this.threshold));
+            }
+            
+            resultDB.setQuerytype(queryType);
+
+            
+        } catch (IOException ex) {
+             logger.error(ex.getMessage());
+        } catch (OBOParserException ex) {
+             logger.error(ex.getMessage());
+        } 
+    }
+
+//    @Override
+//    public void buildNetwork(List<Object[]> rows) throws IOException, OBOParserException {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
+
+    
+   
+
+    
+}

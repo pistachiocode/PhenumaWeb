@@ -1,0 +1,435 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <!--  Cytoscape -->
+
+        <meta name="google-site-verification" content="Of4s9LwBts9yWS7Eg1NfCUyP-wNofie1RT92PWycxxk" />
+        
+        <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>	
+        <script type="text/javascript" src="./javascript/autocomplete.js"></script>
+        <script type="text/javascript" src="./javascript/jquery.qtip.min.js"></script>
+        <script type='text/javascript' src="./javascript/jquery.simplemodal.js"></script>
+        <script type="text/javascript" src="./javascript/phenuma.js"></script>
+        
+        <script type="text/javascript" src="./javascript/tutorial.js"></script>
+        <style>
+            
+            /*Texto de los botones: ajustar ancho de selección de tipo
+            de dato al area de texto.*/
+            .ui-button-text-only .ui-button-text {
+                padding: .6em 2.8em;
+            }
+            
+            #dialog{
+                display: none;
+            }
+        </style>
+        
+        <script>
+            
+            function ejemplo_genes_network()
+            {          
+                $("textarea[id = 'queryform:inputtxtarea']").val("OTC")              
+                $("input[id='queryform:inputtype:0']").click()         
+                $("button[id='queryform:buildnetworkbtn']").click()
+         
+            }
+            
+            function ejemplo_omim_network()
+            {     
+                $("input[id='queryform:inputtype:1']").click()      
+                $("textarea[id = 'queryform:inputtxtarea']").val("271980")              
+
+
+                $("button[id='queryform:buildnetworkbtn']").click()
+
+            }
+            
+            function ejemplo_orpha_network()
+            {          
+                $("textarea[id = 'queryform:inputtxtarea']").val("95")              
+                $("input[id='queryform:inputtype:2']").click()         
+  
+                
+                $("button[id='queryform:buildnetworkbtn']").click()
+
+            }
+            
+            function ejemplo_phenotypes_network()
+            {          
+                $("textarea[id = 'queryform:inputtxtarea']").val("HP:0001691, HP:0003116, HP:0001953")              
+                $("input[id='queryform:inputtype:3']").click()         
+                $("button[id='queryform:buildnetworkbtn']").click()
+
+            }
+            
+            
+            function ejemplo_genes_enrichment()
+            {          
+                $("textarea[id = 'queryform:inputtxtarea']").val("BRAF, MAP2K1, MAP2K2, KRAS, SLC17A5")              
+                $("input[id='queryform:inputtype:0']").click()         
+                $("button[id='queryform:buildnetworkbtn']").click()
+            }
+            
+            function ejemplo_omim_enrichment()
+            {          
+                $("textarea[id = 'queryform:inputtxtarea']").val("607681, 607628, 611364, 600669, 608096, 607631, 607208, 300423, 600131, 604827, 608217")              
+                $("input[id='queryform:inputtype:1']").click()         
+                $("button[id='queryform:buildnetworkbtn']").click()
+            }            
+
+            function ejemplo_orpha_enrichment()
+            {          
+                $("textarea[id = 'queryform:inputtxtarea']").val("67042, 179, 52427, 886, 231183, 773, 85128, 99001, 99002, 1873, 1871, 791, 227796, 53540, 75376")              
+                $("input[id='queryform:inputtype:2']").click()         
+                $("button[id='queryform:buildnetworkbtn']").click()
+            }
+            
+
+
+
+            function changeTextAreaValue(val)
+            {          
+                if(val == 0)
+                    $("span[id = 'queryform:inputtxtarea_label']").html("Write a list of genes i.e. &lt;i&gt; GBA, OTC &lt;/i&gt; or &lt;i&gt; 2629, 5009 &lt;/i&gt;:")       
+                else if (val == 1)
+                    $("span[id = 'queryform:inputtxtarea_label']").html("Write a list of OMIM genes/diseases. Please use OMIM identifiers i.e &lt;i&gt; 271980, 607631  &lt;/i&gt;")       
+                else if (val == 2)
+                    $("span[id = 'queryform:inputtxtarea_label']").html("Write a list of orphan diseases. Please use Orphanet identifiers i.e. &lt;i&gt; 95, 3092, 99051 &lt;/i&gt;:")       
+                else if (val == 3){
+                    $("span[id = 'queryform:inputtxtarea_label']").html("Write a list of phenotypes. Please use HPO id i.e. &lt;i&gt; HP:0001691, HP:0003116, HP:0001953 &lt;/i&gt;:")       
+                }
+                
+                bindAutocomplete("main", val);
+            }
+            
+            
+            function toggleFormType(val)
+            {
+                if(val == 0)
+                {
+                    $("table[id = 'queryform:output_networktypepanel']").show();
+                    $("table[id = 'queryform:output_enrichmenttypepanel']").hide();
+                    
+                    $("table[id = 'table_networkexamples']").show();
+                    $("table[id = 'table_enrichmentexamples']").hide();
+                }
+                else if (val == 1)
+                {
+                    $("table[id = 'queryform:output_enrichmenttypepanel']").show();
+                    $("table[id = 'queryform:output_networktypepanel']").hide();
+                    
+                    $("table[id = 'table_networkexamples']").hide();
+                    $("table[id = 'table_enrichmentexamples']").show();
+                }
+            }
+        </script>
+
+        
+ 	<link href="./grungestyle/styles.css" rel="stylesheet" type="text/css"></link>      
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>  
+        
+    </h:head>
+    
+    <h:body >
+
+	<header>
+	   <div class="container1">
+	      <!--start title-->
+              <div style="float:left;">
+                <img src="./resources/img/logo_blanco.png" />
+              </div>
+	      <!--end title-->
+	      <!--start menu-->
+              <div style="float:left; width: 300px; padding-top: 20px;">
+                  <nav>
+                      <ul>
+                      <li><a href="main.jsf" class="grn">Home</a></li>
+                      <li><a href="index.jsf" class="ylw">Visualizer</a></li>
+                      <li><a href="tutorial.jsf" class="pnk">Help</a></li>
+                      <li><a href="download.jsf" class="orng">Download </a></li>
+                      <li><a href="contact.jsf" class="prpl">About</a></li>
+                      </ul>
+                  </nav>
+              </div>
+	   </div>
+	   <div class="bottom"> 
+           
+           </div>
+	   <!--end menu-->
+	   <!--end header-->
+	</header>
+        
+        <!-- Main Content -->
+        <div style = "display: table; width: 1200px; height: 80%; padding-top: 20px; padding-left: 25px;">
+                       
+            <div style="float:left">
+                    
+                <h:form id="queryform">
+                     
+                    <h:panelGrid columns="1"> 
+                            
+                        <!-- Type of query -->
+                        
+                        <h:panelGrid columns="2">
+                            
+                            <p:selectOneButton  id="querytype"  value="#{networkFormBean.selectedQueryType}" styleClass="queryoption">
+                                <f:selectItems  value="#{networkFormBean.list_queryType}"  var="queryType"     
+                                                itemLabel="#{queryType.name}" itemValue="#{queryType.id}"/>
+                                <p:ajax update="inputtype, outputtype" listener="#{networkFormBean.updateComboBoxes}" />
+                            </p:selectOneButton> 
+            
+                           <img src="resources/img/phicon_question_mark.png" class="phicon_help" onclick="showModalHelp(title_main_querytype_help, content_main_querytype_help, 450,500)"/>
+                           
+                        </h:panelGrid>
+                           
+
+                        <!-- Input Type -->
+                        
+                        <h:outputText  styleClass="phenumalabel_large" value="Input:"/>
+                        
+                        <h:panelGrid columns="2"> 
+                            
+                            <p:selectOneRadio  id="inputtype" value="#{networkFormBean.selectedInputType}" styleClass="selectRadio" onchange="changeTextAreaValue($(this).val())">
+                                <f:selectItems  value="#{networkFormBean.list_inputType}"  var="inputType"     
+                                                itemLabel="#{inputType.name}" itemValue="#{inputType.id}"/>
+                                <p:ajax update="cbnetworktype" listener="#{networkFormBean.updateComboBoxes}" />
+                            </p:selectOneRadio> 
+                            
+                            <img src="resources/img/phicon_question_mark.png" class="phicon_help" onclick="showModalHelp(title_main_inputtype_help, content_main_inputtype_help, 450,300)"/>
+                            
+                        </h:panelGrid>
+
+                        <!-- Input List -->
+                        
+                        <h:outputText  id="inputtxtarea_label" styleClass="phenumalabel_large" value="Write a list of genes i.e. &lt;i&gt; GBA, OTC &lt;/i&gt; or &lt;i&gt; 2629, 5009 &lt;/i&gt;:" escape="false"/>
+                        
+                        <h:panelGrid columns="3"> 
+                            
+                            <p:inputTextarea id="inputtxtarea" value="#{networkFormBean.network.items}" rows="5" cols="200" style="width:613px" />
+                            <p:spacer width="5px;"/>
+                            <img src="resources/img/phicon_question_mark.png" class="phicon_help" onclick="showModalHelp(title_main_input_help, content_main_input_help,700,450)"/>
+                            
+                        </h:panelGrid>
+                        
+                        <!-- Output networks and confidence level -->
+                        
+                        <h:panelGrid id="outputtype" columns="1">
+
+                           <h:panelGrid id="output_networktypepanel" rendered="${networkFormBean.selectedQueryType eq 0}">
+
+
+                                <table id="table_networkexamples">
+                                    <tr> 
+                                        <td style="width:110px;"><a onclick="ejemplo_genes_network()"> Example 1 Genes </a></td>
+                                        <td style="width:180px;"><a onclick="ejemplo_omim_network()"> Example 2 OMIM disease </a></td>
+                                        <td style="width:180px;"><a onclick="ejemplo_orpha_network()"> Example 3 Orphan disease </a></td>
+                                        <td style="width:150px;"><a onclick="ejemplo_phenotypes_network()"> Example 4 Phenotypes </a></td>
+                                    </tr>
+                                </table>
+
+
+                               <h:panelGrid columns="2">
+                                  <!-- Network Type -->
+                                  <h:panelGrid columns="1"> 
+                                     <h:outputText  styleClass="phenumalabel_large" value="Output Network:"/>
+                                     <h:panelGrid columns="2"> 
+                                         <p:selectOneMenu id="cbnetworktype" value="#{networkFormBean.selectedOutputType}" style="width: 500px;">
+                                             <f:selectItems value="#{networkFormBean.list_networkType}" var="networkType" 
+                                                            itemLabel="#{networkType.name}" itemValue="#{networkType.id}" />
+                                         </p:selectOneMenu> 
+                                         <img src="resources/img/phicon_question_mark.png" class="phicon_help" onclick="showModalHelp(title_main_outputtype_help, content_main_outputtype_help, 600,350)"/> 
+                                     </h:panelGrid>
+                                  </h:panelGrid> 
+                                  
+                                  
+                                  
+                                  <!-- Confidence -->
+                                  <h:panelGrid columns="1">
+                                     <h:outputText styleClass="phenumalabel_large"  value="Confidence:" />  
+                                     <h:panelGrid columns="2"> 
+                                         <p:selectOneMenu id="cbconfidence" value="#{networkFormBean.selectedConfidence}" style="width: 100px;">
+                                             <f:selectItems value="#{networkFormBean.list_confidenceTypes}" var="confidenceType" 
+                                                            itemLabel="#{confidenceType.name}" itemValue="#{confidenceType.id}" />
+
+                                         </p:selectOneMenu>
+                                         <img src="resources/img/phicon_question_mark.png" class="phicon_help" onclick="showModalHelp(title_main_confidence_help, content_main_confidence_help, 450,300)"/> 
+                                     </h:panelGrid>
+                                 </h:panelGrid>
+                                 
+                                  
+                              </h:panelGrid>
+
+                           </h:panelGrid>
+
+                           <h:panelGrid id="output_enrichmenttypepanel" rendered="${networkFormBean.selectedQueryType eq 1}">
+
+
+                                <table id="table_enrichmentexamples">
+                                    <tr> 
+                                        <td style="width:110px;"><a onclick="ejemplo_genes_enrichment()"> Example 1 Genes </a></td>
+                                        <td style="width:180px;"><a onclick="ejemplo_omim_enrichment()"> Example 2 OMIM disease </a></td>
+                                        <td style="width:180px;"><a onclick="ejemplo_orpha_enrichment()"> Example 3 Orphan disease </a></td>
+                                    </tr>
+                                </table>
+
+
+                               <!-- Network Type -->
+                               <h:panelGrid columns="1"> 
+                                  <h:outputText  styleClass="phenumalabel_large" value="Enrichment Type:"/>
+                                  <p:selectOneMenu id="cbenrichmentype" value="#{networkFormBean.selectedEnrichmentType}" style="width: 605px;">
+                                      <f:selectItems value="#{networkFormBean.list_enrichmentType}" var="enrichmentType" 
+                                                     itemLabel="#{enrichmentType.name}" itemValue="#{enrichmentType.id}" />
+                                  </p:selectOneMenu> 
+                               </h:panelGrid> 
+
+                          </h:panelGrid>
+
+                        </h:panelGrid>
+
+                        <p:spacer height="5px" />
+
+                        <h:panelGrid columns="2">
+                            
+                            <p:commandButton id="resetquerybtn" value="Reset" styleClass="buttonmain"  actionListener="#{networkFormBean.initForm}" update=":queryform, :downloadLinkform" icon="phicon_reset">
+                            </p:commandButton>
+
+                            <p:commandButton id="buildnetworkbtn" value="Execute" styleClass="buttonmain"  actionListener="#{networkFormBean.addNetworkDB}" 
+                                         onstart="showModal('Processing query, please wait. This could take several minutes...')" oncomplete="closeModal()"  icon="phicon_execute"   update=":messages, :downloadLinkform" >
+  
+                            </p:commandButton>
+                        </h:panelGrid>
+
+                    </h:panelGrid>    
+
+                </h:form>
+                
+                <!-- Download link -->
+
+                <h:form id="downloadLinkform" styleClass="formlabel" style="padding-left:200px;">
+                     <table>
+                         <tr>
+                             <td>
+                                <p:commandLink id="downloadLinkImage" rendered="#{networkFormBean.isTooLarge}" ajax="true" 
+                                                  actionListener="#{networkFormBean.createOutputFile}" onstart="showModal('Processing output file, please wait.')" oncomplete="showModalDownload()">
+                                    <p:graphicImage value="/resources/img/download.png" style="width:32px;height:32px;"/>
+                                </p:commandLink> 
+                            </td>
+                             <td>
+                                <p:commandLink id="downloadLink" value="Download Network" rendered="#{networkFormBean.isTooLarge}" style="font-size: 25px;"
+                                               actionListener="#{networkFormBean.createOutputFile}" onstart="showModal('Processing output file, please wait.')" oncomplete="showModalDownload()">
+
+                                </p:commandLink> 
+                             </td>
+                         </tr>
+                     </table>
+                </h:form>
+                   
+
+                </div>
+                
+                
+                <div id="phenumainfo" class="infoformdiv">
+                    
+                    
+                    <table cellspacing="10px">
+                         <tr>
+                            <td>
+                                <p:graphicImage value="/resources/img/logo_red.png" style="width:50px;height:50px; padding-bottom: 12px;"/>
+                            </td>
+                            <td>   
+                                <p class="biggertext" style="font-size:20px; font-weight: bolder; color: #393A3A;"> <b>PhenUMA</b> is a web tool to generate and analyse integrative networks from a list of genes, diseases or phenotypes. </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:graphicImage value="/resources/img/help.png" style="width:50px;height:50px; padding-bottom: 12px;"/>
+                            </td>
+                            <td>   
+                                <p class="biggertext"> Visit <i> Quick start </i> in <a href="tutorial.jsf" class="pnk">Help</a> section for further information about 
+                                    how to execute queries in PhenUMA.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:graphicImage value="/resources/img/example.png" style="width:50px;height:50px; padding-bottom: 12px;"/>
+                            </td>
+                            <td>   
+                                <p class="biggertext"> Try some examples</p>
+        
+                            </td>
+                        </tr>
+                    </table>
+                    
+
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" showSummary="false" />
+                    
+                </div>
+                
+                <div style="float:left; height:50px; width: 100%;"></div>
+          
+                <div class = "notesgroupdiv">
+                    <div class = "notediv">
+                        <center>
+                        <h3 class="grouptitle"> Phenotypic and Functional Networks </h3>  <br />
+                        <p class="groupcontent"> Networks built using the clinical and functional features associated with genes and diseases. Integration
+                        of different types of networks in the same network to allow study phenotypic relationships in a biomolecular context.</p>
+                        </center>
+                    </div>
+                    <div class = "notediv">
+                         <center>
+                        <h3 class="grouptitle"> Phenotypic and Functional Enrichment </h3>  <br />
+                        <p class="groupcontent"> Most significative phenotypes or GO terms of a node or groups of nodes can be obtained. PhenUMA includes the possibility of evaluate 
+                        the enrichment of terms from a selection of genes or diseases.</p>    
+                        </center>
+                    </div>
+                    <div class = "notediv" >
+                         <center>
+                        <h3 class="grouptitle"> Networks Visualization </h3>  <br />
+                        <p class="groupcontent"> PhenUMA provides a network visualizer that allow work with the resulting networks: apply filters, layouts and explore the
+                        information related with the nodes and edges.</p>  
+                        </center>
+                    </div>
+                </div>
+        </div>
+        
+        <center><p style="font-style:italic; font-size: 16px;">Last Update: 03/07/2014 </p></center>
+	
+        <footer> 
+            <center>
+            <table>
+                <tr>
+                    <td><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.es_CO">
+                        <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" />
+                        </a><br />
+                    </td>
+                    <td>
+                        <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title" > PhenUMA </span> is licensed under a 
+                        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+                                Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+                        </a>
+                    </td>
+                </tr>
+            </table>
+          </center>  
+   	</footer>
+        
+        <!-- Download modal form: repetido en index.html -->   
+        <div id='basic-modal-download'>      
+            <h3>Press to download: network.zip </h3>
+            <h:form style='background-color: #333;'>
+                <p:commandButton  title='Download' value='Download' icon='ui-icon-arrowthickstop-1-s' ajax='false' styleClass='buttonmain'>
+                        <p:fileDownload value='#{networkFormBean.outputFile}'/>        
+                </p:commandButton>
+            </h:form>
+        </div>
+        
+        <link href="./css/basic.css" rel="stylesheet" type="text/css"></link>
+    </h:body>
+</html>
+

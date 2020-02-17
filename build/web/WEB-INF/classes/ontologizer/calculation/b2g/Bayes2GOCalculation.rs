@@ -1,0 +1,6 @@
+ontologizer.calculation.b2g.Bayes2GOCalculation$4
+ontologizer.calculation.b2g.Bayes2GOCalculation$3
+ontologizer.calculation.b2g.Bayes2GOCalculation$2
+ontologizer.calculation.b2g.Bayes2GOCalculation$1
+ontologizer.calculation.b2g.Bayes2GOCalculation
+ontologizer.calculation.b2g.B2GTestParameter

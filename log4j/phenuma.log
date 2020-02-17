@@ -1,0 +1,128 @@
+18:42:30,410  INFO OmimQuery:94 - executeQuery: 152 input omim  613241 214350
+18:44:06,411  INFO OmimQuery:94 - executeQuery: 152 input omim  613241 214350
+18:27:12,868 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:27:42,958 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:30:06,205 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:30:41,099 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:36:13,653 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:37:12,731 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:37:58,978 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:40:20,076 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:40:38,353 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:41:34,006 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:42:06,600 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:42:06,630 ERROR DatabaseQueries:64 - Error cerrando conexi—n Attempting to execute an operation on a closed EntityManager.
+18:42:35,990 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:42:36,016 ERROR DatabaseQueries:64 - Error cerrando conexi—n Attempting to execute an operation on a closed EntityManager.
+18:43:00,470 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:43:00,500 ERROR DatabaseQueries:64 - Error cerrando conexi—n Attempting to execute an operation on a closed EntityManager.
+18:43:11,030 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:43:11,066 ERROR DatabaseQueries:64 - Error cerrando conexi—n Attempting to execute an operation on a closed EntityManager.
+18:44:31,123 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:45:04,879 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:51:21,156 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:55:17,443  INFO Phenuma:149 - Loading OMIM associations to HPO
+18:55:17,461  INFO Phenuma:241 - Loading HPO
+18:55:17,461  INFO Phenuma:180 - Loading ontology: ./resources/in/ontologies/human-phenotype-ontology.obo
+10:44:50,718  INFO OmimQuery:58 - executeQuery: 152 input omim  613241 214350
+10:44:51,568 DEBUG logging:28 - Logging Provider: org.jboss.logging.Log4jLoggerProvider
+10:44:51,568  INFO Version:27 - HV000001: Hibernate Validator 4.3.0.Final
+10:44:51,577 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+10:44:51,578 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+10:44:51,580 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+10:44:51,584 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+10:44:53,637 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+10:44:53,638 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+10:44:53,638 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+10:44:53,639 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+10:45:45,612  INFO OmimQuery:58 - executeQuery: 152 input omim  613241 214350
+10:45:46,316 DEBUG logging:28 - Logging Provider: org.jboss.logging.Log4jLoggerProvider
+10:45:46,316  INFO Version:27 - HV000001: Hibernate Validator 4.3.0.Final
+10:45:46,325 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+10:45:46,326 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+10:45:46,328 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+10:45:46,332 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+10:45:48,281 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+10:45:48,281 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+10:45:48,281 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+10:45:48,282 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+10:45:48,523  INFO OmimQuery:58 - executeQuery: 152 input omim  613241 214350
+10:45:48,546 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+10:45:48,547 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+10:45:48,547 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+10:45:48,548 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+10:45:49,776 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+10:45:49,776 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+10:45:49,777 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+10:45:49,777 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+10:45:49,877  INFO OmimQuery:58 - executeQuery: 152 input omim  613241 214350
+10:45:49,899 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+10:45:49,900 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+10:45:49,900 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+10:45:49,901 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+10:45:51,102 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+10:45:51,102 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+10:45:51,103 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+10:45:51,103 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+10:58:09,503 DEBUG logging:28 - Logging Provider: org.jboss.logging.Log4jLoggerProvider
+10:58:09,505  INFO Version:27 - HV000001: Hibernate Validator 4.3.0.Final
+10:58:09,514 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+10:58:09,515 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+10:58:09,518 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+10:58:09,522 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+10:58:10,496 ERROR DatabaseQueries2:256 - 
+Exception Description: The primary key read from the row [ArrayRecord(
+	 => 271980
+	 => SUCCINIC SEMIALDEHYDE DEHYDROGENASE DEFICIENCY
+	 => 2
+	 => 0
+	 => [B@531df164)] during the execution of the query was detected to be null.  Primary keys must not contain null.
+Query: ReadAllQuery(referenceClass=Disease sql="select * from disease where omim = 271980")
+11:00:57,836 DEBUG logging:28 - Logging Provider: org.jboss.logging.Log4jLoggerProvider
+11:00:57,838  INFO Version:27 - HV000001: Hibernate Validator 4.3.0.Final
+11:00:57,846 DEBUG DefaultTraversableResolver:106 - Found javax.persistence.Persistence on classpath containing 'getPersistenceUtil'. Assuming JPA 2 environment. Trying to instantiate JPA aware TraversableResolver
+11:00:57,847 DEBUG DefaultTraversableResolver:117 - Instantiated JPA aware TraversableResolver of type org.hibernate.validator.internal.engine.resolver.JPATraversableResolver.
+11:00:57,850 DEBUG ValidationXmlParser:184 - Trying to load META-INF/validation.xml for XML based Validator configuration.
+11:00:57,854 DEBUG ValidationXmlParser:187 - No META-INF/validation.xml found. Using annotation based configuration only.
+11:00:58,609 ERROR DatabaseQueries2:256 - 
+Exception Description: The primary key read from the row [ArrayRecord(
+	 => 271980
+	 => SUCCINIC SEMIALDEHYDE DEHYDROGENASE DEFICIENCY
+	 => 2
+	 => 0
+	 => [B@5b4bc4e6)] during the execution of the query was detected to be null.  Primary keys must not contain null.
+Query: ReadAllQuery(referenceClass=Disease sql="select * from disease where omim = 271980")
+13:05:34,400  INFO Network2CysNetworkDB:41 - Rows: 0
+13:05:34,402  INFO Network2CysNetworkDB:47 - Empty Network
+13:05:34,403  INFO Network2CysNetworkDB:108 - Created cytoscape web nodes
+13:05:34,403  INFO Network2CysNetworkDB:161 - Generating cytoscape subnetwork
+13:06:24,031 ERROR DatabaseQueries2:570 - 
+Internal Exception: com.mysql.jdbc.exceptions.MySQLSyntaxErrorException: Unknown column 'OTC' in 'where clause'
+Error Code: 1054
+Call: select geneX, geneXname from phenumadb.gene_gene_relationships where metabolic >= 0.0 and (geneX in (OTC) or geneY in (OTC))  union select geneY, geneYname from phenumadb.gene_gene_relationships where metabolic >= 0.0 and (geneX in (OTC) or geneY in (OTC)) 
+Query: DataReadQuery(sql="select geneX, geneXname from phenumadb.gene_gene_relationships where metabolic >= 0.0 and (geneX in (OTC) or geneY in (OTC))  union select geneY, geneYname from phenumadb.gene_gene_relationships where metabolic >= 0.0 and (geneX in (OTC) or geneY in (OTC)) ")
+13:06:24,034  INFO Network2CysNetworkDB:41 - Rows: 0
+13:06:24,034  INFO Network2CysNetworkDB:47 - Empty Network
+13:06:24,035  INFO Network2CysNetworkDB:108 - Created cytoscape web nodes
+13:06:24,035  INFO Network2CysNetworkDB:161 - Generating cytoscape subnetwork
+13:07:42,533  INFO Network2CysNetworkDB:41 - Rows: 735
+13:07:42,536  INFO Network2CysNetworkDB:55 - Unipartite network
+13:12:46,525  INFO Network2CysNetworkDB:41 - Rows: 735
+13:12:46,527  INFO Network2CysNetworkDB:55 - Unipartite network
+13:14:51,479  INFO Network2CysNetworkDB:41 - Rows: 735
+13:14:51,482  INFO Network2CysNetworkDB:55 - Unipartite network
+13:15:51,113  INFO Network2CysNetworkDB:41 - Rows: 735
+13:15:51,115  INFO Network2CysNetworkDB:55 - Unipartite network
+13:42:08,266  INFO Network2CysNetworkDB:41 - Rows: 735
+13:42:08,268  INFO Network2CysNetworkDB:55 - Unipartite network
+13:43:27,643  INFO Network2CysNetworkDB:41 - Rows: 3291
+13:43:27,645  INFO Network2CysNetworkDB:55 - Unipartite network
+13:43:58,133  INFO Network2CysNetworkDB:41 - Rows: 3291
+13:43:58,135  INFO Network2CysNetworkDB:55 - Unipartite network
+13:45:21,089  INFO Network2CysNetworkDB:41 - Rows: 3291
+13:45:21,092  INFO Network2CysNetworkDB:55 - Unipartite network
+14:00:07,972  INFO Network2CysNetworkDB:44 - Rows: 3291
+14:00:07,974  INFO Network2CysNetworkDB:58 - Unipartite network
+14:00:08,044  INFO Network2CysNetworkDB:111 - Created cytoscape web nodes
+14:00:08,044  INFO Network2CysNetworkDB:164 - Generating cytoscape subnetwork
+14:00:08,984  INFO Network2CysNetworkDB:230 - Created cytoscape edgess

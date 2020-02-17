@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id" />
+        <cc:attribute name="outputfile" required="true"/>
+        <cc:attribute name="test" required="true"/>
+
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <c:if test="#{cc.attrs.outputFile}">
+         <p:dialog id="downloadDialog" widgetVar="downloadDlg" appendToBody="true">
+            <h:panelGrid id="downloadDlgPanel" columns="1">
+                <h:outputText value="The network is too big. The visualizer is not able to display it. However, you  can download it and visualize it using www.cytospace.org"/>
+                <p:commandLink id="downloadLink" value="Text File" ajax="false">
+                    <p:fileDownload value="#{cc.attrs.outputFile}" />  
+                </p:commandLink> 
+            </h:panelGrid>
+         </p:dialog>
+        </c:if>  
+    </cc:implementation>
+</html>

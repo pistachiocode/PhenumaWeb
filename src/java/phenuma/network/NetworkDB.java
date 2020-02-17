@@ -1,0 +1,283 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.network;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import ontologizer.StudySet;
+import phenomizer.utils.NumberUtils;
+import phenomizer.utils.StringUtils;
+import phenuma.networkproyection.NetworkConstants;
+import phenuma.networkproyection.NetworkUtils;
+
+/**
+ *
+ * @author Rocío Rodríguez López
+ */
+public class NetworkDB {
+    
+    /**
+     * Network name
+     */
+    private String name;
+    /*
+     * SQL Sentence result. Edges of the network.
+     */
+    private List<Object[]> rows;
+    
+    /*
+     * Type of relationship
+     */
+    private int querytype;
+    
+    /*
+     * Input type: Genes, Disease or Rare Disease.
+     */
+    private int inputtype;
+    
+    /**
+     * Confidence: high, low or medium
+     */
+    private double confidence;
+    
+    /*
+     * Input elements
+     */
+    private StudySet inputElements;
+    
+    /*
+     * This is used in diseases networks where the input is a set of genes.
+     * These object are shown in other color.
+     */
+    private Map<Integer, List<Integer>> relatedElements; 
+    
+    /*
+     * All nodes of the network
+     */
+    private StudySet nodes;
+    
+    
+    /**
+     * StudySet with the diseases nodes in bipartite networks
+     */
+    private StudySet nodesDiseases;
+    
+    
+
+    public NetworkDB() {
+        
+        this.name = "network_"+StringUtils.randomString(10);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getInputtype() {
+        return inputtype;
+    }
+
+    public void setInputtype(int inputtype) {
+        this.inputtype = inputtype;
+    }
+
+    public StudySet getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(StudySet nodes) {
+        this.nodes = nodes;
+    }
+
+    public int getQuerytype() {
+        return querytype;
+    }
+
+    public void setQuerytype(int querytype) {
+        this.querytype = querytype;
+    }
+
+    public double getConfidence() {
+        return confidence;
+    }
+
+    public void setConfidence(double confidence) {
+        this.confidence = confidence;
+    }
+
+    public List<Object[]> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<Object[]> rows) {
+        this.rows = rows;
+    }
+
+    public StudySet getInputElements() {
+        return inputElements;
+    }
+
+    public void setInputElements(StudySet inputElements) {
+        this.inputElements = inputElements;
+    }
+
+    public Map<Integer,List<Integer>> getRelatedElements() {
+        return relatedElements;
+    }
+
+    public void setRelatedElements(Map<Integer,List<Integer>> relatedElements) {
+        this.relatedElements = relatedElements;
+    }
+
+    public StudySet getNodesDiseases() {
+        return nodesDiseases;
+    }
+
+    public void setNodesDiseases(StudySet nodesDiseases) {
+        this.nodesDiseases = nodesDiseases;
+    }
+    
+    
+    @Override
+    public String toString()
+    {
+        
+        
+        String str = NetworkUtils.getCompleteNetworkHeader(querytype)+"";
+        
+    
+        if (!NetworkUtils.isBipartite(querytype))
+        {
+            
+            for (Object[] row : rows)
+            {
+                String rel = null;
+                
+                if(NetworkUtils.isUnipartiteGenes(querytype) || querytype == NetworkConstants.QUERY_GENE_NETWORK)
+                    rel = row[NetworkConstants.GENEGENE_REL_GENEX_SYMBOL_POS]+"\t"+row[NetworkConstants.GENEGENE_REL_GENEY_SYMBOL_POS];
+                else
+                    rel = row[NetworkConstants.DATABASE_MATRIX_OBJECTX_POS]+"\t"+row[NetworkConstants.DATABASE_MATRIX_OBJECTY_POS];
+                
+                
+                for(int i = NetworkUtils.getPositionFirstRelationship(this.getQuerytype()); i <= NetworkUtils.getPositionLastRelationship(this.getQuerytype()); i++)
+                {
+                    String value = NumberUtils.object2string(row[i]);                  
+                    
+                    
+                    
+                    if (!value.isEmpty() && !value.equals("0") && !value.equals("0.0") )
+                    {
+                        Double double_value = NumberUtils.round(new Double(value), 3);
+                        
+                        String reltype = NetworkUtils.getRelationshipTypeNameByTablePos(i, querytype);
+                        
+                        
+                        if(reltype.equals("infergene") || reltype.equals("inferorpha") || reltype.equals("inferomim") )
+                            double_value = double_value * 10;
+                            
+                        str = str + rel + "\t" + double_value + "\t"+reltype+"\t";
+                        
+                        if(i == NetworkConstants.GENEGENE_REL_PHENOTYPIC_POS && NetworkUtils.isNewRelationship(row, querytype))
+                            str = str + "yes\n";
+                        else
+                            str = str + "no\n";
+                    }
+                    
+                }
+            }
+       
+        }
+        else
+        {
+            for (Object[] row : rows)
+            {
+                if (NetworkUtils.isBipartiteGeneDiseases(this.getQuerytype()))
+                {
+                    String rel =  row[NetworkConstants.GENEOMIM_REL_GENE_SYMBOL_POS]+"\t"+row[NetworkConstants.DATABASE_MATRIX_OBJECTY_POS];
+                    
+                    if (row[NetworkConstants.GENEOMIM_REL_KNOWN_POS]!=null && ((Integer)row[NetworkConstants.GENEOMIM_REL_KNOWN_POS])>0)
+                            str = str + rel + "\t" + row[NetworkConstants.GENEOMIM_REL_KNOWN_POS] + "\t" + NetworkUtils.getRelationshipTypeNameByTablePos(NetworkConstants.GENEOMIM_REL_KNOWN_POS, querytype) + "\n";
+                    
+                    
+                    if (this.inputtype == NetworkConstants.INPUT_TYPE_GENES)
+                    {
+                        if (row[NetworkConstants.GENEOMIM_REL_PHENOTYPIC_OMIM_POS]!=null && ((Double)row[NetworkConstants.GENEOMIM_REL_PHENOTYPIC_OMIM_POS])>0.0)
+                            str = str + rel + "\t" + NumberUtils.round((Double)row[NetworkConstants.GENEOMIM_REL_PHENOTYPIC_OMIM_POS],3) + "\t" + NetworkUtils.getRelationshipTypeNameByTablePos(NetworkConstants.GENEOMIM_REL_PHENOTYPIC_OMIM_POS, querytype)+ "\t";
+                    }
+                    else
+                    {
+                        if (row[NetworkConstants.GENEOMIM_REL_PHENOTYPIC_GENE_POS]!=null && ((Double)row[NetworkConstants.GENEOMIM_REL_PHENOTYPIC_GENE_POS])>0.0)
+                            str = str + rel + "\t" + NumberUtils.round((Double)row[NetworkConstants.GENEOMIM_REL_PHENOTYPIC_GENE_POS],3) + "\t" + NetworkUtils.getRelationshipTypeNameByTablePos(NetworkConstants.GENEOMIM_REL_PHENOTYPIC_GENE_POS, querytype)+ "\t";                        
+                    }
+                    
+                    
+                       
+                }
+                else if (NetworkUtils.isBipartiteGeneOrphan(this.getQuerytype()))
+                {
+                    String rel =  row[NetworkConstants.GENEORPHA_REL_GENE_SYMBOL_POS]+"\t"+row[NetworkConstants.DATABASE_MATRIX_OBJECTY_POS];
+                    
+                    if (row[NetworkConstants.GENEORPHA_REL_KNOWN_POS]!=null && ((Integer)row[NetworkConstants.GENEORPHA_REL_KNOWN_POS])>0)
+                            str = str + rel + "\t" + row[NetworkConstants.GENEORPHA_REL_KNOWN_POS] + "\t" + NetworkUtils.getRelationshipTypeNameByTablePos(NetworkConstants.GENEORPHA_REL_KNOWN_POS, querytype) + "\n";
+                    
+                    
+                    if (this.inputtype == NetworkConstants.INPUT_TYPE_GENES)
+                    {
+                        if (row[NetworkConstants.GENEORPHA_REL_PHENOTYPIC_ORPHA_POS]!=null && ((Double)row[NetworkConstants.GENEORPHA_REL_PHENOTYPIC_ORPHA_POS])>0.0)
+                            str = str + rel + "\t" + NumberUtils.round((Double)row[NetworkConstants.GENEORPHA_REL_PHENOTYPIC_ORPHA_POS],3) + "\t" + NetworkUtils.getRelationshipTypeNameByTablePos(NetworkConstants.GENEORPHA_REL_PHENOTYPIC_ORPHA_POS, querytype)+ "\t";
+                    }
+                    else
+                    {
+                        if (row[NetworkConstants.GENEORPHA_REL_PHENOTYPIC_GENE_POS]!=null && ((Double)row[NetworkConstants.GENEORPHA_REL_PHENOTYPIC_GENE_POS])>0.0)
+                            str = str + rel + "\t" + NumberUtils.round((Double)row[NetworkConstants.GENEORPHA_REL_PHENOTYPIC_GENE_POS],3) + "\t" + NetworkUtils.getRelationshipTypeNameByTablePos(NetworkConstants.GENEORPHA_REL_PHENOTYPIC_GENE_POS, querytype)+ "\t";                        
+                    }
+
+                }
+
+            }
+            
+        }
+
+        
+        
+        return str;
+        
+
+    }
+
+    public ZipOutputStream createOutputZip()
+    {
+        ZipOutputStream zos = null;
+        try {
+            
+            zos = new ZipOutputStream(new FileOutputStream("network.zip"));
+            
+            zos.putNextEntry(new ZipEntry("complete_network.txt")); 
+            
+            System.out.println(this.toString());
+            zos.write(this.toString().getBytes(), 0, this.toString().getBytes().length);
+            
+            zos.closeEntry();
+            zos.close();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(NetworkDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return zos;
+
+    }
+    
+}

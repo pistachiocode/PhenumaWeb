@@ -1,0 +1,211 @@
+
+var sortedOn = 0;
+var tableNameSorted = "";
+var columnNameSorted = ""
+
+function SortTable(sortOn, tablename, columnname, type) {
+
+	var table = document.getElementById(tablename);
+	var tbody = table.getElementsByTagName('tbody')[0];
+	var rows = tbody.getElementsByTagName('tr');
+
+        var rowArray = new Array();
+
+        for (var i=0, length=rows.length; i<length; i++) 
+        {
+                rowArray[i] = new Object;
+                rowArray[i].oldIndex = i;
+
+                if(type == "link")
+                    rowArray[i].value = rows[i].getElementsByTagName('td')[sortOn].getElementsByTagName('a')[0].firstChild.nodeValue;
+                else if(type == "p")
+                    rowArray[i].value = rows[i].getElementsByTagName('td')[sortOn].getElementsByTagName('p')[0].firstChild.nodeValue;
+                else {
+                    rowArray[i].value = rows[i].getElementsByTagName('td')[sortOn].firstChild.nodeValue;
+                }
+        }
+        
+        
+	if (sortOn == sortedOn && tableNameSorted == tablename && columnNameSorted == columnname) 
+        { 
+            rowArray.reverse(); 
+        }
+	else {
+
+        
+		sortedOn = sortOn;
+                tableNameSorted = tablename;
+                columnNameSorted = columnname;
+		
+                /*
+                    Decide which function to use from the three:RowCompareNumbers,
+                    RowCompareDollars or RowCompare (default).
+                    For first column, I needed numeric comparison.
+		*/
+                if (type == "number")
+                    rowArray.sort(RowCompareNumbers);
+                else if (type == "float")
+                    rowArray.sort(RowCompareFloat);
+                else if (type == "pairs")
+                    rowArray.sort(RowComparePairs);
+                else if (type == "scientific")
+                    rowArray.sort(RowCompareScientific);
+                else     
+                    rowArray.sort(RowCompare);
+                
+
+	}
+
+	var newTbody = document.createElement('tbody');
+
+	for (i=0, length=rowArray.length; i<length; i++) {
+		newTbody.appendChild(rows[rowArray[i].oldIndex].cloneNode(true));
+	}
+
+	table.replaceChild(newTbody, tbody);
+}
+
+
+function SortDetailedTable(sortOn, tablename, columnname, type) {
+
+	var table = document.getElementById(tablename);
+	var tbody = table.getElementsByTagName('tbody')[0];
+	var rows = tbody.getElementsByTagName('tr');
+
+	var rowArray = new Array();
+        var detailArray = new Array();
+
+        var i = 0
+        var j = 0;
+        var k = 0;
+	while (i<rows.length) 
+        {
+            if(rows[i].getAttribute("class") != "detail" && rows[i].getAttribute("class") != null)
+            {
+		rowArray[j] = new Object;
+		rowArray[j].oldIndex = i;
+
+                if(type == "link")
+                    rowArray[j].value = rows[i].getElementsByTagName('td')[sortOn].getElementsByTagName('a')[0].firstChild.nodeValue;
+                else {
+                    rowArray[j].value = rows[i].getElementsByTagName('td')[sortOn].firstChild.nodeValue;
+                }
+                
+                j++;
+            } 
+            else if(rows[i].getAttribute("class") == "detail")
+            {
+                detailArray[k] = new Object;
+		detailArray[k].oldIndex = i;
+
+                k++;
+                    
+            }
+            
+            i++;
+	}
+        
+        
+      
+        
+	if (sortOn == sortedOn && tableNameSorted == tablename && columnNameSorted == columnname) 
+        { 
+            rowArray.reverse(); 
+        }
+	else {
+                
+		sortedOn = sortOn;
+                tableNameSorted = tablename;
+                columnNameSorted = columnname;
+		
+                /*
+                    Decide which function to use from the three:RowCompareNumbers,
+                    RowCompareDollars or RowCompare (default).
+                    For first column, I needed numeric comparison.
+		*/
+                if (type == "number")
+                    rowArray.sort(RowCompareNumbers);
+                else if (type == "float")
+                    rowArray.sort(RowCompareFloat);
+                else if (type == "pairs")
+                    rowArray.sort(RowComparePairs);
+                else if (type == "scientific")
+                    rowArray.sort(RowCompareScientific);
+                else     
+                    rowArray.sort(RowCompare);
+                
+
+	}
+
+	var newTbody = document.createElement('tbody');
+
+	for (i=0, length=rowArray.length; i<length; i++) {
+		newTbody.appendChild(rows[rowArray[i].oldIndex].cloneNode(true));
+                newTbody.appendChild(rows[rowArray[i].oldIndex+1].cloneNode(true));
+	}
+
+	table.replaceChild(newTbody, tbody);
+}
+
+
+function RowCompare(a, b) { 
+
+	var aVal = a.value;
+	var bVal = b.value;
+	return (aVal == bVal ? 0 : (aVal > bVal ? 1 : -1));
+}
+
+// Compare number
+function RowCompareNumbers(a, b) {
+
+        if(a.value == "-")
+            a.value = 0
+
+        if(b.value == "-")
+            b.value = 0
+
+	var aVal = parseInt(a.value);
+	var bVal = parseInt(b.value);
+	return (aVal - bVal);
+}
+
+// compare currency
+function RowCompareFloat(a, b) {
+
+        if(a.value == "-")
+            a.value = -100.0
+
+        if(b.value == "-")
+            b.value = -100.0
+        
+	var aVal = parseFloat(a.value);
+	var bVal = parseFloat(b.value);
+	return (aVal - bVal);
+}
+
+
+//compare a/b
+function RowComparePairs(a,b)
+{
+    var aVal = a.value.split("/");
+    var bVal = b.value.split("/")
+
+    var num1_aVal = parseInt(aVal[0]);
+    var num2_aVal = parseInt(aVal[1]);  
+
+    var num1_bVal = parseInt(bVal[0]);
+    var num2_bVal = parseInt(bVal[1]);
+    
+    if(num1_aVal - num1_bVal == 0)
+        return (num2_aVal - num2_bVal);
+    
+    return (num1_aVal - num1_bVal);
+    
+}
+
+function RowCompareScientific(a,b)
+{ 
+    var aVal = parseFloat(a.value.replace(",","."));
+    var bVal = parseFloat(b.value.replace(",","."));
+    return (aVal - bVal);
+}

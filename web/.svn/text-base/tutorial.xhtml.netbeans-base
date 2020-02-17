@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://java.sun.com/jsf/composite/phcomp"> 
+    <h:head>
+
+      <!--  <script type="text/javascript" src ="./javascript/jquery/jquery-ui-1.8.11.custom.min.js"> </script>
+        <script type="text/javascript" src="./javascript/jquery/jquery-1.7.1.min.js"></script> -->
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        
+        
+        <!-- CSS  --> 
+        <link href="./grungestyle/styles.css" rel="stylesheet" type="text/css"></link>  
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>
+         
+        <script>
+       
+        
+        function toggle(form)
+        {
+            $("#videos").hide();
+            $("#pdf").hide();
+            $("#started").hide();
+            
+            $(form).show();
+
+        }
+       
+         $(document).ready(function() {
+
+           toggle('#started')
+
+             
+         })
+           
+        
+        </script>
+    </h:head>
+    <h:body style="font-size:12px;">
+             <!-- Menu -->
+            <header>
+	   <div class="container1">
+	      <!--start title-->
+              <div style="float:left;">
+                <img src="./resources/img/logo_blanco.png" />
+              </div>
+	      <!--end title-->
+	      <!--start menu-->
+              <div style="float:left; width: 300px; padding-top: 20px;">
+                  <nav>
+                      <ul>
+                      <li><a href="main.jsf" class="grn">Home</a></li>
+                      <li><a href="index.jsf" class="ylw">Visualizer</a></li>
+                      <li><a href="tutorial.jsf" class="pnk">Help</a></li>
+                      <li><a href="download.jsf" class="orng">Download </a></li>
+                      <li><a href="contact.jsf" class="prpl">About</a></li>
+                      </ul>
+                  </nav>
+              </div>
+	   </div>
+	   <div class="bottom"> 
+           
+           </div>
+	   <!--end menu-->
+	   <!--end header-->
+	</header>
+              <aside id="sidebar2"><!-- sidebar1 -->
+              <br /><br />
+              <ul>
+                  <li> Tutorial: </li>
+                  <li onclick="toggle('#started')"> Getting Started </li>
+                  <li onclick="toggle('#videos')"> Video Tutorial: How to... </li>
+                  <li onclick="toggle('#pdf')"> Tutorial PDF </li>
+                  <!--
+                  <li>Type of Input</li>
+                  <li>Type of Networks</li>
+                  <li>Confidence Level </li>
+                  <li>Visualizer: Filter, select, get information</li>
+                  <li>Enrichment</li>
+                  <li>Download results</li>
+                  -->
+              </ul>
+              </aside><!-- end of sidebar1 -->
+            
+                
+            <div id="videos">
+                
+            <h3> Video Tutorials: How to ... </h3>
+            <br/>
+            
+             
+                <table class="tabtext_tutorial">
+
+
+                    <tr> 
+                        <td style="width: 470px; padding: 10px;" >
+                            <h4> ...find genes/diseases identifiers? </h4>
+                            <p>Select the identifiers to execute a query in PhenUMA. Severals resources are available to find the gene 
+                            or disease of interest:
+                            <a href="http://www.ncbi.nlm.nih.gov/"> NCBI </a>, <a href="http://www.ensembl.org/index.html">Ensembl</a>,
+                            <a href="www.omim.org"> OMIM </a>, <a href="http://www.genenames.org/">HGNC</a> and <a href="www.orpha.net">Orphanet</a>. 
+                           </p>
+                        </td> 
+                       
+                        <td style="width: 470px; padding: 10px;">
+                            <h4>  ..manage the interface? </h4>
+                            <p>The visualizer allow to interact with the network. Some controls are located in the left-hand panel: filters,
+                               check phenotypic information of the selected nodes, enrichment analyses...
+                           </p>
+                        </td>  
+                    </tr>
+                    <tr>
+                        <td> 
+                            <iframe width="300" height="170" src="//www.youtube.com/embed/NvlJWbhxxd0" frameborder="0" allowfullscreen="true"></iframe> 
+                        </td> 
+                        <td> 
+                            <iframe width="300" height="170" src="//www.youtube.com/embed/z2oZS3Tfqqc" frameborder="0" allowfullscreen="true"></iframe> 
+                        </td>
+                    </tr>
+
+                    <tr> 
+                        <td style="width: 470px; padding: 10px;">
+                            <h4>  ...download the output data? </h4>
+                            <p>Resulting networks can be downloaded in text file format. This makes it possible to work with the results using other
+                                platforms as Cytoscape. 
+                           </p>
+                        </td>
+                        <td style="width: 470px; padding: 10px;">
+                            <h4>  ...visualize resulting networks using Cytoscape? </h4>
+                            <p>Text files returned by PhenUMA can be used in Cytoscape. This video tutorial shows how to visualize
+                               PhenUMA networks using this tool.
+                           </p>
+                        </td>
+                     </tr>
+                    <tr>
+                        
+                        <td> 
+                            <iframe width="300" height="170" src="//www.youtube.com/embed/m8GpwTdHc_8" frameborder="0" allowfullscreen="true"></iframe> 
+                        </td>
+                        <td> 
+                            <iframe width="300" height="170" src="//www.youtube.com/embed/y9_c0HRGzME" frameborder="0" allowfullscreen="true"></iframe> 
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+                
+            <div id="started">
+             <h3> Getting Started </h3>
+            <br/>
+            
+             
+                <table class="tabtext_tutorial">
+
+
+                    <tr> 
+                        <td style="padding: 10px;" >
+                            <h4> 1 Select the input type: genes, OMIM diseases, Orphan diseases or Phenotypes </h4>
+                        </td> 
+                       
+
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">
+                            <h4> 2 Write yout query </h4>
+                            <p>Introduce the list of genes, diseases or phenotype that you want to query separate by commas. 
+                                The recommended identifier for genes is entrez, but
+                                you can gene symbols, mim, hgnc, orphanum or ensembl. To execute a query
+                                select the type of input and write your query. You must to use the OMIM id for dieases, the Orphan id for orphan diseaes and
+                                the HPO id for phenotypes. As long as you want to introduce a set of genes you can use the EntrezGene (Recommended), Symbol or Ensembl. The
+                                MIM, HGNC and Orpha ids are allowed too but, it must be indicated in the same way: MIM:300461, HGNC:8512 or ORPHA:124033
+                           </p>
+                        </td>  
+
+                    </tr>
+
+                    <tr> 
+                        <td style="padding: 10px;">
+                            <h4> 3 Select the output network </h4>
+                            <p>Select the network that you want to visualize. 
+                           </p>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px;">
+                            <h4> 4 Choice the confidence level </h4>
+                            <p> Three leves of confidence are availiable. Select a <b>high</b> to get a network with the more significative relationships.
+                                If you want to lower the threshold select a <b>medium</b> or <b>low</b> confidence.
+                           </p>
+                        </td> 
+                     </tr>
+                    
+                     <tr>
+                        <td style="padding: 10px;">
+                            <h4> 5 Press "Build Network" button and wait some seconds while the query is performed. </h4>
+                            <p> Once the network has been generated the table/visualizer view will be shown. 
+                           </p>
+                        </td> 
+                     </tr>
+
+                </table>
+
+            </div>
+              
+              
+            <div id="pdf">    
+                
+             <!-- Phenuma tutorial -->
+             <h2> PhenUMA Tutorial </h2>
+                 <br/>
+
+                 <p> We are working to provide a complete tutorial in HTML and more help resources, however provisionally, you can download this preliminary 
+                                                                  version in PDF format from the following link:</p>
+
+                 <table>
+
+                     <tr><td><a href="resources/tutorial_phenuma.pdf"> <div class="icon_download"> </div> </a> </td>
+                         <td><a href="resources/tutorial_phenuma.pdf" class="link_tutorial"> Download Tutorial PDF  </a></td></tr>
+
+                 </table>
+
+             
+             <!-- Events -->
+             <br />
+             <h2> Events </h2>
+        
+             <p class="tabtext_tutorial">  Phenuma Course 2013 organized by Ciberer and given the 13 and 14 of June of 2013:  </p>
+             
+             <p class="tabtabtext_tutorial">  
+                 <h:outputLink value="./cursociberer2013.jsf" styleClass="link_tutorial"> 
+                    Course website 
+                 </h:outputLink>
+             </p>
+            
+             
+             <!-- Demos -->
+             <br />
+             
+
+             <p> Donwload slides in PDF
+             <a href="./resources/cursophenuma/SESION_PRACTICA_I.pdf"> <div class="icon_pdf"></div> </a> </p> 
+
+            </div> 
+ 
+             <!-- Footer -->
+            <footer> 
+                <center>
+                <div  class="container1">
+                         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.es_CO">
+                            <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" />
+                    </a><br />
+                    <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title" > PhenUMA </span> is licensed under a 
+                    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+                            Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+                    </a>
+                </div>
+                </center>
+            </footer>
+         
+    </h:body>
+</html>
+

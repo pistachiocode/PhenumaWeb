@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="id"/>
+        <cc:attribute name="widget"/>
+    </cc:interface>
+    
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+
+        
+        <p:dialog id="#{cc.attrs.id}" header="#{edgeTableManagedBean.selectedNode}" widgetVar="#{cc.attrs.widget}" draggable="true" dynamic="true" style="width:400px; height: 300px;"> 
+            <h:form id="dialogform">
+                <p:scrollPanel>
+                    <h:outputText value="#{edgeTableManagedBean.phenotypeTable}" escape="false"/>  
+                </p:scrollPanel>
+            </h:form>
+        </p:dialog>  
+
+        
+    </cc:implementation>
+    
+
+    
+    
+</html>

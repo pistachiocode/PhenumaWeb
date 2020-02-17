@@ -1,0 +1,106 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.networkproyection;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import ontologizer.StudySet;
+import ontologizer.StudySetFactory;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import phenomizer.hpo.PhenumaDB;
+import phenuma.constants.Constants;
+import phenuma.dataqueries.DatabaseQueries2;
+import phenuma.network.NetworkDB;
+
+/**
+ *
+ * @author Armando
+ */
+public class OrphanumQuery extends NetworkQuery implements QueryOperations{
+    
+    static final Logger logger = Logger.getLogger(OrphanumQuery.class.getName());
+    
+    PhenumaDB pdb = PhenumaDB.getInstance();                 
+        
+    private StudySet studySet;    
+    
+    /* In some kind of network is not necesary set an ontology and semantic similarity*/
+    public OrphanumQuery(StudySet studySet, int queryType) {
+        super(queryType);
+        
+        this.studySet = studySet;
+        
+        //default ontology and association container.
+        this.ontology = Constants.ONTO_HPO;
+        this.associations = Constants.ASSOC_ER_HPO;
+        
+        this.semanticSimilarity = Constants.ROBINSON_SYMMETRIC;
+
+        
+    }
+ 
+    public StudySet getStudySet() {
+        return studySet;
+    }
+
+    public void setStudySet(StudySet studySet) {
+        this.studySet = studySet;
+    }
+    
+    
+    
+    @Override
+    public void executeQueryDB() {
+        try {
+            logger.info("executeQuery: "+queryType+" input orphan "+studySet.toString());
+
+            DatabaseQueries2 q  = new DatabaseQueries2(); 
+            
+            NetworkDB networkdb = new NetworkDB();
+            networkdb.setInputElements(studySet);
+            networkdb.setInputtype(NetworkConstants.INPUT_TYPE_ORPHA);
+            networkdb.setQuerytype(queryType);
+            
+            StudySet relatedObjectsStudySet = studySet; 
+            Map<Integer, List<Integer>> disease2genes = new HashMap<Integer, List<Integer>>();     
+            
+           //Genes networks: select the genes related with the input omim.
+            if(NetworkUtils.isUnipartiteGenes(queryType))
+            { 
+                disease2genes = NetworkUtils.geneStudyFromOrphanum(this.studySet);
+                relatedObjectsStudySet = StudySetFactory.createFromIntegerSet(disease2genes.keySet(), true);             
+            }
+            
+            /**
+             * Get the set of Nodes of the outcome network
+             */
+            StudySet networknodesset = new StudySet();
+            if (!NetworkUtils.isBipartite(queryType))
+            {
+                networknodesset = q.getObjectRelated(relatedObjectsStudySet, NetworkConstants.INPUT_TYPE_ORPHA, queryType, this.threshold);
+                networkdb.setNodes(networknodesset);
+            }
+            else
+                networkdb.setNodesDiseases(q.getObjectRelatedBipartite(relatedObjectsStudySet, NetworkConstants.INPUT_TYPE_ORPHA, queryType, this.threshold));
+            
+            /**
+             * Get the rows of the outcome network
+             */
+            networkdb.setRows(q.networkQuery(relatedObjectsStudySet, networknodesset, NetworkConstants.INPUT_TYPE_ORPHA, this.queryType, this.threshold));
+            
+            this.resultDB = networkdb;
+
+        } catch (IOException ex) {
+            Logger.getLogger(OrphanumQuery.class.getName()).log(Level.ERROR, null, ex);
+        } 
+    }
+
+
+ 
+
+}

@@ -1,0 +1,201 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.entities;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import phenuma.utils.PhenumaException;
+
+/**
+ *
+ * @author Armando
+ */
+@Entity
+@Table(name = "gene")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Gene.findAll", query = "SELECT g FROM Gene g"),
+    @NamedQuery(name = "Gene.findByEntrezid", query = "SELECT g FROM Gene g WHERE g.entrezid = :entrezid"),
+    @NamedQuery(name = "Gene.findBySymbol", query = "SELECT g FROM Gene g WHERE g.symbol = :symbol")})
+public class Gene implements Serializable {
+    @Lob
+    @Column(name = "description")
+    private byte[] description;
+    @Column(name = "location")
+    private String location;
+    @Column(name = "chromosome")
+    private String chromosome;
+    @Column(name = "genetype")
+    private String genetype;
+    @Column(name = "name")
+    private String name;
+
+    @JoinTable(name = "gene_rare_disease", joinColumns = {
+        @JoinColumn(name = "entrez", referencedColumnName = "entrezid")}, inverseJoinColumns = {
+        @JoinColumn(name = "orphanum", referencedColumnName = "orphanum")})
+    @ManyToMany
+    private List<RareDisease> rareDiseaseList;
+    
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "entrezid")
+    private Integer entrezid;
+    @Column(name = "symbol")
+    private String symbol;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gene1", fetch = FetchType.LAZY)
+    private List<DiseaseGene> diseaseGeneList;
+
+    public Gene() {
+    }
+
+    public Gene(Integer entrezid) {
+        this.entrezid = entrezid;
+    }
+
+    public Integer getEntrezid() {
+        return entrezid;
+    }
+
+    public void setEntrezid(Integer entrezid) {
+        this.entrezid = entrezid;
+    }
+
+    public String getSymbol() throws PhenumaException {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    @XmlTransient
+    public List<DiseaseGene> getDiseaseGeneList() throws PhenumaException {
+
+        return diseaseGeneList;
+    }
+
+    public void setDiseaseGeneList(List<DiseaseGene> diseaseGeneList) {
+        this.diseaseGeneList = diseaseGeneList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (entrezid != null ? entrezid.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Gene)) {
+            return false;
+        }
+        Gene other = (Gene) object;
+        if ((this.entrezid == null && other.entrezid != null) || (this.entrezid != null && !this.entrezid.equals(other.entrezid))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return entrezid.toString();
+    }
+    
+        
+    
+    /**
+     * List of diseases related with a gene.
+     * 
+     * @return List<Disease> list of disease
+     */
+    public List<Disease> getDiseaseList() throws PhenumaException{
+        
+        List<Disease> diseaseList = new ArrayList<Disease>();
+        
+        Iterator<DiseaseGene> iter = this.getDiseaseGeneList().iterator();
+        
+        while(iter.hasNext()){
+            DiseaseGene dg = iter.next();
+            
+            diseaseList.add(dg.getDisease1());
+        }
+        
+        return diseaseList;
+    }
+
+    @XmlTransient
+    public List<RareDisease> getRareDiseaseList() throws PhenumaException {       
+        return rareDiseaseList;
+    }
+
+    public void setRareDiseaseList(List<RareDisease> rareDiseaseList) {
+        this.rareDiseaseList = rareDiseaseList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public byte[] getDescription() {
+        return description;
+    }
+
+    public void setDescription(byte[] description) {
+        this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getChromosome() {
+        return chromosome;
+    }
+
+    public void setChromosome(String chromosome) {
+        this.chromosome = chromosome;
+    }
+
+    public String getGenetype() {
+        return genetype;
+    }
+
+    public void setGenetype(String genetype) {
+        this.genetype = genetype;
+    }
+   
+
+    
+}

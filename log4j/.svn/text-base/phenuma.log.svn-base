@@ -1,0 +1,23 @@
+18:42:30,410  INFO OmimQuery:94 - executeQuery: 152 input omim  613241 214350
+18:44:06,411  INFO OmimQuery:94 - executeQuery: 152 input omim  613241 214350
+18:27:12,868 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:27:42,958 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:30:06,205 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:30:41,099 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:36:13,653 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:37:12,731 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:37:58,978 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:40:20,076 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:40:38,353 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:41:34,006 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:42:06,600 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:42:06,630 ERROR DatabaseQueries:64 - Error cerrando conexi—n Attempting to execute an operation on a closed EntityManager.
+18:42:35,990 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:42:36,016 ERROR DatabaseQueries:64 - Error cerrando conexi—n Attempting to execute an operation on a closed EntityManager.
+18:43:00,470 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:43:00,500 ERROR DatabaseQueries:64 - Error cerrando conexi—n Attempting to execute an operation on a closed EntityManager.
+18:43:11,030 ERROR DatabaseQueries:58 - Cerrando conexi—n
+18:43:11,066 ERROR DatabaseQueries:64 - Error cerrando conexi—n Attempting to execute an operation on a closed EntityManager.
+18:44:31,123 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:45:04,879 ERROR DatabaseQueries:57 - Cerrando conexi—n
+18:51:21,156 ERROR DatabaseQueries:57 - Cerrando conexi—n

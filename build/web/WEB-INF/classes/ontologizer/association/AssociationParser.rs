@@ -1,0 +1,3 @@
+ontologizer.association.SwissProtAffyAnnotation
+ontologizer.association.SwissProtAffyAnnotaionSet
+ontologizer.association.AssociationParser

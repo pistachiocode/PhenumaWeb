@@ -1,0 +1,9 @@
+ontologizer.FileCache$FileDownload
+ontologizer.FileCache$FileState
+ontologizer.DownloadThread
+ontologizer.FileCache$IFileVisitor
+ontologizer.FileCache
+ontologizer.CachedFile
+ontologizer.FileCache$FileCacheUpdateCallback
+ontologizer.FileCache$1SynchronDownloaderCallback
+ontologizer.FileCache$1

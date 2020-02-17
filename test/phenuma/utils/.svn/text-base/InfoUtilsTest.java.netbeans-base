@@ -1,0 +1,142 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.utils;
+
+import phenuma.utils.InfoUtils;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import phenuma.network.Edge;
+import phenuma.network.Network;
+import phenuma.network.Node;
+import phenuma.networkproyection.NetworkConstants;
+import phenuma.objects.NetworkType;
+import phenuma.objects.QueryExecution;
+import phenuma.objects.TableEdge;
+import phenuma.objects.TableNode;
+import phenuma.cysnetwork.CysNetwork;
+import phenuma.managedbeans.PhenumaWeb;
+
+/**
+ *
+ * @author Armando
+ */
+public class InfoUtilsTest {
+    
+    List<String> genes;
+    
+    public InfoUtilsTest() {
+        
+        genes = new ArrayList<String>();
+        
+        genes.add("1411");
+        genes.add("1410");
+        genes.add("70");
+        genes.add("37");
+        
+    }
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
+    }
+
+    /**
+     * Test of getTableEdges method, of class InfoUtils.
+     */
+    @Test
+    public void testGetTableEdges() throws Exception {
+//        
+//        Network network = QueryExecution.executeGeneQuery(genes, NetworkConstants.MONOPARTITE_GENE_SS_HPO, 2.0);
+//        
+//        //PhenumaWeb pw = PhenumaWeb.getInstance();
+//        
+//        /*Set current network*/
+//      //  CysNetwork cynet = new CysNetwork(network, NetworkConstants.MONOPARTITE_GENE_SS_HPO);
+//       // pw.setCurrentNetwork(cynet);
+//        
+//        
+//    //    List<TableEdge> tableEdges = InfoUtils.getTableEdges(network);
+//        
+//        String str = "";
+//        
+//        for(TableEdge edge : tableEdges){
+//            str = edge.getId()+"\t"+edge.getSource().getText()+"\t"+edge.getTarget()+"\t"+edge.getScore()+"\t"+edge.getRelationship_type()+"\t";
+//            
+//            List<TableNode> terms = edge.getObjects();
+//            for(TableNode node : terms){
+//                str = str + node.getText();
+//            }
+//            
+//        }
+//        
+//        saveToFile(str, "./resources/out/tests/edgesGeneQuery.txt");
+        
+        
+    }
+
+    /**
+     * Test of getRelationshipObjects method, of class InfoUtils.
+     */
+   // @Test
+    public void testGetRelationshipObjects() throws Exception {
+        System.out.println("getRelationshipObjects");
+        Node source = null;
+        Node target = null;
+        Edge edge = null;
+        int relationshipType = 0;
+        List expResult = null;
+        List result = InfoUtils.getRelationshipObjects(source, target, edge, relationshipType);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+//    /**
+//     * Test of termList2nodeList method, of class InfoUtils.
+//     */
+//    //@Test
+//    public void testTermList2nodeList() throws Exception {
+//        System.out.println("termList2nodeList");
+//        Node node = null;
+//        int ontologyID = 0;
+//        int associationID = 0;
+//        List expResult = null;
+//        List result = InfoUtils.termList2nodeList(node, ontologyID, associationID);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//    
+    
+    public static void saveToFile(String file, String content) throws IOException{
+        
+        PrintWriter pw = new PrintWriter(new FileWriter(file));
+        
+        pw.println(content);
+        
+        pw.close();
+        
+    }
+}

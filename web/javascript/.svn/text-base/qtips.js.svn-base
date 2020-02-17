@@ -1,0 +1,271 @@
+
+
+function executeShowQtip()
+{   
+    var event = getLastEvent();
+    var event_target = getLastEventTarget();
+    
+    //Object with the JSON of a node or edge
+    var data = event.target[0].data;
+    
+    var content = "";
+    var title = "";
+    var posx = 0;
+    var posy = 0;
+    
+    //Qtip parameters: title, content and position
+    
+    if (event_target == "node")
+    {
+        posx = $("#cytoscapeweb").offset().left + event.target[0].x;
+        posy = $("#cytoscapeweb").offset().top  + event.target[0].y;
+        
+        content = qtipcontent(data);
+        title   = data.label +" ("+getDatabase(data)+":"+data.id+")"
+        
+        
+    }
+    else if (event_target == "edge")
+    {
+        posx = $("#cytoscapeweb").offset().left + getClickPosx();
+        posy = $("#cytoscapeweb").offset().top  + getClickPosy();
+    
+        content = qtipcontent_edge(data);
+        title   = getRelationshipType(data.type)
+    }
+    
+    showQtip(event, title, content, posx, posy, data.id);
+}     
+
+
+function showQtip(event, title, content, posx, posy, id)
+{ 
+    //$('body').qtip('destroy', true);
+    
+    
+    //alert(title+" "+content+" "+posx+" "+posy+" "+id)
+
+    if(event.target.length==1)
+    {
+        $('body').qtip({
+            id: id,
+            content: {
+                title: title, 
+                text: content
+            },
+            position: {
+                my:'topLeft',
+                at:'topLeft',
+                target:false,
+                type:'absolute',
+                adjust:{
+                    mouse:false,
+                    x: posx,
+                    y: posy,
+                    scroll: false,
+                    resize: false
+                }
+            },
+            show: {
+                ready: true,
+                delay: 1000    
+            },
+            hide: 'click',
+            style: {classes: 'myCustomClass'}
+        })
+    }
+    
+}
+
+
+function qtipcontent(data)
+{
+    if(data.type == gene_type)
+    {
+        return qtipcontent_gene(data)
+    }
+    else if (data.type == disease_type)
+    {
+        return qtipcontent_disease(data)
+    }
+    else if (data.type >= orphanum_type)
+    {
+        return qtipcontent_disease(data)
+    }
+    
+    return "";
+}
+
+
+
+function qtipcontent_gene(gene)
+{
+    var str = getQtipInformaionJSON();
+    
+    var phenotypes = eval("(" + str + ")");
+
+    cleanPhenotypesJSON();
+    
+    var i = 10;
+
+    var tip = "<div id='contenedor'> <span class='genenameqtip'>"+ insertLinkHTML(gene, phenotypes.fullname, gene_type) +"<span>";
+    
+    
+    tip = tip + "<br /> <span class='subsubtitleqtip'> Location: </span> <span class='textqtip'>"   + phenotypes.location + "</span"
+              + "<br /> <span class='subsubtitleqtip'> Gene Type:  </span> <span class='textqtip'>" + phenotypes.genetype + "</span>"
+              + "<br /> <span class='subtitleqtip'> Phenotypes: </span> <br />  ";
+    
+    if(!isEmpty(phenotypes.phenotypes))
+    {
+        for(var i in phenotypes.phenotypes)
+        {
+            tip = tip +phenotypes.phenotypes[i].name +", "
+        }
+
+        tip = tip.substring(0,tip.length-2)
+    }
+    
+    if(!isEmpty(phenotypes.diseases))
+    {
+
+        tip = tip + "</p><span class='subtitleqtip'> OMIM Diseases: </span> <br /> <p class='descriptionqtip'>";
+        for(var i in phenotypes.diseases)
+        {
+            tip = tip + phenotypes.diseases[i].name.toLowerCase() + " ("+insertLinkHTML(phenotypes.diseases[i].id,' OMIM:'+phenotypes.diseases[i].id, disease_type)+"), "
+        }
+
+        tip = tip.substring(0,tip.length-2)
+    }
+    
+    if(!isEmpty(phenotypes.orphandiseases))
+    {  
+        tip = tip + "</p> <span class='subtitleqtip'> Orphan Diseases: </span> <p class='descriptionqtip'> ";
+        for(var i in phenotypes.orphandiseases)
+        {
+            tip = tip  + phenotypes.orphandiseases[i].name.toLowerCase() + " ("+ insertLinkHTML(phenotypes.orphandiseases[i], ' Orphanum:'+phenotypes.orphandiseases[i].id, orphanum_type) + ") ,"
+        }
+
+        tip = tip.substring(0,tip.length-2)
+        tip = tip + "</p>" 
+    }
+    tip = tip + "<br /> <a class='buttonqtip' onclick='explore(\""+gene.id+"\")'>Build Network</a></div>"
+    
+    return tip;
+}
+
+
+
+
+function qtipcontent_disease(disease)
+{
+    
+    var str = getQtipInformaionJSON();
+    
+    var phenotypes = eval("(" + str + ")");
+
+    
+    var i = 10;
+  
+    var tip = "<div id='contenedor'> <span class='genenameqtip'>"+ insertLinkHTML(disease, phenotypes.fullname, disease.type) +"<span>";
+   
+    if(!isEmpty(phenotypes.phenotypes))
+    {
+    
+        tip = tip + "<br /> <span class='subtitleqtip'> Phenotypes: </span><br /><p class='descriptionqtip'> ";
+
+        for(var i in phenotypes.phenotypes)
+        {
+            tip = tip +phenotypes.phenotypes[i].name +", "
+        }
+
+        tip = tip.substring(0,tip.length-2)
+    }
+    
+    if(!isEmpty(phenotypes.genes))
+    {
+        tip = tip + "</p> <span class='subtitleqtip'> Genes: </span> <p class='descriptionqtip'> ";
+        for(var i in phenotypes.genes)
+        {
+            tip = tip +  insertLinkHTML(phenotypes.genes[i], ' Entrez:'+phenotypes.genes[i].id, gene_type)+ phenotypes.genes[i].name + ", "
+        }     
+        tip = tip.substring(0,tip.length-2)
+        tip = tip + "</p>"    
+    }
+    
+
+    if(disease.type >= orphanum_type)
+    {
+        tip = tip + "<br /><span class='subtitleqtip'> Prevalence: </span>" + getPrevalence(disease.type) +"<br />";
+    }
+
+    
+    tip = tip + "<br /><a class='buttonqtip' onclick='explore(\""+disease.id+"\")'>Build Network</a>"
+    
+    return tip;
+}
+
+function qtipcontent_edge(edge)
+{
+    /*
+    var nodeX = findObject(edge.target)
+    var nodeY = findObject(edge.source)
+    
+   // var str = getQtipInformaionJSON();
+    
+   // var phenotypes = eval("(" + str + ")");
+    
+
+    
+    var tip = "<span class='textqtip'> <strong>From: </strong>"+nodeX.label+" to "+nodeY.label+" </span><br />"+
+              "<span class='textqtip'> <strong> Score: </strong>"+edge.score+"</span><br />";
+         
+    tip = tip + "<span class='textqtip'> <strong>Source:</strong> "+getSource(edge)+"</span><br />";
+    
+    if(!isEmpty(phenotypes.terms))
+    {
+        tip = tip + "<span class='textqtip'> <strong>Terms: </strong> "
+
+        for(var i in phenotypes.terms)
+        {
+            tip = tip +phenotypes.terms[i].name +", "
+        }
+        
+        tip = tip.substring(0,tip.length-2)
+        tip = tip + "</span>";
+    }
+    
+    if(!isEmpty(phenotypes.objects))
+    {   
+        tip = tip + "<span class='textqtip'> <strong>Objects: </strong> "
+
+        for(var i in phenotypes.objects)
+        {
+            tip = tip +phenotypes.objects[i].name +", "
+        }
+        
+        tip = tip.substring(0,tip.length-2)
+        tip = tip + "</span>";
+    }*/
+    return "tip"
+    //return tip;
+}
+
+
+
+function explore(gene)
+{
+    $("input[name = 'queryform:genestab:inputtxtarea']").val(gene)
+    $("button[id = 'queryform:genestab:buildnetworkbtn']").click();
+    pbAjax.cancel();
+    pbAjax.start();
+    
+}
+
+
+
+function destroyQtip()
+{
+    $('body').qtip('destroy', true); 
+}
+
+

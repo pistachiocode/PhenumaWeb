@@ -1,0 +1,257 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.utils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import ontologizer.go.OBOParserException;
+import ontologizer.go.Ontology;
+import ontologizer.go.Term;
+import ontologizer.go.TermID;
+import ontologizer.types.ByteString;
+import phenomizer.hpo.Phenuma;
+import phenuma.network.Edge;
+import phenuma.network.EdgeInferred;
+import phenuma.network.EdgeSemanticInfo;
+import phenuma.network.Node;
+import phenuma.network.NodeTerm;
+import phenuma.networkproyection.NetworkConstants;
+import phenuma.util.PhenumaException;
+import phenuma.objects.PhenumaConstants;
+import phenuma.objects.TableNode;
+
+/**
+ *
+ * @author Armando
+ */
+public class InfoUtils {
+    
+    
+//    public static List<TableEdge> getTableEdges(Network network) throws PhenumaException, IOException, OBOParserException{
+//        
+////        List<TableEdge> edges = new ArrayList<TableEdge>();
+////        
+////        //PhenumaWeb pw = PhenumaWeb.getInstance();
+////        
+////        
+////        if (network != null && network!=null){
+////            //Network network = pw.getCurrentNetwork().getNetwork();
+////
+////            List<Edge> edgeList  = network.getEdges();
+////
+////
+////            for(Edge e : edgeList)
+////            {
+////                TableEdge tableEdge = new TableEdge();
+////
+////                //ID
+////                String id = e.getNode1().getId()+"2"+e.getNode2().getId();
+////                tableEdge.setId(id+e.getRelationship_type());
+////
+////                //Create source and target
+////                TableNode sourceNode = new TableNode(e.getNode1().getText(), e.getNode1().getLink(), e.getNode1().getId());
+////                TableNode targetNode = new TableNode(e.getNode2().getText(), e.getNode2().getLink(), e.getNode2().getId());
+////                
+////
+////                tableEdge.setSource(sourceNode);
+////                tableEdge.setTarget(targetNode);
+////
+////
+////                tableEdge.setRelationship_type(PhenumaConstants.getRelationshipName(e.getRelationship_type()));
+////
+////                if(e.getScore()!=null)
+////                    tableEdge.setScore(NumberUtils.round(e.getScore(),3));
+////
+////                //TODO PVALUE
+////                if(e.getPvalue()!=null)
+////                    tableEdge.setPvalue(e.getPvalue());
+////                else
+////                    tableEdge.setPvalue(0.0);
+////                
+////                tableEdge.setObjects(getRelationshipObjects(e.getNode1(), e.getNode2(), e, e.getRelationship_type()));
+////
+////                if(e instanceof EdgeSemantic){
+////                    EdgeSemantic edgeinfo = (EdgeSemantic)e;
+////                    tableEdge.setInfo(edgeinfo.getMaximumTerm2IC());
+////                }
+////                    
+////                    
+////                edges.add(tableEdge);
+////
+////            }
+////
+////        }
+//        
+//        return edges;
+//        
+//    }
+    
+    
+    /**
+     * This method returns a list of TableNodes which are involve in the calculation of the relationship
+     * between two nodes.
+     * 
+     * @param source
+     * @param target
+     * @param edge
+     * @param relationshipType
+     * @return
+     * @throws IOException
+     * @throws OBOParserException
+     * @throws PhenumaException 
+     */
+    public static List<TableNode> getRelationshipObjects(Node source, Node target, Edge edge, int relationshipType) throws IOException, OBOParserException, PhenumaException{
+        
+        List<TableNode> objects = new ArrayList<TableNode>();
+
+        List<TableNode> sourceNodeTerms = new ArrayList<TableNode>();
+        List<TableNode> targetNodeTerms = new ArrayList<TableNode>();     
+
+        if (relationshipType == NetworkConstants.NETWORK_REL_TYPE_INFERRED_GENE ||
+            relationshipType == NetworkConstants.NETWORK_REL_TYPE_INFERRED_OMIM ||
+            relationshipType == NetworkConstants.NETWORK_REL_TYPE_INFERRED_ORPHA )
+        {
+            
+            if(edge instanceof EdgeInferred){
+                
+                EdgeInferred edgeInferred = (EdgeInferred)edge;
+                
+                Set<Node> nodes = edgeInferred.getCommonNodes();
+                for(Node n : nodes)
+                {
+                    TableNode tableNode = new TableNode(n.getText(), n.getLink(), n.getId());
+                    objects.add(tableNode);
+                }
+                
+            }
+            
+            return objects;
+ 
+        }
+        else
+        {
+            return objects;
+        }
+        
+        
+    }
+
+    
+    
+    public static List<EdgeSemanticInfo> getEdgeSemanticInfo(Node source, Node target, Edge edge, int relationshipType)
+    {
+        List<EdgeSemanticInfo> edgesinfo = new ArrayList<EdgeSemanticInfo>(); 
+                
+        if(source instanceof NodeTerm && target instanceof NodeTerm)
+        {
+            
+            
+            
+        }
+        
+        return edgesinfo;
+        
+    }
+    
+//    /**
+//     * This method returns a list of TableNode objects from a list of TermID and the ontology to which they belong.
+//     * 
+//     * @param termlist
+//     * @param ontologyID
+//     * @return
+//     * @throws IOException
+//     * @throws OBOParserException
+//     * @throws PhenumaException 
+//     */
+//    public static List<TableNode> termList2nodeList(Node node, int ontologyID, int associationID) throws IOException, OBOParserException, PhenumaException{
+//        
+//        Phenuma p = Phenuma.getInstance();
+//        
+//        /*Get terms associated to the input node*/
+//        List<TermID> termList = DataQueries2.termListByElement(new ByteString(node.getId()), ontologyID, associationID);
+//        
+//        Ontology ontology = p.getOntologyById(ontologyID);
+//        
+//        List<TableNode> nodeList = new ArrayList<TableNode>();
+//        
+//        /*For each TermID: get the Term object, create the TableNode object and add this object to the output list.*/
+//        for(TermID t : termList)
+//        {
+//           Term      term      = ontology.getTerm(t);
+//           NodeTerm  nodeTerm  = new NodeTerm(term);
+//           TableNode tableNode = new TableNode(nodeTerm.getText(), nodeTerm.getLink(), nodeTerm.getId());
+//           
+//           if(!nodeList.contains(tableNode))
+//                nodeList.add(tableNode);
+//        }
+//        
+//        return nodeList;
+//        
+//    }
+    
+     
+    public static String getColor(double ic)
+    {
+    
+        if (ic >= 1.0)
+           return  PhenumaConstants.COLOR_8;
+        
+        if (ic >= 0.9)
+           return  PhenumaConstants.COLOR_7;
+                
+        if (ic >= 0.8)
+           return  PhenumaConstants.COLOR_6;
+        
+        if (ic >= 0.5)
+           return  PhenumaConstants.COLOR_5;     
+        
+        if (ic >= 0.4)
+           return  PhenumaConstants.COLOR_4;
+        
+        if (ic >= 0.3)
+           return  PhenumaConstants.COLOR_3;
+                
+        if (ic >= 0.2)
+           return  PhenumaConstants.COLOR_2;
+        
+
+       return  PhenumaConstants.COLOR_1;         
+                
+    }
+    
+    
+    public static String getColorGray(double ic)
+    {
+    
+        if (ic >= 8)
+           return  PhenumaConstants.COLOR_8_GRAY;
+        
+        if (ic >= 7)
+           return  PhenumaConstants.COLOR_7_GRAY;
+                
+        if (ic >= 6)
+           return  PhenumaConstants.COLOR_6_GRAY;
+        
+        if (ic >= 5)
+           return  PhenumaConstants.COLOR_5_GRAY;     
+        
+        if (ic >= 4)
+           return  PhenumaConstants.COLOR_4_GRAY;
+        
+        if (ic >= 3)
+           return  PhenumaConstants.COLOR_3_GRAY;
+                
+        if (ic >= 2)
+           return  PhenumaConstants.COLOR_2_GRAY;
+        
+
+       return  PhenumaConstants.COLOR_1_GRAY;         
+                
+    }
+      
+    
+}

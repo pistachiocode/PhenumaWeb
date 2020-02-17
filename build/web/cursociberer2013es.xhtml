@@ -1,0 +1,426 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://java.sun.com/jsf/composite/phcomp"> 
+    <h:head>
+        <!--  Cytoscape -->
+
+        
+      <!--  <script type="text/javascript" src ="./javascript/jquery/jquery-ui-1.8.11.custom.min.js"> </script>
+        <script type="text/javascript" src="./javascript/jquery/jquery-1.7.1.min.js"></script> -->
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        <script type="text/javascript" src ="./css/smoothness/jquery-ui-1.8.11.custom.min.css"> </script>
+        <script type="text/javascript" src ="./tutorial/tutorial.js"> </script>
+        <script type="text/javascript" src ="./javascript/tabbedContent.js"> </script>
+        
+        <!-- CSS  --> 
+
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>
+        <link href="./css/tutorial.css" rel="stylesheet" type="text/css"></link>
+        
+        <link href="./css/form.css" rel="stylesheet" type="text/css"></link>
+        
+        <link href="./css/tabbedContent.css" rel="stylesheet" type="text/css"></link>
+        
+        <link rel="stylesheet" type="text/css" href="./resources/cursophenuma/engine1/style.css" />
+	<script type="text/javascript" src="./resources/cursophenuma/engine1/jquery.js"></script>
+        
+        <script>
+          $(function() {
+     
+          /*  $( "#tabs" ).tabs().addClass( "ui-tabs-vertical" );*/
+
+            $( "#tabs" ).tabs({
+              beforeLoad: function( event, ui ) {
+                ui.jqXHR.error(function() {
+                  ui.panel.html(
+                    "Couldn't load this tab. We'll try to fix this as soon as possible. " +
+                    "If this wouldn't be a demo." );
+                });
+              }
+            });
+          });
+            
+        </script>
+        
+
+
+        <style>
+            html { 
+              background: url('./resources/img/FondoCurso.jpg' ) no-repeat center center fixed; 
+              -webkit-background-size: cover;
+              -moz-background-size: cover;
+              -o-background-size: cover;
+              background-size: cover;
+            }
+          .ui-tabs-vertical { width: 90em; }
+          .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; }
+          .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+          .ui-tabs-vertical .ui-tabs-nav li a { display:block; font-size: 12px; }
+          .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+          .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 75em;}
+          
+          .mylist {margin: 12px; border-right-width: 10px !important;}
+          
+          p, span{
+              font-size: 14px;
+              margin-bottom: 5px;
+          }
+
+        </style>
+    </h:head>
+    <h:body>
+             
+         <div class="maindiv">    
+             <ph:mainmenu/>
+             <!-- Menu -->
+          
+             <p:spacer  height="40" />
+
+             <!-- Logo -->
+             <div class="logodiv">
+                 <center> <p:graphicImage url="./resources/img/logo4_2.png" /> </center>
+             </div>
+        
+
+             <p:spacer width="100" height="50" />
+
+
+             <div class='content'>
+                <div class='tabbed_content'>
+                    <div class='tabs'>
+                            <div class='moving_bg'>
+                                    &nbsp;
+                            </div>
+                            <span style="font-size:14px;" class='tab_item'>
+                                Jornadas PhenUMA 2013
+                            </span>
+                            <span style="font-size:14px;" class='tab_item'>
+                                Programa
+                            </span>
+                            <span style="font-size:14px;" class='tab_item'>
+                                Recursos 
+                            </span>
+                            <span style="font-size:14px;" class='tab_item'>
+                                Más Info
+                            </span>
+                    </div>
+                    
+                    <div class='slide_content'>
+                        
+                        <div class='tabslider'>
+                            
+                            <!-- Introducción -->
+                            
+                            <div>
+                                <h2> Jornadas PhenUMA </h2>
+                                <br />
+                                        <p style="font-size:14px">El CIBER de Enfermedades Raras organiza el curso: "Introducción al Análisis de Redes Fenotípicas y Funcionales en Enfermedades Raras" los próximos 13 y 14 de junio en Málaga. Este curso será impartido por investigadores de la unidad 741, liderada por la Dra. Francisca Sánchez-Jiménez, con el soporte del Programa de Investigación de Medicina Metabólica Hereditaria.</p>
+                                <br />
+                                 <p style="font-size:14px">El principal objetivo es introducir a investigadores en el uso de la plataforma PhenUMA (<a href="http://www.phenuma.uma.es">  www.phenuma.uma.es</a>) desarrollada por la unidad 741 CIBERER. El curso se ha organizado en una jornada de sesiones teóricas y otra de sesiones prácticas con casos de uso.</p>
+                                <br />
+                                 <p style="font-size:14px">Este curso se dirige a investigadores sin experiencia previa en el estudio de redes biomédicas.</p>
+
+                                <iframe src="fotos.html" style="width:700px;height:300px;background-color:transparent;max-width:100%;overflow:hidden;border:none;padding:0;margin:0 auto;display:block;" marginheight="0" marginwidth="0"></iframe> 
+                            
+                                <table  style="width:700px;">
+                                    <tr>
+                                        <td>  <img style="width:300px; height: 100px;" src="./resources/cursophenuma/ciberer.png"/></td>
+                                        <td style="width:3020px;">  </td>
+                                        <td>  <img style="width:135px; height: 150px;" src="./resources/cursophenuma/uma.png"/></td>
+                                    </tr>
+                                </table>
+                            
+                            </div>
+
+
+                            <!-- Programa -->
+                            
+                            <div>
+                                 <table>
+                                          <tr><td><a href="resources/cursociberer_programa.pdf"> <img src="./resources/img/download.png" style="width:20px;height:20px;"></img>  </a></td>
+                                                 <td><a href="resources/Cartel PheUMA_Jornadas_5Junio-1.pdf" style="font-size: 16px;"> Descargar Programa PDF  </a></td></tr>
+                                         </table>
+
+                                        <div style="font-size:14px;">
+
+                                            <br />
+                                            <br />
+                                            <p style="line-height:115%;"><b><span lang="ES">PROGRAMA-I. Sesiones conceptuales.</span></b></p>
+
+                                            <p style="line-height:115%;"><b><i><span lang="ES">Jueves 13
+                                            Junio, 2013 (Hotel D. Curro, c/Sancha de Lara, 7, Málaga)</span></i></b></p>
+
+                                            <p style="line-height:115%;"><b><span lang="ES">12:30&nbsp; </span></b><b><span lang="ES">Recogida de documentación</span></b><b><span></span></b></p>
+
+
+                                            <p style="line-height:115%;"><b><span lang="ES">13:30&nbsp; Inauguración de Francisca Sánchez Jiménez (UMA-U741 CIBERER)</span></b><span></span> </p>
+
+                                            <table>
+                                                <tr> <td style="width:38px;"></td> <td> Descargar Presentación en PDF:</td><td> <a href="./resources/cursophenuma/Welcome.pdf" target="_blank">  <img style="width:20px; height: 20px;" src="./resources/img/Icono_PDF.jpg"/> </a> </td> </tr>
+                                            </table>
+
+                                            <p style="line-height:115%;"><b><span lang="ES">16:00&nbsp; Sesión I. Miguel Ángel Medina (UMA-U741 CIBERER)</span></b><span></span></p>
+
+                                            <p style="line-height:115%;"><i><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></i><i><span lang="ES">Biología de sistemas para el estudio de enfermedades
+                                            raras</span></i><i><span></span></i></p>
+                                            <table>
+                                                <tr> <td style="width:38px;"></td> <td> Descargar Presentación en PDF:</td><td> <a href="./resources/cursophenuma/SESION_I.pdf" target="_blank">  <img style="width:20px; height: 20px;" src="./resources/img/Icono_PDF.jpg"/> </a> </td> </tr>
+                                            </table>
+                                            <p style="line-height:115%;"><b><span lang="ES">16:45&nbsp; Sesión II. Juan A. García Ranea (UMA-U741 CIBERER)</span></b><span></span></p>
+
+                                            <p style="margin-left:28.5pt;line-height:115%;"><i><span lang="ES">Modelado de redes de interacción molecular y su
+                                            aplicación en la</span></i><i><span lang="ES"> </span></i><i><span lang="ES">predicción funcional de
+                                            nuevas dianas</span></i><i><span></span></i></p>
+
+                                            <table>
+                                                <tr> <td style="width:38px;"></td> <td> Descargar Presentación en PDF:</td><td> <a href="./resources/cursophenuma/SESION_II.pdf" target="_blank">  <img style="width:20px; height: 20px;" src="./resources/img/Icono_PDF.jpg"/> </a> </td> </tr>
+                                            </table>
+
+                                            <p style="line-height:115%;"><b><span lang="ES">18:00&nbsp; Sesión III. Aurelio A. Moya García (UMA)</span></b><span></span></p>
+
+                                            <p style="line-height:115%;"><b><i><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></i></b><i><span lang="ES">Reposicionamiento
+                                            de fármacos promiscuos</span></i><i><span></span></i></p>
+
+                                            <table>
+                                                <tr> <td style="width:38px;"></td> <td> Descargar Presentación en PDF:</td><td> <a href="./resources/cursophenuma/SESION_III.pdf" target="_blank">  <img style="width:20px; height: 20px;" src="./resources/img/Icono_PDF.jpg"/> </a> </td> </tr>
+                                            </table>
+
+                                            <p style="line-height:115%;"><b><span lang="ES">18:45&nbsp; Sesión
+                                            IV. Armando Reyes-Palomares (UMA-U741 CIBERER)</span></b></p>
+
+                                            <p style="line-height:115%;"><b><i><span lang="ES">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></i></b><i><span lang="ES">Integración
+                                            de redes fenotípicas y funcionales</span></i><i><span></span></i></p>
+
+                                            <table>
+                                                <tr> <td style="width:38px;"></td> <td> Descargar Presentación en PDF:</td><td> <a href="./resources/cursophenuma/SESION_IV.pdf" target="_blank">  <img style="width:20px; height: 20px;" src="./resources/img/Icono_PDF.jpg"/> </a> </td> </tr>
+                                            </table>
+
+                                            <p style="line-height:115%;"><span>&nbsp;</span></p>
+
+                                            <p style="line-height:115%;"><b><span lang="ES">PROGRAMA-II, Sesiones
+                                            prácticas.</span></b><b style="line-height:115%;"><i><span lang="ES">&nbsp;</span></i></b></p>
+
+                                            <p style="line-height:115%; width:600px;"><b><i><span lang="ES">Viernes 14 Junio, 2013 (Escuela Técnica Superior de Ingeniería Informática, Campus de
+                                            Teatinos, Universidad de Málaga)</span></i></b></p>
+
+                                            <p style="line-height:115%;"><b><span lang="ES">09:30&nbsp; Sesión I: Rocío Rodríguez-López (UMA-U741 CIBERER) </span></b></p>
+
+                                            <p style="line-height:115%;"><b><i><span lang="ES">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></i></b><i><span lang="ES">Tutorial
+                                            PhenUMA: Introducción</span></i><i><span></span></i></p>
+
+                                            <table>
+                                                <tr> <td style="width:48px;"></td> <td> Descargar Presentación en PDF:</td><td> <a href="./resources/cursophenuma/SESION_PRACTICA_I.pdf" target="_blank">  <img style="width:20px; height: 20px;" src="./resources/img/Icono_PDF.jpg"/> </a> </td> </tr>
+                                            </table>
+
+                                            <p style="line-height:115%;"><b><span lang="ES">11:30&nbsp; Sesión II: Rocío Rodríguez López y Armando Reyes-Palomares</span></b><span></span></p>
+
+                                            <p style="line-height:115%;"><b><i><span lang="ES">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></i></b><i><span lang="ES">Tutorial
+                                            PhenUMA: casos de uso y ejemplos</span></i><i><span></span></i></p>
+
+                                            <p style="line-height:115%;"><b><span lang="ES">15:30&nbsp; Sesión III . Rocío Rodríguez-López y Armando Reyes-Palomares</span></b><span></span></p>
+
+                                            <p style="line-height:115%;"><i><span lang="ES">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Recursos para el análisis de redes</span></i><i><span></span></i></p>
+
+                                            <table>
+                                                <tr> <td style="width:48px;"></td> <td> Descargar Presentación de la Sesión II y III en PDF :</td><td> <a href="./resources/cursophenuma/SESION_PRACTICA_II_y_III.pdf" target="_blank">  <img style="width:20px; height: 20px;" src="./resources/img/Icono_PDF.jpg"/> </a> </td> </tr>
+                                            </table>
+
+
+
+                                            <p style="line-height:115%;"><b><span lang="ES">17:30 Reparto de diplomas y cuestionarios. </span></b><span></span></p>
+
+                                            <p style="line-height:115%;"><b><span lang="ES">18:00 Clausura de las jornadas.</span></b><span></span></p>
+
+                                        </div>
+
+                             </div>
+                             
+                            
+                            
+                            <!-- Recursos Practicas -->
+                            
+                             <div>
+            
+
+                                <h3 style=" font-size: 14px;" > Sesión Práctica I:Introducción a PhenUMA </h3>
+                                
+                                <br />
+                                    
+                                <p style=" font-size: 14px; width: 700px;">
+
+                                    <ul  style="font-size: 14px; width: 700px;">
+                                        <li style="font-size: 14px;">
+                                            En esta sección se hizo hincapié en los tipos de identificadores necesarios para realizar consultas
+                                            en la aplicación. Además se incluyó una introducción breve a varias bases de datos públicas en las que encontrar el identificador
+                                            de un gen, enfermedad o fenotipo concreto. 
+                                        </li>
+                                        <li style="font-size: 14px;">
+                                            Introducción a todas las relaciones almacenadas en la base de datos de PhenUMA: Conocidas, Inferidas y de Similitud Semática (Funcional y Fenotípica)
+                                        </li>
+                                        <li style="font-size: 14px;">
+                                            Funcionalidades de la aplicación: Manejo de las redes, paneles laterales y como extraer la información.
+                                        </li>
+                                        <br />
+                                        <li style="font-size: 14px;">
+                                            <h4> Recursos disponibles: </h4>
+                                            <table>
+                                                <tr> <td style="width:20px;"></td> <td> Descargar Presentación en PDF:</td><td> <a href="./resources/cursophenuma/SESION_PRACTICA_I.pdf">  
+                                                            <img style="width:20px; height: 20px;" src="./resources/img/Icono_PDF.jpg"/> </a> 
+                                                    </td> 
+                                                </tr>
+
+                                                <tr> 
+                                                    <td style="width:20px;"></td> <td> Video demostración de <b>entrada de datos</b>:</td> 
+                                                    <td> 
+                                                        <a href="https://www.youtube.com/watch?v=NvlJWbhxxd0" target="_blank"> <img style="width:20px; height: 20px;" src="./resources/img/youtube.png"/> </a> 
+                                                    </td> 
+                                                </tr>
+
+                                                <tr> <td style="width:20px;"></td> <td> Video demostración de PhenExplorer:</td>
+                                                     <td> 
+                                                         <a href="http://www.youtube.com/watch?v=posn14S2uI0" target="_blank">   <img style="width:20px; height: 20px;" src="./resources/img/youtube.png"/> </a> 
+                                                     </td> 
+                                                </tr>
+
+                                                <tr> 
+                                                    <td style="width:20px;"></td> <td> Video demostración <b>manejo de la interfaz</b>:</td>
+                                                    <td> <a href="http://www.youtube.com/watch?v=z2oZS3Tfqqc" target="_blank">  <img style="width:20px; height: 20px;" src="./resources/img/youtube.png"/> </a> </td> 
+                                                </tr>
+
+                                                <tr> 
+                                                    <td style="width:20px;"></td> <td> Video demostración <b>salida de datos</b>: </td> 
+                                                    <td> <a href="http://www.youtube.com/watch?v=m8GpwTdHc_8" target="_blank">  <img style="width:20px; height: 20px;" src="./resources/img/youtube.png"/> </a> </td> 
+                                                </tr>
+                                            </table>
+                                            
+                                        </li>
+                                        
+                                        
+                                    </ul>
+                                    
+                                </p>
+                                
+                                <br />
+                                
+                        
+                                
+                                <br />
+                                
+                                <h3 style=" font-size: 14px;"> Sesión II y III: Casos de uso y Ejemplos  </h3>
+                                
+                                <br />
+                                    
+                                <p style=" font-size: 14px; width: 700px;">
+
+                                    <ul  style="font-size: 14px; width: 700px;">
+                                        <li style="font-size: 14px;">
+                                            Ejercicios y ejemplos
+                                        </li>
+                                        <li style="font-size: 14px;">
+                                            Introducción a la herramienta cytoscape
+                                        </li>
+                                        <br />
+                                        <li style="font-size: 14px;">
+                                           <h4> Recursos disponibles: </h4>
+                                            <table>
+                                                <tr> <td style="width:20px;"></td> <td> Descargar Presentación de la Sesión II y III en PDF :</td><td> <a href="./resources/cursophenuma/SESION_PRACTICA_II_y_III.pdf">  <img style="width:20px; height: 20px;" src="./resources/img/Icono_PDF.jpg"/> </a> </td> </tr>
+                                                <tr>
+                                                    <td style="width:20px;"></td> <td> Video demostración: Descargar y generar subredes:</td> 
+                                                    <td> 
+                                                        <a href="https://www.youtube.com/watch?v=ecbK_UXjejI" target="_blank"> <img style="width:20px; height: 20px;" src="./resources/img/youtube.png"/> </a> 
+                                                    </td> 
+                                                </tr>
+
+                                                <tr> <td style="width:20px;"></td> <td> Video demostración: Visualizar red con Cytoscape:</td>
+                                                     <td> 
+                                                         <a href="http://www.youtube.com/watch?v=y9_c0HRGzME" target="_blank">   <img style="width:20px; height: 20px;" src="./resources/img/youtube.png"/> </a> 
+                                                     </td> 
+                                                </tr>
+                                                <tr> <td style="width:20px;"></td> <td> Material:</td>
+                                                     <td> 
+                                                         <a href="./resources/cursophenuma/Material.zip" target="_blank">   <img style="width:20px; height: 20px;" src="./resources/img/zip.png"/> </a> 
+                                                     </td> 
+                                                </tr>
+                                            </table>
+                                        </li>
+                                    </ul>
+                                    
+                                </p>
+                            </div>
+                                                    
+                            <!-- Fin Recursos Practicas -->
+                            <div>
+                                <p style="font-size: 14px;">
+                                    <ul>
+                                        <li style="font-size: 14px;">
+                                            Enlaces a bases de datos públicas:
+                                            
+                                            <ul style="font-size: 14px;">
+                                                <li style="font-size: 14px;"> NCBI: <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">  http://www.ncbi.nlm.nih.gov/ </a> </li> 
+                                                <li style="font-size: 14px;"> Ensembl: <a href="http://www.ensembl.org/index.html" target="_blank">  http://www.ensembl.org/index.html </a> </li> 
+                                                <li style="font-size: 14px;"> HGNC: <a href="http://www.genenames.org/" target="_blank">  http://www.genenames.org/ </a> </li> 
+                                                <li style="font-size: 14px;"> OMIM: <a href="http://omim.org/" target="_blank">  http://omim.org/ </a> </li> 
+                                                <li style="font-size: 14px;"> Orphanet: <a href="http://www.orpha.net/consor/cgi-bin/index.php" target="_blank">  http://www.orpha.net/consor/cgi-bin/index.php </a> </li>
+                                            </ul>
+                                        </li>
+                                        <br />
+                                        <li style="font-size: 14px;">
+                                            Otras bases de datos interesantes:
+                                            
+                                            <ul style="font-size: 14px;">
+                                                <li style="font-size: 14px;"> GeneCards <a href="http://www.genecards.org/" target="_blank">  http://www.genecards.org/ </a> </li> 
+                                                <li style="font-size: 14px;"> STRING - Known and Predicted Protein-Protein Interactions  <a href="http://string-db.org/" target="_blank">  http://string-db.org/ </a> </li> 
+                                                <li style="font-size: 14px;"> Gene Ontology  <a href="http://www.geneontology.org/" target="_blank">  http://www.geneontology.org/ </a> </li> 
+                                          
+                                           </ul>
+                                        </li>
+                                        <br />
+                                        <li style="font-size: 14px;">
+                                            Bioliografía:
+                                            
+                                            <ul style="font-size: 14px;">
+                                                 <li style="font-size: 14px;">  
+                                                     <p>Armando Reyes-Palomares, Rocio Rodríguez-López, Juan Antonio Ranea, Francisca Sánchez-Jiménez, Miguel Ángel Medina.
+                                                     <a href="http://www.ncbi.nlm.nih.gov/pubmed/23437198" target="_blanck">Global analysis of the human pathophenotypic similarity gene network merges disease module components.</a>
+                                                     PLoS One. 2013;8(2):e56653. doi:10.1371/journal.pone.0056653. Epub 2013 Feb 21</p> 
+                                                 </li>
+                                                 <li style="font-size: 14px;">
+                                                     <p>Kwang-Il Goh, Michael E. Cusick, David Valle , Barton Childs, Marc Vidal and Albert-László Barabási
+                                                     <a href="http://www.pnas.org/content/104/21/8685.full" target="_blank">  The human disease network </a> 
+                                                     doi: 10.1073/pnas.0701361104  PNAS May 22, 2007 vol. 104 no. 21 8685-8690</p>
+                                                 </li> 
+                                                 <li style="font-size: 14px;">
+                                                     <p>Hiroaki Kitano
+                                                     <a href="http://theory.bio.uu.nl/BPA/pdf/Obligatory_reading/Kitano_s02.pdf" target="_blank">  Systems Biology: A Brief Overview </a> 
+                                                     Science 295, 1662 (2002); DOI: 10.1126/science.1069492</p>
+                                                 </li> 
+                                           </ul>
+                                        </li>
+                                    </ul>
+                                </p>
+                                <br />
+                                <p style="font-size: 14px;">
+                                    Interesante charla de Albert-László Barabási en el TEDMED 2012. 
+                                </p>
+                                <br />
+                                <iframe width="500" height="280" src="http://www.youtube.com/embed/10oQMHadGos?feature=player_detailpage" frameborder="0" allowfullscreen="true"></iframe>
+                            </div>
+                            
+                        </div>
+
+                            
+                    </div>
+                   
+                </div>
+
+             </div>
+        </div>
+
+          
+    </h:body>
+</html>
+

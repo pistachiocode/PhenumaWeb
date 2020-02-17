@@ -1,0 +1,109 @@
+ /*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.networkproyection;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import ontologizer.StudySet;
+import ontologizer.StudySetFactory;
+import org.apache.log4j.Logger;
+import phenomizer.hpo.PhenumaDB;
+import phenuma.dataqueries.DatabaseQueries;
+import phenuma.network.NetworkDB;
+
+/**
+ * This class represents a gene query. The result is a network with the applied information.
+ * 
+ * @author Armando
+ */
+public class GeneQuery extends NetworkQuery implements QueryOperations{
+    
+    static final Logger logger = Logger.getLogger(GeneQuery.class.getName());
+    
+    //Entity manager factory
+    PhenumaDB pdb = PhenumaDB.getInstance();         
+        
+    
+    private StudySet studySet;
+
+    public GeneQuery(StudySet studySet, int queryType) {
+        super(queryType);
+        this.studySet = studySet;
+    }
+   
+    public StudySet getStudySet() {
+        return studySet;
+    }
+
+    public void setStudySet(StudySet studySet) {
+        this.studySet = studySet;
+    }
+    
+    
+    @Override
+    public void executeQueryDB() 
+    {
+        try {
+            
+            
+            DatabaseQueries q = new  DatabaseQueries();
+            
+            //Create network object
+            NetworkDB networkdb = new NetworkDB();
+            
+            networkdb.setInputElements(studySet);
+            networkdb.setInputtype(NetworkConstants.INPUT_TYPE_GENES);
+            networkdb.setQuerytype(queryType);
+            
+            
+            StudySet relatedObjectsStudySet = studySet; 
+           
+            Map<Integer, List<Integer>> disease2genes = new HashMap<Integer, List<Integer>>();
+                     
+            //Diseases networks: select the diseases related with the input genes.
+            if(queryType == NetworkConstants.UNIPARTITE_DISEASE_SS)
+            { 
+                disease2genes = NetworkUtils.diseaseStudyFromGenes(this.studySet);
+                relatedObjectsStudySet = StudySetFactory.createFromIntegerSet(disease2genes.keySet(), true);             
+            }
+            else if (queryType == NetworkConstants.UNIPARTITE_ORPHAN_SS)
+            {
+                disease2genes = NetworkUtils.rareDiseaseStudyFromGenes(this.studySet);
+                relatedObjectsStudySet = StudySetFactory.createFromIntegerSet(disease2genes.keySet(), true);           
+            }
+            
+            
+            /**
+             * Get the set of Nodes of the outcome network
+             */
+            StudySet networknodesset = new StudySet();
+            if (!NetworkUtils.isBipartite(queryType)){
+                networknodesset = q.getNetworkNodes(relatedObjectsStudySet, NetworkConstants.INPUT_TYPE_GENES, queryType, this.threshold);
+                networkdb.setNodes(networknodesset);
+            }else
+                networkdb.setNodesDiseases(q.getObjectRelatedBipartite(relatedObjectsStudySet, NetworkConstants.INPUT_TYPE_GENES, queryType, this.threshold));
+            
+            /**
+             * Get the rows of the outcome network
+             */
+            networkdb.setRows(q.networkQuery(relatedObjectsStudySet, networknodesset, NetworkConstants.INPUT_TYPE_GENES, this.queryType, this.threshold));
+            
+            networkdb.setRelatedElements(disease2genes);
+            
+            
+            this.resultDB = networkdb;
+            
+
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(GeneQuery.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+
+    
+}

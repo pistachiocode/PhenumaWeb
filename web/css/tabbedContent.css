@@ -1,0 +1,84 @@
+.tabbed_content {
+	background-color: #333333;
+	width: 750px;	
+	height: 48px;
+        /* -- CSS3 - add a drop shadow -- */
+        -webkit-box-shadow:0px 0 50px #ccc;
+        -moz-box-shadow:0px 0 50px #ccc; 
+        box-shadow:0px 0 50px #ccc;		
+
+        /* -- CSS3 - define rounded corners for the form -- */	
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px; 
+
+    
+}
+
+.tabs {
+	height: 50px;
+	position: relative;
+}
+
+.tabs .moving_bg {
+	padding: 10px;
+	background-color:#D77702;
+        
+        
+	/*background-image:url(../images/arrow_down_green.gif);*/
+	position: absolute;
+	width: 175px;
+	z-index: 190;
+	left: 0;
+	padding-bottom: 25px;
+	background-position: bottom left;
+	background-repeat: no-repeat;
+
+        /* -- CSS3 - define rounded corners for the form -- */	
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px; 
+}
+
+.tabs .tab_item {
+	display: block;
+	float: left;
+	padding: 15px;
+	width: 150px;
+	color: #ffffff;
+	text-align: center;
+	z-index: 200;
+	position: relative;
+	cursor: pointer;
+        font-size: 12px;
+}
+
+.tabbed_content .slide_content {
+	overflow: hidden;
+	padding: 0px 0 0px 0px;
+	position: relative;
+	width: 760px;
+
+}
+
+.tabslider {
+	width: 3500px;
+}
+
+
+
+.tabslider div {
+	float: left;
+	width: 750px;
+	margin: 5px;
+	padding: 0px;
+}
+.tabslider div a {
+	color: #000000;
+	text-decoration: none;
+}
+
+.tabslider div a:hover {
+	color: #000000;
+}
+

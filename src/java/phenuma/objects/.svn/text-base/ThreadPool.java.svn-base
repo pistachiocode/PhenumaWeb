@@ -1,0 +1,47 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package phenuma.objects;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ *
+ * @author Armando
+ */
+public class ThreadPool {
+    
+    ExecutorService exec = null;
+    
+    
+    private static ThreadPool instance = null;
+
+
+    public ThreadPool(){
+        exec = Executors.newFixedThreadPool(1);
+    }
+    
+    
+
+    public static ThreadPool getInstance(){
+        if (instance == null)
+            instance = new ThreadPool();
+
+
+        return instance;      
+
+    }
+
+    public ExecutorService getExec() {
+        return exec;
+    }
+
+    public void setExec(ExecutorService exec) {
+        this.exec = exec;
+    }
+    
+    
+    
+}

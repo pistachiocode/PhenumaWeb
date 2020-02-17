@@ -1,0 +1,17 @@
+package phenomizer.hpo;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class HPOUtils {
+	
+	public static final String HPOpattern = "HP:[0-9]{7}";
+	
+	public static boolean isHPOterm (String str){
+		Pattern p = Pattern.compile("[^A-Za-z0-9.@_-~#]+");
+		
+	    Matcher m = p.matcher(str);
+		return m.find();
+	}
+
+}

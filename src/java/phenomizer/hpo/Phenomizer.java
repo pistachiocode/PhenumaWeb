@@ -1,0 +1,258 @@
+package phenomizer.hpo;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+
+import ontologizer.association.Association;
+import ontologizer.association.AssociationContainer;
+import ontologizer.association.AssociationParser;
+import ontologizer.go.OBOParser;
+import ontologizer.go.OBOParserException;
+import ontologizer.go.Ontology;
+import ontologizer.go.Term;
+import ontologizer.go.TermContainer;
+import ontologizer.types.ByteString;
+import org.apache.log4j.Logger;
+
+
+/**
+ * This class stores the ontology and annotations, making them accessible in
+ * every class of the application, using a singleton pattern.
+ * @author Rocio
+ *
+ */
+
+
+public class Phenomizer {
+	static final Logger logger = Logger.getLogger(Phenuma.class.toString());
+        
+	/**
+	 * Type of data constants
+	 */
+	public static final int GENES = 0;
+	public static final int DISEASES = 1;
+	
+	/**
+	 * Adjustments constants
+	 */
+	public static final int BONFERRONI =0;
+	public static final int BENJAMINI_HOCHBERG = 1;
+	
+	
+	/**
+	 * Ontology 
+	 */
+	private Ontology ontology;
+	
+	
+	/**
+	 * Disease associations container
+	 */
+	private AssociationContainer assocContainer;
+	
+	
+	
+	/**
+	 * Type of adjustment selected
+	 */
+	private int adjust_type;
+	
+	/**
+	 * Path of ontology and associatons file
+	 */
+	private String ontologyPath;
+	private String annotationsPath;
+
+	
+	/**
+         * Semantic Similarity Measure
+         */
+        
+        private int semanticSimilarityMeasure;
+        
+        private int termSemanticSimilarityMeasure;
+        
+	/**
+	 * Global variable used to store the single instance of Phenomizer used by the application.
+	 */
+	private static Phenomizer instance = null;
+	
+	
+	/**
+	 * Private constructor of phenomizer. This method parses the association files and the ontology files.
+	 */
+	protected Phenomizer()  
+	{	
+            /* Default adjustment type */
+            adjust_type = BONFERRONI;
+            this.termSemanticSimilarityMeasure = phenuma.constants.Constants.RESNIK_TSS;
+
+	}
+	 
+	
+	/**
+	 * Create a phenomizer instance. If the instance is not null, this method create it.
+	 * @return
+	 */
+   	public static Phenomizer getInstance()
+   	{
+            if (instance == null)
+                    instance = new Phenomizer();
+
+            return instance;
+   	}
+   	
+   	/**
+   	 * Getters and setters
+   	 */
+			
+	public Ontology getOntology() {
+		return ontology;
+	}
+
+
+	public AssociationContainer getAssocContainer() {
+		return assocContainer;
+	}
+	
+	
+       
+	public int getAdjust_type() {
+		return adjust_type;
+	}
+
+       
+
+	public String getOntologyPath() {
+		return ontologyPath;
+	}
+
+
+	public String getAnnotationsPath() {
+		return annotationsPath;
+	}
+        
+                       
+	public void setAdjust_type(int adjust_type) {
+		this.adjust_type = adjust_type;
+        }
+
+       
+	public void setOntologyPath(String ontologyPath, String subontology) throws IOException, OBOParserException {
+		this.ontologyPath = ontologyPath;
+		ontology = Phenomizer.parseOntology(ontologyPath, subontology);		
+	}
+
+
+	public void setAnnotationsPath(String annotationsPath, boolean IEA) throws IOException {
+		this.setAnnotationsPath(annotationsPath, IEA, null);
+	}
+        
+        public void setAnnotationsPath(String annotationsPath, boolean IEA, ByteString dbName) throws IOException {
+		this.annotationsPath = annotationsPath;
+		assocContainer = Phenomizer.parseAssociations(annotationsPath, ontology, IEA, dbName);
+	}
+                
+
+        public int getSemanticSimilarityMeasure() {
+            return semanticSimilarityMeasure;
+        }
+
+        public void setSemanticSimilarityMeasure(int semanticSimilarityMeasure) {
+            this.semanticSimilarityMeasure = semanticSimilarityMeasure;
+        }
+
+        public int getTermSemanticSimilarityMeasure() {
+            return termSemanticSimilarityMeasure;
+        }
+
+        public void setTermSemanticSimilarityMeasure(int termSemanticSimilarityMeasure) {
+            this.termSemanticSimilarityMeasure = termSemanticSimilarityMeasure;
+    }
+
+
+	/**
+	 * Parse obo file. Use Phenotypic abnormality subontology.
+	 *  
+	 * @param ontologyFile
+	 * @return
+	 * @throws OBOParserException 
+	 * @throws IOException 
+	 */
+	public static Ontology parseOntology(String ontologyFile, String subontology) throws IOException, OBOParserException
+	{
+            
+            logger.info("Loading ontology: "+ontologyFile);    
+            OBOParser oboParser = new OBOParser(ontologyFile);
+            oboParser.doParse();
+
+            TermContainer termContainer = new TermContainer(oboParser.getTermMap(), oboParser.getFormatVersion(), oboParser.getDate());
+            Ontology wholeOntology = new Ontology(termContainer);
+
+            if(subontology!=null)
+                wholeOntology.setRelevantSubontology(subontology);
+
+            return wholeOntology.getOntlogyOfRelevantTerms();
+	}
+	
+	/**
+	 * Parse associations file
+	 * @params association file path 
+	 * @return AssociationContainer
+	 * @throws IOException 
+	 * */
+	public static AssociationContainer parseAssociations(String annotFile, Ontology ontology, boolean IEA) throws IOException{
+            
+            return parseAssociations(annotFile, ontology, IEA, null);
+	}
+	
+        
+        	/**
+	 * Parse associations file
+	 * @params association file path 
+	 * @return AssociationContainer
+	 * @throws IOException 
+	 * */
+	public static AssociationContainer parseAssociations(String annotFile, Ontology ontology, boolean IEA, ByteString dbname) throws IOException{
+            logger.info("Loading associations: "+annotFile);  
+            
+            AssociationParser assocParser = new AssociationParser(annotFile, ontology.getTermContainer());
+            ArrayList<Association> associations = assocParser.getAssociations();
+
+            ArrayList<Term> allowed = new ArrayList<Term>();
+            allowed.addAll(ontology.getTermsInTopologicalOrder());
+
+            //Ignorar IEA para GO (IEA = TRUE)
+            AssociationContainer assoc = new AssociationContainer(associations, assocParser.getSynonym2gene(), assocParser.getDbObject2gene(), IEA, dbname, allowed);
+
+            
+            logger.info("Loaded: "+annotFile); 
+            return assoc;
+		
+	}
+	
+        public  String getSemanticSimilarityName(int ssm){
+            
+            if (ssm == phenuma.constants.Constants.RESNIK)
+                return "RESNIK";
+            else if (ssm == phenuma.constants.Constants.ROBINSON)
+                return "ROBINSON";
+            else if (ssm == phenuma.constants.Constants.ROBINSON_SYMMETRIC)
+                return "ROBINSON_SYMMETRIC";
+            else if (ssm == phenuma.constants.Constants.PHENUMA)
+                return "PHENUMA";
+            else if (ssm == phenuma.constants.Constants.PHENUMA_SYMMETRIC)
+                return "PHENUMA_SYMMETRIC";
+            
+            return "Not Found";
+        }
+	/**
+	 * This method check if the data of ontology and annotations files is loaded
+	 * @return
+	 */
+	public boolean dataLoaded(){
+		return (ontology!=null) && (this.assocContainer!=null);
+	}
+
+}

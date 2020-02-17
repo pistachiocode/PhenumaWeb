@@ -1,0 +1,486 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://java.sun.com/jsf/composite/phcomp"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>PhenUMA</title>
+        
+        <!--  Cytoscape -->
+        <script type="text/javascript" src="./resources/cytoscapeweb/min/json2.min.js"></script>
+        <script type="text/javascript" src="./resources/cytoscapeweb/min/AC_OETags.min.js"></script>
+        <script type="text/javascript" src="./resources/cytoscapeweb/min/cytoscapeweb.min.js"></script>
+        <script type="text/javascript" src ="./javascript/cytoscape.js"> </script>
+        
+        <!-- Javascript -->
+        <script type="text/javascript" src ="./javascript/jquery-ui-autocomplete.js"></script>
+        <script type="text/javascript" src ="./javascript/sorttable.js"></script>
+        <script type="text/javascript" src ="./javascript/phenuma.js"> </script>
+        <script type="text/javascript" src ="./javascript/qtips.js"> </script>
+       
+        
+        <script type='text/javascript' src="./javascript/jquery.simplemodal.js"></script>
+        <script type="text/javascript" src="./javascript/jquery.qtip.min.js"></script>
+        <script type="text/javascript" src="./javascript/autocomplete.js"></script>
+         
+         
+        <!-- CSS  --> 
+        <link type="text/css" rel="stylesheet" href="./css/jquery.qtip.min.css" />
+
+        <link href="./grungestyle/styles.css" rel="stylesheet" type="text/css"></link>
+        <link href="./css/phenuma.css" rel="stylesheet" type="text/css"></link>
+        <link href="./css/form_vis.css" rel="stylesheet" type="text/css"></link>
+        
+        <link href="./css/demo.css" rel="stylesheet" type="text/css"></link>
+        <link href="./css/basic.css" rel="stylesheet" type="text/css"></link>
+        
+        <style>
+            	#eq span {
+                    width:200px; float:left; margin:15px
+                }
+                
+                .selected {
+                    color: blue;
+                 }
+
+        </style>
+        
+        <script type="text/javascript">
+
+           /*
+            * Global variables. 
+            */
+        
+           var _score = 0; //??
+           
+           var _window_size = 0;
+           
+           var _initialOptions = {layout: 'Tree',
+                                  score : 0, 
+                                  simsemgocc : true, 
+                                  simsemgomf : true,
+                                  simsemgobp : true,
+                                  simsemhpo  : true,
+                                  ppi        : true,
+                                  infgene    : true,
+                                  infomim    : true,
+                                  inforpha   : true,
+                                  metabolic  : true,
+                                  omim       : true,
+                                  orphadata  : true};
+           
+           
+            
+           /**
+            * Check if the value of the field 'Items' is empty.
+          */
+          function isItemsEmpty() {
+               return document.getElementById('queryform:panelform:genestab:inputtxtarea').value=='';
+          }
+           
+                    
+         /**
+          * Sliders: change de thresholds and filter relationships
+          */
+          function loadSliders(){
+               
+                $( "[name='slidder']" ).each(function() {
+                       
+                      
+                    // read initial values from markup and remove that
+                    var str = $( this ).text().split(",");
+
+                    var max = Math.round((parseFloat(str[0]))*100)/100;
+                    var min = Math.round((parseFloat(str[1]))*100)/100;
+                    var rel = str[2];
+                    var slide = str[3];
+                    var step = parseFloat(str[4]);
+    
+              
+                    $(this).empty().slider({
+                            value: min,
+                            min: min,
+                            max: max,
+                            step: step,
+                            orientation: "horizontal",
+                            range: "min",
+                            animate: true,
+                            slide: function( event, ui ) {
+                                        var score = ui.value;
+                                        
+                                        var labelscore = score;
+                                        if(rel == 4 || rel == 5 || rel == 6)
+                                            labelscore = labelscore * 10
+                                        
+                                        $("#"+rel+"value").html(labelscore)
+                                   },
+                                stop: function( event, ui ) {
+                                        var score = ui.value;
+                                        applyFilter(score, rel);
+                                   }
+                    });
+                   
+                   //Hidding the handler for slider of unscored relationships.
+                   if(slide=="false" || max==min)
+                   {
+                       $(this).empty().slider().html("");
+                        $("#"+rel+"value").html("")
+                   }
+                   
+                    
+		});
+                
+               
+      
+           }
+           
+          
+          function loadInformation(){
+              loadSliders();
+          }
+          
+          
+          function reload()
+          {
+              $("[id='formfooter']").hide().fadeIn("fast");
+      
+          }
+          
+          function loading()
+          {
+               $('body').css({'cursor':'progress'})
+          }
+          
+          
+          function complete()
+          {
+              $('body').css({'cursor':'default'})
+          }
+          
+          function prueba()
+          {
+              $("div[id ='loadingimg']").show();
+          }
+           
+          function tableExpansion(){
+            //$("td[colspan=5]").find("table").hide();
+
+            $("table[id='resulttable']").click(function(event) {
+                
+               event.stopPropagation();
+               
+               var $target = $(event.target);
+               
+               if ( $target.closest("td").attr("colspan") > 1 ) {
+                   $target.slideUp();
+               } else {
+                   $target.closest("tr").next().find("table").slideToggle();
+               }                
+               
+               var iconclass = $target.closest("td"); 
+               if(iconclass == 'ui-icon-circle-minus')
+                    $target.closest("td").toggleClass("ui-icon-circle-plus")
+               else
+                    $target.closest("td").toggleClass("ui-icon-circle-minus")
+               
+            });
+          }
+          
+          
+ 
+          
+
+          $(document).ready(function() {
+
+             loadInformation()   
+             reload();
+             
+  
+             //Table sorter
+             $( "[class='ui-button-icon-left ui-icon ui-icon-hand']").click(function() {
+  
+                  $( this ).toggleClass( "ui-icon-hand-selected");
+                  return false;
+             });
+         
+  
+             $("div[id ='loadingimg']").hide();
+             
+
+             
+             tableExpansion();
+             
+             showModalProcessing("Loading...", "")
+           })
+           
+         
+         
+            
+        </script>
+
+        
+        <c:if test="${networkFormBean.selectedQueryType eq 0}">
+            <script>
+                querytype = 0;
+            </script>
+        </c:if>
+        
+        <c:if test="${networkFormBean.selectedQueryType eq 1}">
+            <script>
+                querytype = 1; 
+            </script>
+        </c:if>
+        
+    </h:head>
+    
+    <h:body style="background-color: #393A3A;" onload="reload(); updatetable(querytype); closeModal(); bindAutocomplete('index',#{networkFormBean.selectedInputType});">
+        
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" showSummary="false"/>
+            
+            <!-- Query Forms -->
+            <div class="formdiv_index">
+
+                <div class="container1">
+                    <div style="float:left;">
+                        <img src="./resources/img/logo_blanco.png" />
+                    </div>
+                    <div style="float:left; width: 300px; padding-top: 20px;">
+                      <nav>
+                          <ul>
+                          <li><a href="main.jsf" class="grn">Home</a></li>
+                          <li><a href="index.jsf" class="ylw">Visualizer</a></li>
+                          <li><a href="tutorial.jsf" class="pnk">Help</a></li>
+                          <li><a href="download.jsf" class="orng">Download </a></li>
+                          <li><a href="citeus.jsf" class="blu">Cite us</a></li>
+                          <li><a href="contact.jsf" class="prpl">About</a></li>
+                          </ul>
+                      </nav>
+                  </div>
+
+                </div>
+                 <h:form id="queryform">
+                      <h:panelGrid columns="8">
+
+                          <c:if test="#{networkFormBean.selectedQueryType eq 0}">
+                            <p:commandButton id="changeview" value="View" onclick="toggleview('#layout', '#layout_table')" styleClass="buttonvisform"/> 
+                          </c:if>
+                          
+                            <!-- Network Query From -->
+                           <ph:netwizard id="genestab" querytype="#{networkFormBean.selectedQueryType}"/>
+
+                      </h:panelGrid>
+
+                </h:form>
+          
+            </div>
+
+        
+
+            <!-- Result Table -->
+            <p:layout id="layout_table" styleClass="centraldiv_enrichment" style="background-color: #393A3A;">
+
+                <!-- Networks --> 
+                <p:layoutUnit id ="centrallayout_table" position="center" resizable="false" style="background-color: #393A3A; padding: 0px;">
+             
+                    <!-- the input fields that will hold the variables we will use -->
+                    <div>
+                        <div style="display:table; height: 35px; width: 100%; background-color: #BDBDBD;">
+
+                            <div style="float: left; padding-top: 5px;  padding-left: 3px; width: 10%; position: relative;">
+                                <h:form style="background-color: #BDBDBD;">
+
+                                    <p:commandButton  title="Download" value="Download" icon="ui-icon-arrowthickstop-1-s" ajax="true" 
+                                                      actionListener="#{networkFormBean.createOutputFile}" onstart="showModalProcessing('Processing output file','Please wait.')" oncomplete="showModalDownload()"/> 
+
+                                </h:form>    
+                            </div>
+                            <label style="color:#393A3A; padding-top: 12px; font-size: 14px; float:left; font-weight: bold;">Filter:</label>
+                            <div style="float:left; padding: 5px;">
+                                <input id="searchfield" type="text" class="searchfield" onkeyup="filterTable($('input[id=\'searchfield\']').val(), #{networkFormBean.selectedQueryType})" />
+                            </div> 
+                        </div>
+                            
+                      
+                        <h:form id="tableform"> 
+                            <table  id ="resulttable" class="scroll" cellspacing="0" cellpadding="0" border="0">
+
+                            </table>
+
+                        </h:form>
+                         
+                    </div>
+           
+       
+               
+                       
+                </p:layoutUnit> 
+
+            </p:layout>
+                <!-- Central -->
+                <p:layout  id="layout" styleClass="centraldiv" >
+
+                     <!-- Networks --> 
+                     <p:layoutUnit id="centrallayout" position="center" resizable="false"  styleClass="networkdiv" style="overflow:hidden; background-color: #BDBDBD;">
+
+                            <ph:menu styleClass="menunetworkdiv"/>
+
+                            <h:form id="networksform"> 
+                                    <!-- networks -->
+                                    <ph:netview network="#{networkFormBean.currentCysNetwork.mainnetwork}"
+                                                subnetworks ="#{networkFormBean.currentCysNetwork.subnetworks}"
+                                                threshold ="#{networkFormBean.currentCysNetwork.networkDB.confidence}">
+                                    </ph:netview>   
+
+                             </h:form>
+
+                    </p:layoutUnit>
+
+
+                    <!--Information-->
+                    <p:layoutUnit id="infolayoutunit" position="west" resizable="true" header="Info" collapsible="true" styleClass="infodiv" style="overflow:hidden; background-color: white;" size="300">
+
+
+                        <h:form id="selectedform" style="background-color: transparent">
+
+                            <p:tabView id="infotabview" style="border-color:#FFF; font-size:10px; overflow: hidden; width: 98%; padding-left: 3px; padding-rigth: 3px;">
+
+                                    <p:tab id="infonetworktab" title="Filters" >
+                                        
+                                        <ph:subnetworks id="subnetworklist" items="#{networkFormBean.subnetworks}"/>    
+
+                                        <p:spacer height="70" width="100%"/>
+                                     </p:tab>
+
+
+                                    <!--Nodes-->
+
+                                    <p:tab id="infonodestab" title="Nodes">  
+                                       <div style="height:200px;width:100%;overflow:scroll;">
+                                       <table id ="nodeTable" class="phenumatable">
+
+                                       </table>
+                                       </div>
+                                       <p:separator/>
+                                       <h:outputText id="phenotable" value="#{edgeTableManagedBean.phenotypeTable}" escape="false"/>  
+                                     </p:tab>
+
+                                    <!--Edges-->
+
+                                    <p:tab id="infoedgesstab" title="Edges">  
+                                        <div style="height:200px;width:100%;overflow:scroll;">
+                                            <table  id ="edgeTable"  class="phenumatable">
+
+                                            </table>
+                                        </div>
+                                        <p:separator/>
+                                        <h:outputText id="edgeinfotable" value="#{edgeTableManagedBean.phenotypeTable}" escape="false"/> 
+
+                                     </p:tab>
+
+                                    <!--Enrichment-->
+
+                                    <p:tab id="enrichmenttab" title="Enrichment" >
+
+                                         <p:toolbar>
+                                             <p:toolbarGroup align="right">  
+                                                   <p:commandButton value="Phenotypes" actionListener="#{edgeTableManagedBean.enrichmentPhenotypesClick}" update=":selectedform:infotabview:enrichmentinfotable" onclick=" showModalProcessing('Please wait, calculating enrichment.','')" oncomplete="closeModal()"/>
+
+                                                   <p:commandButton value="GO BP" actionListener="#{edgeTableManagedBean.enrichmentGOBPClick}" update=":selectedform:infotabview:enrichmentinfotable" onclick=" showModalProcessing('Please wait, calculating enrichment.','')" oncomplete="closeModal()"/>
+
+                                                   <p:commandButton value="GO CC" actionListener="#{edgeTableManagedBean.enrichmentGOCCClick}" update=":selectedform:infotabview:enrichmentinfotable" onclick=" showModalProcessing('Please wait, calculating enrichment.','')" oncomplete="closeModal()"/>
+
+                                                   <p:commandButton value="GO MF" actionListener="#{edgeTableManagedBean.enrichmentGOMFClick}" update=":selectedform:infotabview:enrichmentinfotable" onclick=" showModalProcessing('Please wait, calculating enrichment.','')" oncomplete="closeModal()"/>
+
+                                                   <p:commandButton value="Clear" actionListener="#{edgeTableManagedBean.clearEnrichmentClick}" update=":selectedform:infotabview:enrichmentinfotable" onclick="loading()" oncomplete="complete()"/>
+
+                                                   <p:commandButton  title="Download Enrichment" value="Download Enrinchment" icon="ui-icon-arrowthickstop-1-s" ajax="true" actionListener="#{edgeTableManagedBean.createOutputFile}"
+                                                                     onstart="showModalProcessing('Processing output file','Please wait.')" oncomplete="showModalDownloadEnrichment()"/>
+                                              </p:toolbarGroup>
+                                         </p:toolbar>
+
+                                         <h:outputText id="enrichmentinfotable" value="#{edgeTableManagedBean.enrichmentTable}" escape="false"/>
+
+
+                                    </p:tab>      
+
+                            </p:tabView>
+
+                       </h:form>
+
+                    </p:layoutUnit>
+
+            </p:layout>
+
+            
+             <!-- FALSE FORM used to show information selected in the network in the information panel -->
+                  
+             <h:form id="falseform" style="background:transparent">
+                <!-- Selected node or edge in the tables to show the related information (phenotypes) -->
+                <h:inputHidden id="selectedNode" value="#{edgeTableManagedBean.selectedNode}" immediate="true" />
+                <h:inputHidden id="selectedEdge" value="#{edgeTableManagedBean.selectedEdge}" immediate="true" />
+
+                <h:inputHidden id="qtipinformation" value="#{edgeTableManagedBean.qtip}" immediate="true"/>
+
+                <h:inputText id="enrichment" value="#{networkFormBean.enrichment_json}" immediate="true" style="display:none;"/>
+
+                <!-- Selected Nodes for Enrichment -->
+                <h:inputHidden id="selectedNodes" value="#{edgeTableManagedBean.selectedNodes}" immediate="true" />
+
+                <!-- Show the information in the below table -->
+                <p:commandLink id="button"  type="submit" actionListener="#{edgeTableManagedBean.click}" update=":selectedform:infotabview:phenotable" style="color:#FFF;" onclick=" showModalProcessing('Retrieving node information','Please wait.')" oncomplete="closeModal()"/>
+                <p:commandLink id="buttonedge"  type="submit" actionListener="#{edgeTableManagedBean.edgeClick}" update=":selectedform:infotabview:edgeinfotable" style="color:#FFF;" onclick="showModalProcessing('Retrieving node information','Please wait.')" oncomplete="closeModal()"/>
+                <p:commandLink id="buttonenrichmentsubmit" type="submit" update=":selectedform:infotabview:enrichmentinfotable" style="color:#FFF;"/>
+
+                <p:commandLink id="buttonqtips"  type="submit" actionListener="#{edgeTableManagedBean.getNodeInformationQtip}" update=":falseform:qtipinformation" style="color:#FFF;" oncomplete="executeShowQtip()"/>
+                <p:commandLink id="buttonedgeqtips"  type="submit" actionListener="#{edgeTableManagedBean.getEdgeInformationQtip}" update=":falseform:qtipinformation" style="color:#FFF;" oncomplete="executeShowQtip()"/>
+
+            </h:form>
+            
+            <p:spacer height="10" />
+           
+            
+            <!-- Footer -->
+            <div class="footerdiv">
+
+                <h:form id="formfooter">
+                    
+                    <p:spacer height="5" width="5" />
+                    
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" showSummary="false"/>
+
+                </h:form>
+
+            </div>   
+            
+            
+            <!-- Download modal form: repetido en main.html -->   
+            <div id='basic-modal-download'>      
+                <h:form style='background-color: #333;'>
+                    <h3>Press to download file </h3>
+                    <p:commandButton  title='Download' value='Download' icon='ui-icon-arrowthickstop-1-s' ajax='false' styleClass='buttonmain' style="margin-left:130px;">
+                            <p:fileDownload value='#{networkFormBean.outputFile}'/>        
+                    </p:commandButton>
+                </h:form>
+            </div>
+ 
+            <div id='basic-modal-download-enrichment'>      
+            <h3>Press to download: enrichment.txt </h3>
+            <h:form style='background-color: #333;'>
+                <p:commandButton  title='Download' value='Download' icon='ui-icon-arrowthickstop-1-s' ajax='false' styleClass='buttonmain'>
+                        <p:fileDownload value='#{edgeTableManagedBean.outputFile}'/>        
+                </p:commandButton>
+            </h:form>
+            </div>
+  
+      <!--  </div> -->
+      <script>
+          closeModal();
+      </script>  
+        
+        
+</h:body>
+
+</html>
+
